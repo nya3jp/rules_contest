@@ -1,0 +1,60 @@
+package(default_visibility = ["//visibility:private"])
+
+py_binary(
+    name = "dataset_merge",
+    srcs = ["dataset_merge.py"],
+    srcs_version = "PY3",
+    deps = [":datasets"],
+    visibility = ["//visibility:public"],
+)
+
+py_binary(
+    name = "dataset_generate",
+    srcs = ["dataset_generate.py"],
+    srcs_version = "PY3",
+    visibility = ["//visibility:public"],
+)
+
+py_binary(
+    name = "dataset_derive",
+    srcs = ["dataset_derive.py"],
+    srcs_version = "PY3",
+    deps = [":datasets"],
+    visibility = ["//visibility:public"],
+)
+
+py_binary(
+    name = "dataset_test",
+    srcs = ["dataset_test.py"],
+    srcs_version = "PY3",
+    deps = [":datasets"],
+    visibility = ["//visibility:public"],
+)
+
+py_binary(
+    name = "simple_judge",
+    srcs = ["simple_judge.py"],
+    srcs_version = "PY3",
+    deps = [":datasets"],
+    visibility = ["//visibility:public"],
+)
+
+py_binary(
+    name = "simple_judge_wrapper_generator",
+    srcs = ["simple_judge_wrapper_generator.py"],
+    srcs_version = "PY3",
+    visibility = ["//visibility:public"],
+)
+
+py_binary(
+    name = "solution_test_wrapper_generator",
+    srcs = ["solution_test_wrapper_generator.py"],
+    srcs_version = "PY3",
+    visibility = ["//visibility:public"],
+)
+
+py_library(
+    name = "datasets",
+    srcs = ["datasets.py"],
+    srcs_version = "PY3",
+)
