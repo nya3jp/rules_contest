@@ -1,0 +1,2 @@
+# Do not start the local server.
+startup --batch
