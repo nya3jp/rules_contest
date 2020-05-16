@@ -32,6 +32,13 @@ py_binary(
 )
 
 py_binary(
+    name = "dataset_test_wrapper_generator",
+    srcs = ["dataset_test_wrapper_generator.py"],
+    srcs_version = "PY3",
+    visibility = ["//visibility:public"],
+)
+
+py_binary(
     name = "simple_judge",
     srcs = ["simple_judge.py"],
     srcs_version = "PY3",

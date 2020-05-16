@@ -2,5 +2,6 @@ load("@rules_contest//contest:defs.bzl",
     "dataset_generate",
     "dataset_derive",
     "dataset_merge",
+    "dataset_test",
     "simple_judge",
     "solution_test")

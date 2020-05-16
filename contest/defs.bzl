@@ -42,6 +42,47 @@ def dataset_merge(name, datasets, **kwargs):
     )
 
 
+def dataset_test(name, exec, datasets, input_extension="in", **kwargs):
+    zip = name + "_dataset.zip"
+    native.genrule(
+        name = name + "_dataset_zip",
+        outs = [zip],
+        srcs = datasets,
+        tools = ["@rules_contest//contest/impls:dataset_merge"],
+        cmd = "'$(execpath @rules_contest//contest/impls:dataset_merge)' \
+            --output='$@' \
+            $(SRCS)",
+    )
+    sh = name + ".sh"
+    native.genrule(
+        name = name + "_sh",
+        outs = [sh],
+        srcs = [zip],
+        tools = [
+            "@rules_contest//contest/impls:dataset_test_wrapper_generator",
+            "@rules_contest//contest/impls:dataset_test",
+            exec,
+        ],
+        executable = True,
+        cmd = "'$(execpath @rules_contest//contest/impls:dataset_test_wrapper_generator)' \
+            --output='$@' \
+            --dataset_test='$(rootpath @rules_contest//contest/impls:dataset_test)' \
+            --executable='$(rootpath " + exec + ")' \
+            --input_extension='" + input_extension + "' \
+            $(rootpath " + zip + ")",
+    )
+    native.sh_test(
+        name = name,
+        srcs = [sh],
+        data = [
+            "@rules_contest//contest/impls:dataset_test",
+            exec,
+            zip,
+        ],
+        **kwargs
+    )
+
+
 def simple_judge(name, datasets, comparator="@rules_contest//contest:exact_comparator", input_extension="in", answer_extension="diff", **kwargs):
     zip = name + "_dataset.zip"
     native.genrule(

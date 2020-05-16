@@ -23,13 +23,13 @@ py_binary(
     srcs = ["generator.py"],
 )
 
-#py_binary(
-#    name = "validator",
-#    srcs = ["validator.py"],
-#)
+py_binary(
+    name = "validator",
+    srcs = ["validator.py"],
+)
 
-#dataset_test(
-#    name = "tests_test",
-#    exec = ":validator",
-#    datasets = [":dataset"],
-#)
+dataset_test(
+    name = "dataset_test",
+    exec = ":validator",
+    datasets = [":dataset"],
+)
