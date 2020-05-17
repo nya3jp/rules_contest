@@ -65,3 +65,25 @@ py_library(
     srcs = ["datasets.py"],
     srcs_version = "PY3",
 )
+
+py_binary(
+    name = "jinja2_template",
+    srcs = ["jinja2_template.py"],
+    srcs_version = "PY3",
+    deps = [
+        ":datasets",
+        "//third_party/jinja2",
+        "//third_party/yaml",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+py_binary(
+    name = "render_markdown",
+    srcs = ["render_markdown.py"],
+    srcs_version = "PY3",
+    deps = [
+        "//third_party/markdown",
+    ],
+    visibility = ["//visibility:public"],
+)

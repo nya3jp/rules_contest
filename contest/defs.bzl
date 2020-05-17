@@ -138,3 +138,53 @@ def solution_test(name, solution, judge, judge_args=[], **kwargs):
         data = [solution, judge],
         **kwargs
     )
+
+
+def jinja2_template(name, srcs, main=None, vars=[], datasets=[], **kwargs):
+    if len(srcs) == 1:
+        main = srcs[0]
+    if not main:
+        fail("main must be specified for multi-file templates")
+    if main not in srcs:
+        fail("main must be one of srcs")
+    zip = name + "_dataset.zip"
+    native.genrule(
+        name = name + "_dataset_zip",
+        outs = [zip],
+        srcs = datasets,
+        tools = ["@rules_contest//contest/impls:dataset_merge"],
+        cmd = "'$(execpath @rules_contest//contest/impls:dataset_merge)' \
+            --output='$@' \
+            $(SRCS)",
+    )
+    vars_args = []
+    for file in vars:
+        vars_args.append("--template_vars_file='$(execpath %s)'" % file)
+    out = name + ".rendered"
+    native.genrule(
+        name = name,
+        outs = [out],
+        srcs = srcs + [zip] + vars,
+        tools = ["@rules_contest//contest/impls:jinja2_template"],
+        cmd = "'$(execpath @rules_contest//contest/impls:jinja2_template)' \
+            --output='$@' \
+            --input='$(execpath " + main + ")' \
+            --dataset='$(execpath " + zip + ")' \
+            " + " ".join(vars_args),
+        **kwargs
+    )
+
+
+def markdown(name, src, **kwargs):
+    html = name + ".html"
+    native.genrule(
+        name = name,
+        outs = [html],
+        srcs = [src],
+        tools = ["@rules_contest//contest/impls:render_markdown"],
+        cmd = "'$(execpath @rules_contest//contest/impls:render_markdown)' \
+            --output='$@' \
+            --input='$<' \
+            ",
+        **kwargs
+    )
