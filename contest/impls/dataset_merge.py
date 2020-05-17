@@ -1,5 +1,6 @@
 import argparse
 import os
+import shutil
 import subprocess
 
 from contest.impls import datasets
@@ -10,6 +11,10 @@ def main():
     parser.add_argument('--output', required=True)
     parser.add_argument('datasets', nargs='*')
     options = parser.parse_args()
+
+    if len(options.datasets) == 1 and options.datasets[0].endswith('.zip'):
+        shutil.copy(options.datasets[0], options.output)
+        return
 
     with datasets.expand(options.datasets) as dataset_dir:
         subprocess.check_call(
