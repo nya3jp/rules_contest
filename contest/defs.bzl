@@ -188,3 +188,46 @@ def markdown(name, src, **kwargs):
             ",
         **kwargs
     )
+
+
+def cc_yaml_library(name, src, **kwargs):
+    gen_name = name + "_gen"
+    out = src.rsplit(".", 2)[0] + ".h"
+    native.genrule(
+        name = gen_name,
+        outs = [out],
+        srcs = [src],
+        tools = ["@rules_contest//contest/impls:cc_yaml_library"],
+        cmd = "'$(execpath @rules_contest//contest/impls:cc_yaml_library)' \
+            --output='$@' \
+            --input='$<' \
+            ",
+        **kwargs
+    )
+    native.cc_library(
+        name = name,
+        hdrs = [out],
+        **kwargs
+    )
+
+
+def py_yaml_library(name, src, **kwargs):
+    gen_name = name + "_gen"
+    out = src.rsplit(".", 2)[0] + ".py"
+    native.genrule(
+        name = gen_name,
+        outs = [out],
+        srcs = [src],
+        tools = ["@rules_contest//contest/impls:py_yaml_library"],
+        cmd = "'$(execpath @rules_contest//contest/impls:py_yaml_library)' \
+            --output='$@' \
+            --input='$<' \
+            ",
+        **kwargs
+    )
+    native.py_library(
+        name = name,
+        srcs = [out],
+        srcs_version = "PY2AND3",
+        **kwargs
+    )

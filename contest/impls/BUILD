@@ -87,3 +87,23 @@ py_binary(
     ],
     visibility = ["//visibility:public"],
 )
+
+py_binary(
+    name = "cc_yaml_library",
+    srcs = ["cc_yaml_library.py"],
+    srcs_version = "PY3",
+    deps = [
+        "//third_party/yaml",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+py_binary(
+    name = "py_yaml_library",
+    srcs = ["py_yaml_library.py"],
+    srcs_version = "PY3",
+    deps = [
+        "//third_party/yaml",
+    ],
+    visibility = ["//visibility:public"],
+)

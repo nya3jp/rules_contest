@@ -21,11 +21,13 @@ dataset_generate(
 py_binary(
     name = "generator",
     srcs = ["generator.py"],
+    deps = ["//ab:constraints_py"],
 )
 
 py_binary(
     name = "validator",
     srcs = ["validator.py"],
+    deps = ["//ab:constraints_py"],
 )
 
 dataset_test(

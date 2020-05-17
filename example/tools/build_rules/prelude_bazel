@@ -6,4 +6,6 @@ load("@rules_contest//contest:defs.bzl",
     "simple_judge",
     "solution_test",
     "jinja2_template",
-    "markdown")
+    "markdown",
+    "cc_yaml_library",
+    "py_yaml_library")

@@ -3,11 +3,12 @@
 import os
 import random
 
-MAX = 1000000000
+from ab import constraints
+
 seq = 0
 
 
-def Generate(out_dir, a, b):
+def generate(out_dir, a, b):
     global seq
     filename = '50-random%02d.in' % seq
     with open(os.path.join(out_dir, filename), 'w') as f:
@@ -17,8 +18,11 @@ def Generate(out_dir, a, b):
 
 def main():
     out_dir = os.environ['OUTPUT_DIR']
+    random.seed(283)
     for _ in range(20):
-        Generate(out_dir, random.randrange(0, MAX), random.randrange(0, MAX))
+        a = random.randrange(0, constraints.VALUE_MAX + 1)
+        b = random.randrange(0, constraints.VALUE_MAX + 1)
+        generate(out_dir, a, b)
 
 
 if __name__ == '__main__':

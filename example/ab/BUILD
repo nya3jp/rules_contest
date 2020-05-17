@@ -11,3 +11,8 @@ jinja2_template(
     vars = ["constraints.yaml"],
     datasets = ["//ab/judge:dataset"],
 )
+
+py_yaml_library(
+    name = "constraints_py",
+    src = "constraints.yaml",
+)
