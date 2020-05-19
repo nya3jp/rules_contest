@@ -24,13 +24,13 @@ def main():
 
     with datasets.expand([options.dataset]) as dataset_dir:
         names = datasets.names(dataset_dir)
-        tests = []
+        cases = []
 
         for name in names:
             print('======= %s' % name)
             input_path = os.path.join(dataset_dir, name + '.' + options.input_extension)
             if not os.path.exists(input_path):
-                tests.append({
+                cases.append({
                     'name': name,
                     'result': 'error',
                     'message': 'Input file missing: %s' % os.path.basename(input_path),
@@ -38,7 +38,7 @@ def main():
                 continue
             answer_path = os.path.join(dataset_dir, name + '.' + options.answer_extension)
             if not os.path.exists(answer_path):
-                tests.append({
+                cases.append({
                     'name': name,
                     'result': 'error',
                     'message': 'Answer file missing: %s' % os.path.basename(answer_path),
@@ -69,7 +69,7 @@ def main():
                 print(stderr_file.read())
 
             if solution_code != 0:
-                tests.append({
+                cases.append({
                     'name': name,
                     'result': 'reject',
                     'message': 'Solution exited with code %d' % solution_code,
@@ -101,7 +101,7 @@ def main():
                 print(stderr_file.read())
 
             if judge_code != 0:
-                tests.append({
+                cases.append({
                     'name': name,
                     'result': 'reject',
                     'message': 'Judge exited with code %d' % judge_code,
@@ -112,44 +112,45 @@ def main():
                 })
                 continue
 
-            tests.append({
+            cases.append({
                 'name': name,
                 'result': 'accept',
+                'message': 'OK',
                 'solution_time': solution_time,
                 'solution_code': solution_code,
                 'judge_time': judge_time,
                 'judge_code': judge_code,
             })
 
-    for test in tests:
-        if test['result'] not in ('accept', 'reject'):
+    for case in cases:
+        if case['result'] not in ('accept', 'reject'):
             result = 'error'
-            message = '%s: %s' % (test['name'], test['message'])
+            message = '%s: %s' % (case['name'], case['message'])
             break
     else:
         if options.expect == 'accept':
-            for test in tests:
-                if test['result'] == 'reject':
+            for case in cases:
+                if case['result'] == 'reject':
                     result = 'failure'
-                    message = '%s: %s' % (test['name'], test['message'])
+                    message = '%s: %s' % (case['name'], case['message'])
                     break
             else:
                 result = 'success'
                 message = 'All accepted'
         elif options.expect == 'reject_any':
-            for test in tests:
-                if test['result'] == 'reject':
+            for case in cases:
+                if case['result'] == 'reject':
                     result = 'success'
-                    message = '%s: Rejected as expected: %s' % (test['name'], test['message'])
+                    message = '%s: Rejected as expected: %s' % (case['name'], case['message'])
                     break
             else:
                 result = 'failure'
                 message = 'All accepted unexpectedly'
         elif options.expect == 'reject_all':
-            for test in tests:
-                if test['result'] == 'accept':
+            for case in cases:
+                if case['result'] == 'accept':
                     result = 'failure'
-                    message = '%s: Accepted unexpectedly' % test['name']
+                    message = '%s: Accepted unexpectedly' % case['name']
                     break
             else:
                 result = 'success'
@@ -163,7 +164,7 @@ def main():
         'expect': options.expect,
         'result': result,
         'message': message,
-        'tests': tests,
+        'cases': cases,
     }
     with open(os.path.join(options.output_dir, 'results.json'), 'w') as f:
         json.dump(report, f, indent=2, sort_keys=True)
