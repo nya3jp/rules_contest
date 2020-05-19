@@ -118,7 +118,7 @@ def simple_judge(name, datasets, comparator="@rules_contest//contest:exact_compa
     )
 
 
-def solution_test(name, solution, judge, judge_args=[], **kwargs):
+def solution_test(name, solution, judge, judge_args=[], tags=[], **kwargs):
     sh = name + ".sh"
     native.genrule(
         name = name + "_sh",
@@ -136,6 +136,7 @@ def solution_test(name, solution, judge, judge_args=[], **kwargs):
         name = name,
         srcs = [sh],
         data = [solution, judge],
+        tags = tags + ["solution"],
         **kwargs
     )
 
