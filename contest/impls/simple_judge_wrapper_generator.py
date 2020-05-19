@@ -4,6 +4,7 @@ import shlex
 _SCRIPT_TMPL = """#!/bin/sh
 
 exec %(judge)s \\
+    --output_dir="${TEST_UNDECLARED_OUTPUTS_DIR}" \\
     --comparator=%(comparator)s \\
     --dataset=%(dataset)s \\
     --input_extension=%(input_extension)s \\
