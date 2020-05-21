@@ -13,6 +13,8 @@ filegroup(
 )
 
 py_binary(
-    name = "run_solution_tests",
-    srcs = ["run_solution_tests.py"],
+    name = "render_test_results",
+    srcs = ["render_test_results.py"],
+    data = ["test_results.html"],
+    deps = ["//third_party/jinja2"],
 )

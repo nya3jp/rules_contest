@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <title>Test Results</title>
+</head>
+<body>
+<div class="container-fluid">
+    <h1>Test Results</h1>
+
+    <table class="table table-sm">
+        {% if report.other_tests %}
+        <thead class="thead-light">
+        <tr>
+            <th colspan="3">Unit Tests</th>
+        </tr>
+        </thead>
+        {% for _, test in report.other_tests|dictsort %}
+        <tbody>
+        <tr>
+            <td>{{ test.target }}</td>
+            <td class="table-{{ test.result == 'success' and 'success' or 'danger' }}">{{ test.result }}</td>
+            <td>{{ test.message }}</td>
+        </tr>
+        </tbody>
+        {% endfor %}
+        {% endif %}
+
+        {% if report.solution_tests %}
+        <thead class="thead-light">
+        <tr>
+            <th colspan="3">Solution Tests</th>
+        </tr>
+        </thead>
+        {% for _, test in report.solution_tests|dictsort %}
+        <tbody>
+        <tr>
+            <td>{{ test.target }}</td>
+            <td class="table-{{ test.result == 'success' and 'success' or 'danger' }}">{{ test.result }}</td>
+            <td>{{ test.message }}</td>
+        </tr>
+        </tbody>
+        {% endfor %}
+        {% endif %}
+    </table>
+
+</div>
+</body>
+</html>
