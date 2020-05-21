@@ -74,7 +74,7 @@ def main():
     env = jinja2.Environment(
         loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
         autoescape=True)
-    template = env.get_template('test_results.html')
+    template = env.get_template('test_results.md')
     html = template.render(report=report)
 
     if options.output:

@@ -15,6 +15,6 @@ filegroup(
 py_binary(
     name = "render_test_results",
     srcs = ["render_test_results.py"],
-    data = ["test_results.html"],
+    data = ["test_results.md"],
     deps = ["//third_party/jinja2"],
 )
