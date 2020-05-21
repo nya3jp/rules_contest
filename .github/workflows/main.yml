@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: Test
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Install Bazel
+        run: |
+          curl https://bazel.build/bazel-release.pub.gpg | sudo apt-key add -
+          echo "deb [arch=amd64] https://storage.googleapis.com/bazel-apt stable jdk1.8" | sudo tee /etc/apt/sources.list.d/bazel.list
+          sudo apt update
+          sudo apt install bazel
+      - name: Checkout the repository
+        uses: actions/checkout@v2
+      - name: Checkout the example repository
+        uses: actions/checkout@v2
+        with:
+          repository: https://github.com/nya3jp/contest_template
+          path: contest_template
+      - name: Run tests
+        run: |
+          cd $GITHUB_WORKSPACE/contest_template
+          echo 'local_repository(name="rules_contest", path="..")' > WORKSPACE
+          bazel test //...
