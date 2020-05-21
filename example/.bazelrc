@@ -1,2 +1,0 @@
-build -c opt
-build --coverage_report_generator=@rules_contest//contest:fake_coverage_report_generator

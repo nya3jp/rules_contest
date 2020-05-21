@@ -1,6 +1,0 @@
-# This example uses rules_contest in the parent repository.
-# For real use, import rules_contest with http_archive or git_repository instead.
-local_repository(
-    name = "rules_contest",
-    path = "..",
-)
