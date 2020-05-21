@@ -24,11 +24,19 @@ def main():
 
         tests = []
 
+        expected_targets = set()
+
         for line in event_file:
             data = json.loads(line)
+            if 'configured' in data:
+                if 'solution' in data['configured'].get('tag', []):
+                    expected_targets.add(data['id']['targetConfigured']['label'])
+                continue
             if 'testResult' not in data:
                 continue
             target = data['id']['testResult']['label']
+            assert target in expected_targets
+            expected_targets.remove(target)
             for output in data['testResult']['testActionOutput']:
                 if output['name'] == 'test.outputs__outputs.zip':
                     assert output['uri'].startswith('file://'), output['uri']
@@ -52,6 +60,13 @@ def main():
                     'message': 'Failed to read results.json: %s' % e,
                 }
             tests.append(test)
+
+        for target in expected_targets:
+            tests.append({
+                'target': target,
+                'result': 'error',
+                'message': 'Test was not run',
+            })
 
     report = {
         'tests': tests,
