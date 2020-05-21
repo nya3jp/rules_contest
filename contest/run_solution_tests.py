@@ -1,3 +1,4 @@
+import argparse
 import json
 import os
 import subprocess
@@ -7,8 +8,10 @@ import zipfile
 
 
 def main():
-    extra_args = sys.argv[1:]
-    workspace_dir = os.environ['BUILD_WORKSPACE_DIRECTORY']
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--target', dest='targets', action='append', required=True)
+    parser.add_argument('--workspace', default=os.environ.get('BUILD_WORKSPACE_DIRECTORY', ''))
+    options = parser.parse_args()
 
     with tempfile.NamedTemporaryFile() as event_file:
         args = [
@@ -16,8 +19,8 @@ def main():
             'test',
             '--build_event_json_file=%s' % event_file.name,
             '--test_tag_filters=solution',
-        ] + extra_args
-        subprocess.call(args, cwd=workspace_dir, stdout=subprocess.DEVNULL)
+        ] + options.targets
+        subprocess.call(args, cwd=options.workspace, stdout=subprocess.DEVNULL)
 
         tests = []
 
