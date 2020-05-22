@@ -47,9 +47,9 @@ def main():
             solution_stdout_path = os.path.join(options.output_dir, '%s.solution.stdout' % case.name)
             solution_stderr_path = os.path.join(options.output_dir, '%s.solution.stderr' % case.name)
 
-            with open(input_path, 'r') as stdin_file, \
-                    open(solution_stdout_path, 'w+') as stdout_file, \
-                    open(solution_stderr_path, 'w+') as stderr_file:
+            with open(input_path, 'rb') as stdin_file, \
+                    open(solution_stdout_path, 'wb') as stdout_file, \
+                    open(solution_stderr_path, 'wb') as stderr_file:
                 args = [options.solution]
                 print('>>> %s' % ' '.join(shlex.quote(arg) for arg in args))
 
@@ -65,14 +65,16 @@ def main():
                     stderr=stderr_file)
                 solution_time = time.time() - start_time
 
-                if solution_code == 228:
-                    print('Skipped')
-                else:
-                    print('Finished with code %d in %.1fs' % (solution_code, solution_time))
-                    print('--- STDOUT ---')
-                    print(stdout_file.read())
-                    print('--- STDERR ---')
-                    print(stderr_file.read())
+            if solution_code == 228:
+                print('Skipped')
+            else:
+                print('Finished with code %d in %.1fs' % (solution_code, solution_time))
+                print('--- STDOUT ---')
+                with open(solution_stdout_path, 'r') as f:
+                    print(f.read())
+                print('--- STDERR ---')
+                with open(solution_stderr_path, 'r') as f:
+                    print(f.read())
 
             if solution_code == 228:
                 cases.append({
@@ -96,8 +98,8 @@ def main():
             judge_stdout_path = os.path.join(options.output_dir, '%s.judge.stdout' % case.name)
             judge_stderr_path = os.path.join(options.output_dir, '%s.judge.stderr' % case.name)
 
-            with open(judge_stdout_path, 'w+') as stdout_file, \
-                    open(judge_stderr_path, 'w+') as stderr_file:
+            with open(judge_stdout_path, 'wb') as stdout_file, \
+                    open(judge_stderr_path, 'wb') as stderr_file:
                 args = [options.comparator, input_path, solution_stdout_path, answer_path]
                 print('>>> %s' % ' '.join(shlex.quote(arg) for arg in args))
 
@@ -113,11 +115,13 @@ def main():
                     stderr=stderr_file)
                 judge_time = time.time() - start_time
 
-                print('Finished with code %d in %.1fs' % (judge_code, judge_time))
-                print('--- STDOUT ---')
-                print(stdout_file.read())
-                print('--- STDERR ---')
-                print(stderr_file.read())
+            print('Finished with code %d in %.1fs' % (judge_code, judge_time))
+            print('--- STDOUT ---')
+            with open(judge_stdout_path, 'r') as f:
+                print(f.read())
+            print('--- STDERR ---')
+            with open(judge_stderr_path, 'r') as f:
+                print(f.read())
 
             if judge_code != 0:
                 cases.append({
