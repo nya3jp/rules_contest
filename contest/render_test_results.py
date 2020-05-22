@@ -13,6 +13,8 @@ def main():
     parser.add_argument('input')
     options = parser.parse_args()
 
+    known_solution_tests = set()
+    broken_tests = {}
     solution_tests = {}
     other_tests = {}
 
@@ -22,16 +24,33 @@ def main():
             if 'configured' in data:
                 if 'testSize' in data['configured']:
                     target = data['id']['targetConfigured']['label']
-                    tags = data['configured'].get('tag', [])
-                    tests = solution_tests if 'solution' in tags else other_tests
-                    tests[target] = {
+                    broken_tests[target] = {
                         'target': target,
                         'result': 'error',
                         'message': 'Test was not run',
                     }
+                    tags = data['configured'].get('tag', [])
+                    if 'solution' in tags:
+                        known_solution_tests.add(target)
             if 'testResult' in data:
                 target = data['id']['testResult']['label']
-                if target in other_tests:
+                if target in known_solution_tests:
+                    for output in data['testResult']['testActionOutput']:
+                        if output['name'] == 'test.outputs__outputs.zip':
+                            assert output['uri'].startswith('file://'), output['uri']
+                            zip_path = output['uri'][len('file://'):]
+                            break
+                    else:
+                        broken_tests[target]['message'] = 'outputs.zip not found'
+                        continue
+                    try:
+                        with zipfile.ZipFile(zip_path) as archive:
+                            with archive.open('results.json') as f:
+                                solution_tests[target] = json.load(f)
+                                broken_tests.pop(target)
+                    except IOError as e:
+                        broken_tests[target]['message'] = 'Failed to read results.json: %s' % e
+                else:
                     status = data['testResult']['status']
                     result = {
                         'PASSED': 'success',
@@ -42,32 +61,23 @@ def main():
                         'result': result,
                         'message': status,
                     }
-                else:
-                    for output in data['testResult']['testActionOutput']:
-                        if output['name'] == 'test.outputs__outputs.zip':
-                            assert output['uri'].startswith('file://'), output['uri']
-                            zip_path = output['uri'][len('file://'):]
-                            break
-                    else:
-                        solution_tests[target] = {
-                            'target': target,
-                            'result': 'error',
-                            'message': 'outputs.zip not found',
-                        }
-                        continue
-                    try:
-                        with zipfile.ZipFile(zip_path) as archive:
-                            with archive.open('results.json') as f:
-                                solution_tests[target] = json.load(f)
-                    except IOError as e:
-                        solution_tests[target] = {
-                            'target': target,
-                            'result': 'error',
-                            'message': 'Failed to read results.json: %s' % e,
-                        }
+                    broken_tests.pop(target)
+
+    judge_matrices = {}
+    for test_target, test in sorted(solution_tests.items()):
+        judge_target = test['judge']['target']
+        judge_matrix = judge_matrices.setdefault(
+            judge_target,
+            {'judge_target': judge_target, 'test_targets': [], 'cases': {}})
+        judge_matrix['test_targets'].append(test_target)
+        for case in test['cases']:
+            row = judge_matrix['cases'].setdefault(case['name'], {})
+            row[test_target] = case
 
     report = {
+        'broken_tests': broken_tests,
         'solution_tests': solution_tests,
+        'judge_matrices': judge_matrices,
         'other_tests': other_tests,
     }
 
