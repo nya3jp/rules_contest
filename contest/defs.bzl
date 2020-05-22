@@ -148,7 +148,7 @@ def sample_test(name, files, judge, judge_args=[], output_extension="out", **kwa
         "--output_extension='" + output_extension + "'",
     ]
     for file in files:
-        args.append("'$(rootpath %s)'" % file)
+        args.append("$(rootpaths %s)" % file)
     native.genrule(
         name = name + "_solution_gen",
         outs = [sh],
@@ -172,7 +172,7 @@ def sample_test(name, files, judge, judge_args=[], output_extension="out", **kwa
     )
 
 
-def jinja2_template(name, srcs, main=None, vars=[], dataset=None, **kwargs):
+def jinja2_template(name, srcs, main=None, files=[], vars=[], dataset=None, **kwargs):
     if len(srcs) == 1:
         main = srcs[0]
     if not main:
@@ -186,9 +186,11 @@ def jinja2_template(name, srcs, main=None, vars=[], dataset=None, **kwargs):
     ]
     if dataset:
         args.append("--dataset='$(execpath " + dataset + ")'")
+    for file in files:
+        args.append("--file='$(execpaths %s)'" % file)
     for file in vars:
-        args.append("--template_vars_file='$(execpath %s)'" % file)
-    deps = srcs + vars
+        args.append("--vars='$(execpaths %s)'" % file)
+    deps = srcs + files + vars
     if dataset:
         deps.append(dataset)
     out = name + ".rendered"

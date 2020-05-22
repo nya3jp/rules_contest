@@ -1,5 +1,7 @@
 import argparse
+import contextlib
 import os
+from typing import Optional
 
 import jinja2
 import yaml
@@ -7,7 +9,7 @@ import yaml
 from contest.impls import datasets
 
 
-class LazyDatasetContent:
+class _LazyDatasetDict:
     def __init__(self, dataset_dir: str):
         self._dataset_dir = dataset_dir
 
@@ -19,21 +21,40 @@ class LazyDatasetContent:
             raise KeyError('file not found: %s' % name)
 
 
+@contextlib.contextmanager
+def _maybe_dataset_dict(zip_path: Optional[str]) -> Optional[_LazyDatasetDict]:
+    if not zip_path:
+        yield None
+    else:
+        with datasets.expand(zip_path) as dataset_dir:
+            yield _LazyDatasetDict(dataset_dir)
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--output', required=True)
     parser.add_argument('--input', required=True)
-    parser.add_argument('--dataset', required=True)
-    parser.add_argument('--template_vars_file', action='append')
+    parser.add_argument('--file', dest='files', action='append')
+    parser.add_argument('--vars', dest='vars', action='append')
+    parser.add_argument('--dataset')
     options = parser.parse_args()
 
-    template_vars = {}
-    for vars_file in options.template_vars_file:
-        with open(vars_file, 'r') as f:
-            template_vars.update(yaml.safe_load(f))
+    template_vars = {
+        'files': {},
+        'vars': {},
+        'dataset': None,
+    }
+    for paths in options.files:
+        for path in paths.split():
+            with open(path, 'r') as f:
+                template_vars['files'][os.path.basename(path)] = f.read()
+    for paths in options.vars:
+        for path in paths.split():
+            with open(path, 'r') as f:
+                template_vars['vars'].update(yaml.safe_load(f))
 
-    with datasets.expand(options.dataset) as dataset_dir:
-        template_vars['dataset'] = LazyDatasetContent(dataset_dir)
+    with _maybe_dataset_dict(options.dataset) as dataset:
+        template_vars['dataset'] = dataset
 
         env = jinja2.Environment(
             loader=jinja2.FileSystemLoader(['.'], followlinks=True))
