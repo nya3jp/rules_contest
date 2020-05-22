@@ -14,7 +14,7 @@ def dataset_generate(name, exec, **kwargs):
     )
 
 
-def dataset_derive(name, exec, dataset, input_extension="in", output_extension="diff", **kwargs):
+def dataset_derive(name, exec, dataset, input_extension="in", output_extension="ans", **kwargs):
     out = name + ".zip"
     args = [
         "'$(execpath @rules_contest//contest/impls:dataset_derive)'",
@@ -84,7 +84,7 @@ def dataset_test(name, exec, dataset, input_extension="in", **kwargs):
     )
 
 
-def simple_judge(name, dataset, comparator="@rules_contest//contest:exact_comparator", input_extension="in", answer_extension="diff", **kwargs):
+def simple_judge(name, dataset, comparator="@rules_contest//contest:exact_comparator", input_extension="in", answer_extension="ans", **kwargs):
     sh = name + ".sh"
     args = [
         "'$(execpath @rules_contest//contest/impls:simple_judge_wrapper_generator)'",
@@ -96,7 +96,7 @@ def simple_judge(name, dataset, comparator="@rules_contest//contest:exact_compar
         "--answer_extension='" + answer_extension + "'",
     ]
     native.genrule(
-        name = name + "_sh",
+        name = name + "_gen",
         outs = [sh],
         srcs = [dataset],
         tools = [
@@ -125,7 +125,7 @@ def solution_test(name, solution, judge, judge_args=[], tags=[], **kwargs):
         "--",
     ] + judge_args
     native.genrule(
-        name = name + "_sh",
+        name = name + "_gen",
         outs = [sh],
         tools = ["@rules_contest//contest/impls:solution_test_wrapper_generator", solution, judge],
         executable = True,
@@ -136,6 +136,38 @@ def solution_test(name, solution, judge, judge_args=[], tags=[], **kwargs):
         srcs = [sh],
         data = [solution, judge],
         tags = tags + ["solution"],
+        **kwargs
+    )
+
+
+def sample_test(name, files, judge, judge_args=[], output_extension="out", **kwargs):
+    sh = name + "_solution.sh"
+    args = [
+        "'$(execpath @rules_contest//contest/impls:sample_test_solution_generator)'",
+        "--output='$@'",
+        "--output_extension='" + output_extension + "'",
+    ]
+    for file in files:
+        args.append("'$(rootpath %s)'" % file)
+    native.genrule(
+        name = name + "_solution_gen",
+        outs = [sh],
+        srcs = files,
+        tools = ["@rules_contest//contest/impls:sample_test_solution_generator"],
+        executable = True,
+        cmd = " ".join(args),
+    )
+    bin_name = name + "_solution"
+    native.sh_binary(
+        name = bin_name,
+        srcs = [sh],
+        data = files,
+    )
+    solution_test(
+        name = name,
+        solution = ":" + bin_name,
+        judge = judge,
+        judge_args = judge_args,
         **kwargs
     )
 

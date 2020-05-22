@@ -53,21 +53,37 @@ def main():
                 args = [options.solution]
                 print('>>> %s' % ' '.join(shlex.quote(arg) for arg in args))
 
+                env = os.environ.copy()
+                env.update(case.env)
+
                 start_time = time.time()
                 solution_code = subprocess.call(
                     args,
+                    env=env,
                     stdin=stdin_file,
                     stdout=stdout_file,
                     stderr=stderr_file)
                 solution_time = time.time() - start_time
 
-                print('Finished with code %d in %.1fs' % (solution_code, solution_time))
-                print('--- STDOUT ---')
-                print(stdout_file.read())
-                print('--- STDERR ---')
-                print(stderr_file.read())
+                if solution_code == 228:
+                    print('Skipped')
+                else:
+                    print('Finished with code %d in %.1fs' % (solution_code, solution_time))
+                    print('--- STDOUT ---')
+                    print(stdout_file.read())
+                    print('--- STDERR ---')
+                    print(stderr_file.read())
 
-            if solution_code != 0:
+            if solution_code == 228:
+                cases.append({
+                    'name': case.name,
+                    'result': 'skipped',
+                    'message': 'Solution skipped the test case',
+                    'solution_time': solution_time,
+                    'solution_code': solution_code,
+                })
+                continue
+            elif solution_code != 0:
                 cases.append({
                     'name': case.name,
                     'result': 'reject',
@@ -126,7 +142,7 @@ def main():
             })
 
     for case in cases:
-        if case['result'] not in ('accept', 'reject'):
+        if case['result'] not in ('accept', 'reject', 'skipped'):
             result = 'error'
             message = '%s: %s' % (case['name'], case['message'])
             break

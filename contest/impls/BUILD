@@ -61,6 +61,16 @@ py_binary(
     visibility = ["//visibility:public"],
 )
 
+py_binary(
+    name = "sample_test_solution_generator",
+    srcs = ["sample_test_solution_generator.py"],
+    srcs_version = "PY3",
+    deps = [
+        "//third_party/jinja2",
+    ],
+    visibility = ["//visibility:public"],
+)
+
 py_library(
     name = "datasets",
     srcs = ["datasets.py"],
