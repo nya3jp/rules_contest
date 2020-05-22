@@ -1,6 +1,7 @@
 package(default_visibility = ["//visibility:private"])
 
 load("//contest/impls/lint:defs.bzl", "pycodestyle_test", "bzlcodestyle_test")
+load("@io_bazel_stardoc//stardoc:stardoc.bzl", "stardoc")
 
 sh_binary(
     name = "exact_comparator",
@@ -29,4 +30,10 @@ pycodestyle_test(
 bzlcodestyle_test(
     name = "bzlcodestyle_test",
     srcs = glob(["*.bzl"]),
+)
+
+stardoc(
+    name = "reference",
+    input = "defs.bzl",
+    out = "reference.md",
 )

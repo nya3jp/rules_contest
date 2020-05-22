@@ -1,4 +1,12 @@
 def dataset_generate(name, exec, **kwargs):
+    """Generates a new dataset by running an executable.
+
+    The executable should write generated data files to $OUTPUT_DIR.
+
+    Args:
+      name: A unique name for this rule.
+      exec: The label of an executable.
+    """
     out = name + ".zip"
     args = [
         "'$(execpath @rules_contest//contest/impls:dataset_generate)'",
