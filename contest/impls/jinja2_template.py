@@ -32,7 +32,7 @@ def main():
         with open(vars_file, 'r') as f:
             template_vars.update(yaml.safe_load(f))
 
-    with datasets.expand([options.dataset]) as dataset_dir:
+    with datasets.expand(options.dataset) as dataset_dir:
         template_vars['dataset'] = LazyDatasetContent(dataset_dir)
 
         env = jinja2.Environment(

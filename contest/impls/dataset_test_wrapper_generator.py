@@ -5,8 +5,8 @@ _SCRIPT_TMPL = """#!/bin/sh
 
 exec %(dataset_test)s \\
     --executable=%(executable)s \\
-    --input_extension=%(input_extension)s \\
-    %(datasets)s
+    --dataset=%(dataset)s \\
+    --input_extension=%(input_extension)s
 """
 
 
@@ -15,15 +15,15 @@ def main():
     parser.add_argument('--output', required=True)
     parser.add_argument('--dataset_test', required=True)
     parser.add_argument('--executable', required=True)
+    parser.add_argument('--dataset', required=True)
     parser.add_argument('--input_extension', required=True)
-    parser.add_argument('datasets', nargs='*')
     options = parser.parse_args()
 
     script_vars = {
         'dataset_test': shlex.quote(options.dataset_test),
         'executable': shlex.quote(options.executable),
+        'dataset': shlex.quote(options.dataset),
         'input_extension': shlex.quote(options.input_extension),
-        'datasets': ' '.join(shlex.quote(dataset) for dataset in options.datasets),
     }
     script = _SCRIPT_TMPL % script_vars
 

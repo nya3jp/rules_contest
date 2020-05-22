@@ -1,23 +1,21 @@
 import contextlib
 import os
-import shutil
 import subprocess
 import tempfile
-
 from typing import List
 
 
 @contextlib.contextmanager
-def expand(sources: List[str]) -> str:
+def expand(zip_path: str) -> str:
     with tempfile.TemporaryDirectory() as dataset_dir:
-        for source in sources:
-            if source.endswith('.zip'):
-                subprocess.check_call(
-                    ['unzip', '-q', '-n', os.path.abspath(source)],
-                    cwd=dataset_dir)
-            else:
-                shutil.copy(source, os.path.join(dataset_dir, os.path.basename(source)))
+        extract(zip_path, dataset_dir)
         yield dataset_dir
+
+
+def extract(zip_path: str, out_dir: str) -> None:
+    subprocess.check_call(
+        ['unzip', '-q', '-n', os.path.abspath(zip_path)],
+        cwd=out_dir)
 
 
 def names(dataset_dir: str) -> List[str]:
@@ -25,3 +23,9 @@ def names(dataset_dir: str) -> List[str]:
     for filename in os.listdir(dataset_dir):
         nameset.add(filename.split('.', 2)[0])
     return sorted(nameset)
+
+
+def create(in_dir: str, zip_path: str) -> None:
+    subprocess.check_call(
+        ['zip', '-q', '-r', os.path.abspath(zip_path), '.'],
+        cwd=in_dir)

@@ -3,7 +3,7 @@ import shlex
 
 _SCRIPT_TMPL = """#!/bin/sh
 
-exec %(judge)s \\
+exec %(simple_judge)s \\
     --output_dir="${TEST_UNDECLARED_OUTPUTS_DIR}" \\
     --comparator=%(comparator)s \\
     --dataset=%(dataset)s \\
@@ -16,7 +16,7 @@ exec %(judge)s \\
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--output', required=True)
-    parser.add_argument('--judge', required=True)
+    parser.add_argument('--simple_judge', required=True)
     parser.add_argument('--comparator', required=True)
     parser.add_argument('--dataset', required=True)
     parser.add_argument('--input_extension', required=True)
@@ -24,7 +24,7 @@ def main():
     options = parser.parse_args()
 
     script_vars = {
-        'judge': shlex.quote(options.judge),
+        'simple_judge': shlex.quote(options.simple_judge),
         'comparator': shlex.quote(options.comparator),
         'dataset': shlex.quote(options.dataset),
         'input_extension': shlex.quote(options.input_extension),

@@ -1,7 +1,7 @@
 import argparse
 import os
 import shutil
-import subprocess
+import tempfile
 
 from contest.impls import datasets
 
@@ -9,17 +9,16 @@ from contest.impls import datasets
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--output', required=True)
-    parser.add_argument('datasets', nargs='*')
+    parser.add_argument('--file', dest='files', action='append')
+    parser.add_argument('--dataset', dest='datasets', action='append')
     options = parser.parse_args()
 
-    if len(options.datasets) == 1 and options.datasets[0].endswith('.zip'):
-        shutil.copy(options.datasets[0], options.output)
-        return
-
-    with datasets.expand(options.datasets) as dataset_dir:
-        subprocess.check_call(
-            ['zip', '-q', '-r', os.path.abspath(options.output), '.'],
-            cwd=dataset_dir)
+    with tempfile.TemporaryDirectory() as dataset_dir:
+        for path in options.files:
+            shutil.copy(path, os.path.join(dataset_dir, os.path.basename(path)))
+        for path in options.datasets:
+            datasets.extract(path, dataset_dir)
+        datasets.create(dataset_dir, options.output)
 
 
 if __name__ == '__main__':

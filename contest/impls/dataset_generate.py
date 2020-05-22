@@ -3,6 +3,8 @@ import os
 import subprocess
 import tempfile
 
+from contest.impls import datasets
+
 
 def main():
     parser = argparse.ArgumentParser()
@@ -16,9 +18,7 @@ def main():
         subprocess.check_call(
             [options.executable],
             env=env)
-        subprocess.check_call(
-            ['zip', '-q', '-r', os.path.abspath(options.output), '.'],
-            cwd=dataset_dir)
+        datasets.create(dataset_dir, options.output)
 
 
 if __name__ == '__main__':

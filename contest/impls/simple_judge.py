@@ -22,7 +22,7 @@ def main():
 
     assert options.expect in ('accept', 'reject_any', 'reject_all')
 
-    with datasets.expand([options.dataset]) as dataset_dir:
+    with datasets.expand(options.dataset) as dataset_dir:
         names = datasets.names(dataset_dir)
         cases = []
 

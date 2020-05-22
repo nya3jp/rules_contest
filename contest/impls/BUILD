@@ -1,23 +1,24 @@
 package(default_visibility = ["//visibility:private"])
 
 py_binary(
-    name = "dataset_merge",
-    srcs = ["dataset_merge.py"],
+    name = "dataset_generate",
+    srcs = ["dataset_generate.py"],
     srcs_version = "PY3",
     deps = [":datasets"],
     visibility = ["//visibility:public"],
 )
 
 py_binary(
-    name = "dataset_generate",
-    srcs = ["dataset_generate.py"],
+    name = "dataset_derive",
+    srcs = ["dataset_derive.py"],
     srcs_version = "PY3",
+    deps = [":datasets"],
     visibility = ["//visibility:public"],
 )
 
 py_binary(
-    name = "dataset_derive",
-    srcs = ["dataset_derive.py"],
+    name = "dataset_merge",
+    srcs = ["dataset_merge.py"],
     srcs_version = "PY3",
     deps = [":datasets"],
     visibility = ["//visibility:public"],
