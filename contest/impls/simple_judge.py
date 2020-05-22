@@ -83,7 +83,7 @@ def main():
 
             with open(judge_stdout_path, 'w+') as stdout_file, \
                     open(judge_stderr_path, 'w+') as stderr_file:
-                args = [options.comparator, solution_stdout_path, answer_path]
+                args = [options.comparator, input_path, solution_stdout_path, answer_path]
                 print('>>> %s' % ' '.join(shlex.quote(arg) for arg in args))
 
                 start_time = time.time()

@@ -1,3 +1,3 @@
 #!/bin/sh
 
-exec diff -u "$1" "$2"
+exec diff -u "$2" "$3"
