@@ -23,30 +23,29 @@ def main():
     assert options.expect in ('accept', 'reject_any', 'reject_all')
 
     with datasets.expand(options.dataset) as dataset_dir:
-        names = datasets.names(dataset_dir)
         cases = []
 
-        for name in names:
-            print('======= %s' % name)
-            input_path = os.path.join(dataset_dir, name + '.' + options.input_extension)
-            if not os.path.exists(input_path):
+        for case in datasets.cases(dataset_dir):
+            print('======= %s' % case.name)
+            input_path = case.files.get(options.input_extension)
+            if not input_path:
                 cases.append({
-                    'name': name,
+                    'name': case.name,
                     'result': 'error',
                     'message': 'Input file missing: %s' % os.path.basename(input_path),
                 })
                 continue
-            answer_path = os.path.join(dataset_dir, name + '.' + options.answer_extension)
-            if not os.path.exists(answer_path):
+            answer_path = case.files.get(options.answer_extension)
+            if not answer_path:
                 cases.append({
-                    'name': name,
+                    'name': case.name,
                     'result': 'error',
                     'message': 'Answer file missing: %s' % os.path.basename(answer_path),
                 })
                 continue
 
-            solution_stdout_path = os.path.join(options.output_dir, '%s.solution.stdout' % name)
-            solution_stderr_path = os.path.join(options.output_dir, '%s.solution.stderr' % name)
+            solution_stdout_path = os.path.join(options.output_dir, '%s.solution.stdout' % case.name)
+            solution_stderr_path = os.path.join(options.output_dir, '%s.solution.stderr' % case.name)
 
             with open(input_path, 'r') as stdin_file, \
                     open(solution_stdout_path, 'w+') as stdout_file, \
@@ -70,7 +69,7 @@ def main():
 
             if solution_code != 0:
                 cases.append({
-                    'name': name,
+                    'name': case.name,
                     'result': 'reject',
                     'message': 'Solution exited with code %d' % solution_code,
                     'solution_time': solution_time,
@@ -78,17 +77,21 @@ def main():
                 })
                 continue
 
-            judge_stdout_path = os.path.join(options.output_dir, '%s.judge.stdout' % name)
-            judge_stderr_path = os.path.join(options.output_dir, '%s.judge.stderr' % name)
+            judge_stdout_path = os.path.join(options.output_dir, '%s.judge.stdout' % case.name)
+            judge_stderr_path = os.path.join(options.output_dir, '%s.judge.stderr' % case.name)
 
             with open(judge_stdout_path, 'w+') as stdout_file, \
                     open(judge_stderr_path, 'w+') as stderr_file:
                 args = [options.comparator, input_path, solution_stdout_path, answer_path]
                 print('>>> %s' % ' '.join(shlex.quote(arg) for arg in args))
 
+                env = os.environ.copy()
+                env.update(case.env)
+
                 start_time = time.time()
                 judge_code = subprocess.call(
                     args,
+                    env=env,
                     stdin=subprocess.DEVNULL,
                     stdout=stdout_file,
                     stderr=stderr_file)
@@ -102,7 +105,7 @@ def main():
 
             if judge_code != 0:
                 cases.append({
-                    'name': name,
+                    'name': case.name,
                     'result': 'reject',
                     'message': 'Judge exited with code %d' % judge_code,
                     'solution_time': solution_time,
@@ -113,7 +116,7 @@ def main():
                 continue
 
             cases.append({
-                'name': name,
+                'name': case.name,
                 'result': 'accept',
                 'message': 'OK',
                 'solution_time': solution_time,

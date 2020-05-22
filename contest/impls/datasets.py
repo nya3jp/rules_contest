@@ -2,7 +2,8 @@ import contextlib
 import os
 import subprocess
 import tempfile
-from typing import List
+from typing import Dict, List
+import typing
 
 
 @contextlib.contextmanager
@@ -18,11 +19,22 @@ def extract(zip_path: str, out_dir: str) -> None:
         cwd=out_dir)
 
 
-def names(dataset_dir: str) -> List[str]:
-    nameset = set()
+class Case(typing.NamedTuple):
+    name: str
+    files: Dict[str, str]
+    env: Dict[str, str]
+
+
+def cases(dataset_dir: str) -> List[Case]:
+    case_map = {}
     for filename in os.listdir(dataset_dir):
-        nameset.add(filename.split('.', 2)[0])
-    return sorted(nameset)
+        name, ext = filename.split('.', 2)
+        case = case_map.setdefault(name, Case(name=name, files={}, env={'CASE_NAME': name}))
+        filepath = os.path.join(dataset_dir, filename)
+        case.files[ext] = filepath
+        env_name = 'INPUT_%s' % ext.upper().replace('.', '_')
+        case.env[env_name] = filepath
+    return sorted(case_map.values())
 
 
 def create(in_dir: str, zip_path: str) -> None:
