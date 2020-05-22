@@ -16,11 +16,11 @@ def main():
     parser.add_argument('--dataset', required=True)
     parser.add_argument('--input_extension', required=True)
     parser.add_argument('--answer_extension', required=True)
-    parser.add_argument('--expect', default='accept')
+    parser.add_argument('--expect', default='accepted')
     parser.add_argument('solution')
     options = parser.parse_args()
 
-    assert options.expect in ('accept', 'reject_any', 'reject_all')
+    assert options.expect in ('accepted', 'reject_any', 'reject_all')
 
     with datasets.expand(options.dataset) as dataset_dir:
         cases = []
@@ -88,7 +88,7 @@ def main():
             elif solution_code != 0:
                 cases.append({
                     'name': case.name,
-                    'result': 'reject',
+                    'result': 'rejected',
                     'message': 'Solution exited with code %d' % solution_code,
                     'solution_time': solution_time,
                     'solution_code': solution_code,
@@ -126,7 +126,7 @@ def main():
             if judge_code != 0:
                 cases.append({
                     'name': case.name,
-                    'result': 'reject',
+                    'result': 'rejected',
                     'message': 'Judge exited with code %d' % judge_code,
                     'solution_time': solution_time,
                     'solution_code': solution_code,
@@ -137,7 +137,7 @@ def main():
 
             cases.append({
                 'name': case.name,
-                'result': 'accept',
+                'result': 'accepted',
                 'message': 'OK',
                 'solution_time': solution_time,
                 'solution_code': solution_code,
@@ -146,14 +146,14 @@ def main():
             })
 
     for case in cases:
-        if case['result'] not in ('accept', 'reject', 'skipped'):
+        if case['result'] not in ('accepted', 'rejected', 'skipped'):
             result = 'error'
             message = '%s: %s' % (case['name'], case['message'])
             break
     else:
-        if options.expect == 'accept':
+        if options.expect == 'accepted':
             for case in cases:
-                if case['result'] == 'reject':
+                if case['result'] == 'rejected':
                     result = 'failure'
                     message = '%s: %s' % (case['name'], case['message'])
                     break
@@ -162,7 +162,7 @@ def main():
                 message = 'All accepted'
         elif options.expect == 'reject_any':
             for case in cases:
-                if case['result'] == 'reject':
+                if case['result'] == 'rejected':
                     result = 'success'
                     message = '%s: Rejected as expected: %s' % (case['name'], case['message'])
                     break
@@ -171,13 +171,13 @@ def main():
                 message = 'All accepted unexpectedly'
         elif options.expect == 'reject_all':
             for case in cases:
-                if case['result'] == 'accept':
+                if case['result'] == 'accepted':
                     result = 'failure'
                     message = '%s: Accepted unexpectedly' % case['name']
                     break
             else:
                 result = 'success'
-                message = 'All rejected'
+                message = 'All rejected as expected'
         else:
             assert False, options.expect
 
