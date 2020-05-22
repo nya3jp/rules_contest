@@ -1,6 +1,6 @@
 package(default_visibility = ["//visibility:private"])
 
-load("//contest/impls/lint:defs.bzl", "pycodestyle_test")
+load("//contest/impls/lint:defs.bzl", "pycodestyle_test", "bzlcodestyle_test")
 
 sh_binary(
     name = "exact_comparator",
@@ -24,4 +24,9 @@ py_binary(
 pycodestyle_test(
     name = "pycodestyle_test",
     srcs = glob(["*.py"]),
+)
+
+bzlcodestyle_test(
+    name = "bzlcodestyle_test",
+    srcs = glob(["*.bzl"]),
 )
