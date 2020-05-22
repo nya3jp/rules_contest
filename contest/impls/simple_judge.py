@@ -12,15 +12,18 @@ from contest.impls import datasets
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--output_dir', required=True)
+    parser.add_argument('--judge_name', required=True)
     parser.add_argument('--comparator', required=True)
     parser.add_argument('--dataset', required=True)
     parser.add_argument('--input_extension', required=True)
     parser.add_argument('--answer_extension', required=True)
+    parser.add_argument('--metadata', default='{}')
     parser.add_argument('--expect', default='accepted')
     parser.add_argument('solution')
     options = parser.parse_args()
 
     assert options.expect in ('accepted', 'reject_any', 'reject_all')
+    metadata = json.loads(options.metadata)
 
     with datasets.expand(options.dataset) as dataset_dir:
         cases = []
@@ -182,7 +185,11 @@ def main():
             assert False, options.expect
 
     report = {
-        'judge': 'simple_judge',
+        'judge': {
+            'target': options.judge_name,
+            'type': 'simple_judge',
+            'metadata': metadata,
+        },
         'target': os.environ['TEST_TARGET'],
         'expect': options.expect,
         'result': result,

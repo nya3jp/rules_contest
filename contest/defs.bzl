@@ -92,17 +92,24 @@ def dataset_test(name, exec, dataset, input_extension="in", **kwargs):
     )
 
 
-def simple_judge(name, dataset, comparator="@rules_contest//contest:exact_comparator", input_extension="in", answer_extension="ans", **kwargs):
+def simple_judge(name, dataset, comparator="@rules_contest//contest:exact_comparator", input_extension="in", answer_extension="ans", metadata={}, **kwargs):
+    full_name = "//" + native.package_name() + ":" + name
+    if native.repository_name() != "@":
+        full_name = native.repository_name() + full_name
     sh = name + ".sh"
     args = [
         "'$(execpath @rules_contest//contest/impls:simple_judge_wrapper_generator)'",
         "--output='$@'",
+        "--judge_name=" + full_name,
         "--simple_judge='$(rootpath @rules_contest//contest/impls:simple_judge)'",
         "--comparator='$(rootpath " + comparator + ")'",
         "--dataset='$(rootpath " + dataset + ")'",
         "--input_extension='" + input_extension + "'",
         "--answer_extension='" + answer_extension + "'",
     ]
+    args.extend([
+        "--metadata=%s:%s" % (key, value)
+        for key, value in sorted(metadata.items())])
     native.genrule(
         name = name + "_gen",
         outs = [sh],
