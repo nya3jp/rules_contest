@@ -2,6 +2,8 @@ package(default_visibility = ["//visibility:private"])
 
 load("//contest/impls/lint:defs.bzl", "pycodestyle_test", "bzlcodestyle_test")
 
+exports_files(["defs.bzl"])
+
 sh_binary(
     name = "exact_comparator",
     srcs = ["exact_comparator.sh"],
