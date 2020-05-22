@@ -1,5 +1,7 @@
 package(default_visibility = ["//visibility:private"])
 
+load("//contest/impls/lint:defs.bzl", "pycodestyle_test")
+
 py_binary(
     name = "dataset_generate",
     srcs = ["dataset_generate.py"],
@@ -117,4 +119,9 @@ py_binary(
         "//third_party/yaml",
     ],
     visibility = ["//visibility:public"],
+)
+
+pycodestyle_test(
+    name = "pycodestyle_test",
+    srcs = glob(["*.py"]),
 )
