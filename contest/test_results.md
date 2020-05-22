@@ -1,6 +1,4 @@
-# Test Results
-
-## Unit Tests
+# Unit Tests
 
 | Target | | Message |
 | --- | --- | --- |
@@ -8,7 +6,7 @@
 | {{ test.target }} | {{ test.result == 'success' and '🍀' or '🔥' }} | {{ test.message }} |
 {% endfor -%}
 
-## Solution Tests
+# Solution Tests
 
 | Target | | Message |
 | --- | --- | --- |
@@ -16,18 +14,18 @@
 | {{ test.target }} | {{ test.result == 'success' and '🍀' or '🔥' }} | {{ test.message }} |
 {% endfor -%}
 
-## Solution Details
+# Solution Details
 
 {% for _, test in report.solution_tests|dictsort -%}
-### {{ test.target }} {{ test.result == 'success' and '🍀' or '🔥' }}
+## {{ test.target }} {{ test.result == 'success' and '🍀' or '🔥' }}
 
 {{ test.message }}
 
-| Test case | | Message |
-| --- | --- | --- |
+| Test case | Result | Time | Message |
+| --- | --- | ---: | --- |
 {% for case in test.cases -%}
 {% if case.result != 'skipped' -%}
-| {{ case.name }} | {{ case.result }} | {{ case.message }} |
+| {{ case.name }} | {{ case.result }} | {{ "%.1fs"|format(case.solution_time) }} | {{ case.message }} |
 {% endif -%}
 {% endfor -%}
 {% endfor -%}
