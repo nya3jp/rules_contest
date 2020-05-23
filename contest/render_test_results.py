@@ -1,4 +1,5 @@
 import argparse
+import io
 import json
 import os
 import sys
@@ -46,7 +47,7 @@ def main():
                     try:
                         with zipfile.ZipFile(zip_path) as archive:
                             with archive.open('results.json') as f:
-                                solution_tests[target] = json.load(f)
+                                solution_tests[target] = json.load(io.TextIOWrapper(f))
                                 broken_tests.pop(target)
                     except IOError as e:
                         broken_tests[target]['message'] = 'Failed to read results.json: %s' % e
