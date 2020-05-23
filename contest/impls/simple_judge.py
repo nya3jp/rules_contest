@@ -35,7 +35,7 @@ def main():
                 cases.append({
                     'name': case.name,
                     'result': 'error',
-                    'message': 'Input file missing: %s' % os.path.basename(input_path),
+                    'message': 'Input file missing: %s.%s' % (case.name, options.input_extension),
                 })
                 continue
             answer_path = case.files.get(options.answer_extension)
@@ -43,7 +43,7 @@ def main():
                 cases.append({
                     'name': case.name,
                     'result': 'error',
-                    'message': 'Answer file missing: %s' % os.path.basename(answer_path),
+                    'message': 'Answer file missing: %s.%s' % (case.name, options.answer_extension),
                 })
                 continue
 
