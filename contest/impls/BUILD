@@ -79,6 +79,13 @@ py_library(
     srcs_version = "PY3",
 )
 
+py_test(
+    name = "datasets_test",
+    srcs = ["datasets_test.py"],
+    srcs_version = "PY3",
+    deps = [":datasets"],
+)
+
 py_binary(
     name = "jinja2_template",
     srcs = ["jinja2_template.py"],
