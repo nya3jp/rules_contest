@@ -32,6 +32,6 @@
 | Test case |{% for t in matrix.test_targets %} {{ t.split(':')[-1] }} |{% endfor %}
 | --- |{% for t in matrix.test_targets %} --- |{% endfor %}
 {% for case_name, row in matrix.cases|dictsort -%}
-| {{ case_name }} |{% for t in matrix.test_targets %}{% set case = row[t] %} {% if case and case.result != 'skipped' %}{% if case.result == 'accepted' %}{{ "%.1fs"|format(case.solution_time) }}{% else %}{{ case.message }}{% endif %}{% endif %} |{% endfor %}
+| **{{ case_name }}** |{% for t in matrix.test_targets %}{% set case = row[t] %} {% if case and case.result != 'skipped' %}{% if case.result == 'accepted' %}{{ "%.1fs"|format(case.solution_time) }}{% else %}{{ case.message }}{% endif %}{% endif %} |{% endfor %}
 {% endfor -%}
 {% endfor -%}
