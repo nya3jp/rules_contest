@@ -19,11 +19,15 @@ def main():
             if not input_path:
                 sys.exit('%s.%s not found' % (case.name, options.input_extension))
 
-            print('======= %s' % case.name)
+            print('*** %s: ' % case.name, end='')
             with open(input_path, 'rb') as input_file:
                 env = os.environ.copy()
                 env.update(case.env)
-                subprocess.check_call([options.executable], stdin=input_file, env=env)
+                returncode = subprocess.call([options.executable], stdin=input_file, env=env)
+                if returncode != 0:
+                    print('FAILED (exit code %d)' % returncode)
+                    sys.exit(1)
+                print('OK')
 
 
 if __name__ == '__main__':

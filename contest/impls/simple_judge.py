@@ -29,21 +29,25 @@ def main():
         cases = []
 
         for case in datasets.cases(dataset_dir):
-            print('======= %s' % case.name)
+            print('*** %s: ' % case.name, end='')
             input_path = case.files.get(options.input_extension)
             if not input_path:
+                msg = 'Input file missing: %s.%s' % (case.name, options.input_extension)
+                print(msg)
                 cases.append({
                     'name': case.name,
                     'result': 'error',
-                    'message': 'Input file missing: %s.%s' % (case.name, options.input_extension),
+                    'message': msg,
                 })
                 continue
             answer_path = case.files.get(options.answer_extension)
             if not answer_path:
+                msg = 'Answer file missing: %s.%s' % (case.name, options.answer_extension)
+                print(msg)
                 cases.append({
                     'name': case.name,
                     'result': 'error',
-                    'message': 'Answer file missing: %s.%s' % (case.name, options.answer_extension),
+                    'message': msg,
                 })
                 continue
 
@@ -54,7 +58,6 @@ def main():
                     open(solution_stdout_path, 'wb') as stdout_file, \
                     open(solution_stderr_path, 'wb') as stderr_file:
                 args = [options.solution]
-                print('>>> %s' % ' '.join(shlex.quote(arg) for arg in args))
 
                 env = os.environ.copy()
                 env.update(case.env)
@@ -69,30 +72,29 @@ def main():
                 solution_time = time.time() - start_time
 
             if solution_code == 228:
-                print('Skipped')
-            else:
-                print('Finished with code %d in %.1fs' % (solution_code, solution_time))
-                print('--- STDOUT ---')
-                with open(solution_stdout_path, 'r') as f:
-                    print(f.read())
-                print('--- STDERR ---')
-                with open(solution_stderr_path, 'r') as f:
-                    print(f.read())
-
-            if solution_code == 228:
+                msg = 'Solution skipped the test case'
+                print(msg)
                 cases.append({
                     'name': case.name,
                     'result': 'skipped',
-                    'message': 'Solution skipped the test case',
+                    'message': msg,
                     'solution_time': solution_time,
                     'solution_code': solution_code,
                 })
                 continue
             elif solution_code != 0:
+                msg = 'Solution exited with code %d' % solution_code
+                print(msg)
+                print('--- SOLUTION STDOUT ---')
+                with open(solution_stdout_path, 'r') as f:
+                    print(f.read())
+                print('--- SOLUTION STDERR ---')
+                with open(solution_stderr_path, 'r') as f:
+                    print(f.read())
                 cases.append({
                     'name': case.name,
                     'result': 'rejected',
-                    'message': 'Solution exited with code %d' % solution_code,
+                    'message': msg,
                     'solution_time': solution_time,
                     'solution_code': solution_code,
                 })
@@ -104,7 +106,6 @@ def main():
             with open(judge_stdout_path, 'wb') as stdout_file, \
                     open(judge_stderr_path, 'wb') as stderr_file:
                 args = [options.comparator, input_path, solution_stdout_path, answer_path]
-                print('>>> %s' % ' '.join(shlex.quote(arg) for arg in args))
 
                 env = os.environ.copy()
                 env.update(case.env)
@@ -118,19 +119,25 @@ def main():
                     stderr=stderr_file)
                 judge_time = time.time() - start_time
 
-            print('Finished with code %d in %.1fs' % (judge_code, judge_time))
-            print('--- STDOUT ---')
-            with open(judge_stdout_path, 'r') as f:
-                print(f.read())
-            print('--- STDERR ---')
-            with open(judge_stderr_path, 'r') as f:
-                print(f.read())
-
             if judge_code != 0:
+                msg = 'Judge exited with code %d' % judge_code
+                print(msg)
+                print('--- SOLUTION STDOUT ---')
+                with open(solution_stdout_path, 'r') as f:
+                    print(f.read())
+                print('--- SOLUTION STDERR ---')
+                with open(solution_stderr_path, 'r') as f:
+                    print(f.read())
+                print('--- JUDGE STDOUT ---')
+                with open(judge_stdout_path, 'r') as f:
+                    print(f.read())
+                print('--- JUDGE STDERR ---')
+                with open(judge_stderr_path, 'r') as f:
+                    print(f.read())
                 cases.append({
                     'name': case.name,
                     'result': 'rejected',
-                    'message': 'Judge exited with code %d' % judge_code,
+                    'message': msg,
                     'solution_time': solution_time,
                     'solution_code': solution_code,
                     'judge_time': judge_time,
@@ -138,10 +145,12 @@ def main():
                 })
                 continue
 
+            msg = 'OK'
+            print(msg)
             cases.append({
                 'name': case.name,
                 'result': 'accepted',
-                'message': 'OK',
+                'message': msg,
                 'solution_time': solution_time,
                 'solution_code': solution_code,
                 'judge_time': judge_time,
