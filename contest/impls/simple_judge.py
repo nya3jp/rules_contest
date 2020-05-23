@@ -167,7 +167,7 @@ def main():
             for case in cases:
                 if case['result'] == 'rejected':
                     result = 'success'
-                    message = '%s: Rejected as expected: %s' % (case['name'], case['message'])
+                    message = 'Rejected as expected: %s: %s' % (case['name'], case['message'])
                     break
             else:
                 result = 'failure'
@@ -176,7 +176,7 @@ def main():
             for case in cases:
                 if case['result'] == 'accepted':
                     result = 'failure'
-                    message = '%s: Accepted unexpectedly' % case['name']
+                    message = 'Accepted unexpectedly: %s' % case['name']
                     break
             else:
                 result = 'success'
