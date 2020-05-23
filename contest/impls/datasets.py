@@ -19,10 +19,9 @@ def extract(zip_path: str, out_dir: str) -> None:
         cwd=out_dir)
 
 
-class Case(typing.NamedTuple):
-    name: str
-    files: Dict[str, str]
-    env: Dict[str, str]
+Case = typing.NamedTuple(
+    'Case',
+    [('name', str), ('files', Dict[str, str]), ('env', Dict[str, str])])
 
 
 def cases(dataset_dir: str) -> List[Case]:
