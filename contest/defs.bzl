@@ -21,8 +21,7 @@ def dataset_generate(name, exec, **kwargs):
         **kwargs
     )
 
-
-def dataset_derive(name, exec, dataset, input_extension="in", output_extension="ans", **kwargs):
+def dataset_derive(name, exec, dataset, input_extension = "in", output_extension = "ans", **kwargs):
     out = name + ".zip"
     args = [
         "'$(execpath @rules_contest//contest/impls:dataset_derive)'",
@@ -41,8 +40,7 @@ def dataset_derive(name, exec, dataset, input_extension="in", output_extension="
         **kwargs
     )
 
-
-def dataset_merge(name, files=[], datasets=[], **kwargs):
+def dataset_merge(name, files = [], datasets = [], **kwargs):
     out = name + ".zip"
     args = [
         "'$(execpath @rules_contest//contest/impls:dataset_merge)'",
@@ -61,8 +59,7 @@ def dataset_merge(name, files=[], datasets=[], **kwargs):
         **kwargs
     )
 
-
-def dataset_test(name, exec, dataset, input_extension="in", **kwargs):
+def dataset_test(name, exec, dataset, input_extension = "in", **kwargs):
     sh = name + ".sh"
     args = [
         "'$(execpath @rules_contest//contest/impls:dataset_test_wrapper_generator)'",
@@ -91,8 +88,7 @@ def dataset_test(name, exec, dataset, input_extension="in", **kwargs):
         **kwargs
     )
 
-
-def simple_judge(name, dataset, comparator="@rules_contest//contest:exact_comparator", input_extension="in", answer_extension="ans", metadata={}, **kwargs):
+def simple_judge(name, dataset, comparator = "@rules_contest//contest:exact_comparator", input_extension = "in", answer_extension = "ans", metadata = {}, **kwargs):
     full_name = "//" + native.package_name() + ":" + name
     if native.repository_name() != "@":
         full_name = native.repository_name() + full_name
@@ -109,7 +105,8 @@ def simple_judge(name, dataset, comparator="@rules_contest//contest:exact_compar
     ]
     args.extend([
         "--metadata=%s:%s" % (key, value)
-        for key, value in sorted(metadata.items())])
+        for key, value in sorted(metadata.items())
+    ])
     native.genrule(
         name = name + "_gen",
         outs = [sh],
@@ -129,8 +126,7 @@ def simple_judge(name, dataset, comparator="@rules_contest//contest:exact_compar
         **kwargs
     )
 
-
-def solution_test(name, solution, judge, judge_args=[], tags=[], **kwargs):
+def solution_test(name, solution, judge, judge_args = [], tags = [], **kwargs):
     sh = name + ".sh"
     args = [
         "'$(execpath @rules_contest//contest/impls:solution_test_wrapper_generator)'",
@@ -154,8 +150,7 @@ def solution_test(name, solution, judge, judge_args=[], tags=[], **kwargs):
         **kwargs
     )
 
-
-def sample_test(name, files, judge, judge_args=[], output_extension="out", **kwargs):
+def sample_test(name, files, judge, judge_args = [], output_extension = "out", **kwargs):
     sh = name + "_solution.sh"
     args = [
         "'$(execpath @rules_contest//contest/impls:sample_test_solution_generator)'",
@@ -186,8 +181,7 @@ def sample_test(name, files, judge, judge_args=[], output_extension="out", **kwa
         **kwargs
     )
 
-
-def jinja2_template(name, srcs, main=None, files=[], vars=[], dataset=None, **kwargs):
+def jinja2_template(name, srcs, main = None, files = [], vars = [], dataset = None, **kwargs):
     if len(srcs) == 1:
         main = srcs[0]
     if not main:
@@ -218,7 +212,6 @@ def jinja2_template(name, srcs, main=None, files=[], vars=[], dataset=None, **kw
         **kwargs
     )
 
-
 def markdown(name, src, **kwargs):
     html = name + ".html"
     native.genrule(
@@ -232,7 +225,6 @@ def markdown(name, src, **kwargs):
             ",
         **kwargs
     )
-
 
 def cc_yaml_library(name, src, **kwargs):
     gen_name = name + "_gen"
@@ -253,7 +245,6 @@ def cc_yaml_library(name, src, **kwargs):
         hdrs = [out],
         **kwargs
     )
-
 
 def py_yaml_library(name, src, **kwargs):
     gen_name = name + "_gen"

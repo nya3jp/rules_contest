@@ -1,6 +1,8 @@
 package(default_visibility = ["//visibility:private"])
 
-load("//contest/impls/lint:defs.bzl", "pycodestyle_test", "bzlcodestyle_test")
+load("//contest/impls/lint:defs.bzl", "buildifier_test", "pycodestyle_test")
+
+buildifier_test()
 
 exports_files(["defs.bzl"])
 
@@ -26,9 +28,4 @@ py_binary(
 pycodestyle_test(
     name = "pycodestyle_test",
     srcs = glob(["*.py"]),
-)
-
-bzlcodestyle_test(
-    name = "bzlcodestyle_test",
-    srcs = glob(["*.bzl"]),
 )
