@@ -1,43 +1,46 @@
 # Getting Started
 
-This section tells you how to create a new repository for managing
+This section tells you how to create a new workspace for managing
 programming contest problems.
 
-## Install Bazel
+## Prerequisites
 
-Download and install Bazel by following [the official guide].
+[Bazel] is required to use `rules_contest`. Install it by following
+[the official guide].
 
+[Bazel]: https://bazel.build/
 [the official guide]: https://docs.bazel.build/versions/master/install.html
 
 ## Clone the template repository
 
-[A template repository] is available on GitHub. Click the "[Use this template]"
-button to create a new repository using the template. Use git to checkout
-the repository to the local machine.
+We provide [a Git repository] containing a template workspace on GitHub.
+Click the "[Use this template]" button to create a new repository using
+the template. Use [Git] to checkout the repository to the local machine.
 
-[A template repository]: https://github.com/nya3jp/contest_template
+[a Git repository]: https://github.com/nya3jp/contest_template
 [Use this template]: https://help.github.com/articles/creating-a-repository-from-a-template/
+[Git]: https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository
 
-The template repository contains two mock problems ("Sum of two numbers" and
+The template workspace contains two mock problems ("Sum of two numbers" and
 "Square root"), as well as several reference solutions to them.
 
 ## Build all targets
 
-In the checked out repository, run the following command to build all datasets
-and reference solutions.
+In the workspace, run the following command to build all datasets and reference
+solutions.
 
 ```console
 bazel build //...
 ```
 
-Build artifacts are saved under the `bazel-bin` directory in the repository
-root directory. For example, the dataset for the "Sum of two numbers" problem
-is at `bazel-bin/sum/judge/dataset.zip`.
+Build artifacts are saved under the `bazel-bin` directory in the workspace.
+For example, the dataset for the "Sum of two numbers" problem is at
+`bazel-bin/sum/judge/dataset.zip`.
 
 ## Test all targets
 
-In the checked out repository, run the following command to test all datasets
-and reference solutions.
+In the workspace, run the following command to test all datasets and reference
+solutions.
 
 ```console
 bazel test //...
