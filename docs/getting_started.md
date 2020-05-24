@@ -11,11 +11,11 @@ Download and install Bazel by following [the official guide].
 
 ## Clone the template repository
 
-A template repository is available at
-https://github.com/nya3jp/contest_template. Click the "[Use this template]"
+[A template repository] is available on GitHub. Click the "[Use this template]"
 button to create a new repository using the template. Use git to checkout
 the repository to the local machine.
 
+[A template repository]: https://github.com/nya3jp/contest_template
 [Use this template]: https://help.github.com/articles/creating-a-repository-from-a-template/
 
 The template repository contains two mock problems ("Sum of two numbers" and
