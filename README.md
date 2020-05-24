@@ -7,10 +7,9 @@ rules_contest is a set of [Bazel] rules for maintaining programming contest prob
 This project started as an experiment to port [Rime] to Bazel rules.
 
 
-## How to try
+## Documentation
 
-Check out https://github.com/nya3jp/contest_template for an example repository
-using rules_contest.
+Full documentation is available at https://rules-contest.readthedocs.io/.
 
 
 [Bazel]: https://bazel.build/
