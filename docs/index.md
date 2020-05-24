@@ -15,4 +15,5 @@ with your own custom rules while still using other useful rules.
 
 ## Contents
 
-- [Getting started](getting_started.md)
+- [Getting Started](getting_started.md)
+- [GitHub Project Page](https://github.com/nya3jp/rules_contest)

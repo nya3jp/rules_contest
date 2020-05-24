@@ -1,4 +1,4 @@
-# Getting started
+# Getting Started
 
 This section tells you how to create a new repository for managing
 programming contest problems.
