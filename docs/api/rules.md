@@ -1,9 +1,23 @@
 # Rules
 
-## `dataset_merge`
+## `@rules_contest//contest:defs.bzl`
 
-## `dataset_generate`
+### `dataset_merge`
 
-## `dataset_derive`
+### `dataset_generate`
 
-## `dataset_test`
+### `dataset_derive`
+
+### `dataset_test`
+
+### `simple_judge`
+
+### `solution_test`
+
+### `jinja2_template`
+
+### `markdown`
+
+### `cc_yaml_library`
+
+### `py_yaml_library`

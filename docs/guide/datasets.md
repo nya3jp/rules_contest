@@ -7,7 +7,8 @@ This section describes how to build and test datasets using `rules_contest`.
 A *dataset* is a zip archive file containing data files used to evaluate
 solution programs. Each data file in a dataset is named as
 `<basename>.<extension>` where a basename does not contain a period.
-A *test case* consists of data files having the same basename.
+
+A *test case* consists of data files having the same basename in a dataset.
 
 For example, a dataset consisting of four files, `00_sample1.in`,
 `00_sample1.out`, `00_sample2.in` and `10_random.in` contains three test cases
@@ -37,10 +38,10 @@ This rule is typically used to generate random input data files.
 ![dataset_generate](../images/dataset_generate.svg)
 
 [`dataset_derive`] rule extends a dataset by running a program. A program for
-the `dataset_derive` rule is run for each test case in the input dataset.
-A data file with an input file extension (default: ".in") is opened and
+the [`dataset_derive`] rule is run for each test case in the input dataset.
+A data file with an input file extension (default: `.in`) is opened and
 connected to the standard input of the program, and a data file with an output
-file extension (default: ".out") is opened and connected to the standard output.
+file extension (default: `.out`) is opened and connected to the standard output.
  The output dataset is built by combining the data files from the input dataset
  and the generated output files. This rule is typically used to generate answer
  data files by running a reference solution program over input data files.
@@ -57,8 +58,8 @@ It is important to ensure that built datasets have correct formats and meet
 the problem constraints. Currently one rule is provided to test datasets.
 
 [`dataset_test`] rule tests a dataset by running a program. A program for
-the `dataset_test` rule is run for each test case in the dataset. A data file
-with an input file extension (default: ".in") is opened and connected to the
+the [`dataset_test`] rule is run for each test case in the dataset. A data file
+with an input file extension (default: `.in`) is opened and connected to the
 standard input of the program. A test passes if the program exits normally
 (exit code 0) for all test cases.
 
