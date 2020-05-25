@@ -49,7 +49,7 @@ contest event, it is recommended to place workspace files in the following
 `WORKSPACE` file in the workspace directory should include the following
 external dependency to use `rules_contest`.
 
-```starlark
+```python
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
 git_repository(
@@ -74,7 +74,7 @@ collaborators do not accidentally commit those them.
 You can place `.bazelrc` file in the workspace directory to override Bazel's
 default configurations. Some configurations are recommended.
 
-```
+```text
 # Enable optimization by default.
 # Without this setting, C++ programs are much slower.
 build -c opt
@@ -91,7 +91,7 @@ build --coverage_report_generator=@rules_contest//contest:fake_coverage_report_g
 `BUILD` file. You can load rules provided by `rules_contest` to avoid explicitly
 loading them in each `BUILD` file.
 
-```starlark
+```python
 load("@rules_contest//contest:defs.bzl",
     "dataset_generate",
     "dataset_derive",
@@ -106,7 +106,7 @@ load("@rules_contest//contest:defs.bzl",
     "py_yaml_library")
 ```
 
-### Configuring continuous integration
+## Configuring continuous integration
 
 It is likely that you want to set up a continuous integration to build and test
 your workspace periodically or on every commit. See [the template repository]
