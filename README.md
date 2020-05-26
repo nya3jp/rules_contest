@@ -1,6 +1,7 @@
 # rules_contest
 
-![Test](https://github.com/nya3jp/rules_contest/workflows/Test/badge.svg)
+![test](https://github.com/nya3jp/rules_contest/workflows/test/badge.svg)
+![docs](https://readthedocs.org/projects/rules-contest/badge/?version=latest&style=flat)
 
 rules_contest is a set of [Bazel] rules for maintaining programming contest problems.
 
