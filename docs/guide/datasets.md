@@ -63,4 +63,6 @@ with an input file extension (default: `.in`) is opened and connected to the
 standard input of the program. A test passes if the program exits normally
 (exit code 0) for all test cases.
 
+![dataset_test](../images/dataset_test.svg)
+
 [`dataset_test`]: ../api/rules.html#dataset-test
