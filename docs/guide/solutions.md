@@ -43,7 +43,7 @@ the expectation of a solution.
 [`simple_judge`]: ../api/rules.html#simple-judge
 [the default exact comparator]: ../api/targets.html#rules-contest-contest-fake-coverage-report-generator
 
-## Testing reference solutions
+## Testing solutions
 
 [`solution_test`] is a test rule that runs a judge against a solution.
 On executing a judge program, the path to the specified solution program is
