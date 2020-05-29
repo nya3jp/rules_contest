@@ -51,4 +51,6 @@ passed as a command line argument. A test is considered pass if the judge
 program exits normally (exit code 0). You can also specify extra arguments to
 pass to the judge program to control a judge program's behavior.
 
+![solution_test](../images/solution_test.svg)
+
 [`solution_test`]: ../api/rules.html#solution-test
