@@ -1,6 +1,6 @@
 # Rules
 
-## `@rules_contest//contest:defs.bzl`
+## Standard rules (`@rules_contest//contest:defs.bzl`)
 
 ### `dataset_merge`
 
