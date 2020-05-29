@@ -19,6 +19,7 @@
    guide/tracker
    guide/constraints
    guide/statements
+   guide/example_graph
 
 .. toctree::
     :maxdepth: 1
