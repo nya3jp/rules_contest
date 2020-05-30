@@ -136,7 +136,43 @@ pass to the judge program to control a judge program's behavior.
 
 ## jinja2_template
 
+`jinja2_template(name, srcs, main, vars, files, dataset, **kwargs)`
+
+`jinja2_template` rule renders a [Jinja2 template], substituting variables
+computed from constraint YAML files, static files and datasets.
+
+Templates have access to the following variables:
+
+| Variable | Description | Example |
+| --- | --- | --- |
+| `vars` | Constraints from YAML files | `vars.VALUE_MAX` |
+| `files` | Content of static files | `files["00_sample1.out"]` |
+| `dataset` | Content of the dataset | `dataset["00_sample1.in"]` |
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| `name` | `str` | Required | A unique name for the rule. |
+| `srcs` | `List[Label]` | Required | A list of source template files. |
+| `main` | `Label` | `None` | The label of a main template file. Optional if `srcs` contains only a single file. |
+| `vars` | `List[Label]` | `[]` | A list of labels of constraint YAML files whose values are made available as template variables. |
+| `files` | `List[Label]` | `[]` | A list of labels of static files made available as template variables. |
+| `dataset` | `Label` | `None` | An optional bale of a dataset whose contents are made available as template variables. |
+
+[Jinja2 template]: https://jinja.palletsprojects.com/
+
 ## markdown
+
+`markdown(name, src, **kwargs)`
+
+`markdown` rule renders a [Markdown] document to a HTML document. This rule
+might be useful to build a file to upload to online judge systems.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| `name` | `str` | Required | A unique name for the rule. |
+| `src` | `Label` | Required | The label of a source Markdown file. |
+
+[Markdown]: https://en.wikipedia.org/wiki/Markdown
 
 ## cc_yaml_library
 
