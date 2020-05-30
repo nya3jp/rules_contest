@@ -88,7 +88,7 @@ def dataset_test(name, exec, dataset, input_extension = "in", **kwargs):
         **kwargs
     )
 
-def simple_judge(name, dataset, comparator = "@rules_contest//contest:exact_comparator", input_extension = "in", answer_extension = "ans", metadata = {}, **kwargs):
+def simple_judge(name, dataset, comparator = "@rules_contest//contest:exact_comparator", input_extension = "in", answer_extension = "ans", _metadata = {}, **kwargs):
     full_name = "//" + native.package_name() + ":" + name
     if native.repository_name() != "@":
         full_name = native.repository_name() + full_name
@@ -105,7 +105,7 @@ def simple_judge(name, dataset, comparator = "@rules_contest//contest:exact_comp
     ]
     args.extend([
         "--metadata=%s:%s" % (key, value)
-        for key, value in sorted(metadata.items())
+        for key, value in sorted(_metadata.items())
     ])
     native.genrule(
         name = name + "_gen",
