@@ -18,7 +18,7 @@ bazel run @rules_contest//contest:render_test_results -- $PWD/build.jsonl > $PWD
 
 ## `@rules_contest//contest:fake_coverage_report_generator`
 
-An executable does nothing.
+An executable that does nothing.
 
 This rule can be specified to the `--coverage_report_generator` flag to avoid
 downloading heavy OpenJDK archives on running tests when Java is not used.
