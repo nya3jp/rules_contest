@@ -113,7 +113,26 @@ the expectation of a solution.
 | `input_extension` | `str` | `"in"` | The extension of input data files. |
 | `answer_extension` | `str` | `"in"` | The extension of answer data files. |
 
+![simple_judge](../images/simple_judge.svg)
+
 ## `solution_test`
+
+`solution_test(name, solution, judge, judge_args, **kwargs)`
+
+`solution_test` is a test rule that runs a judge against a solution.
+On executing a judge program, the path to the specified solution program is
+passed as a command line argument. A test is considered pass if the judge
+program exits normally (exit code 0). You can also specify extra arguments to
+pass to the judge program to control a judge program's behavior.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| `name` | `str` | Required | A unique name for the rule. |
+| `solution` | `Label` | Required | A label of a solution executable to pass to the judge. |
+| `judge` | `Label` | Required | A label of a judge executable. |
+| `judge_args` | `List[str]` | `[]` | A list of extra arguments passed to the judge. |
+
+![solution_test](../images/solution_test.svg)
 
 ## `jinja2_template`
 
