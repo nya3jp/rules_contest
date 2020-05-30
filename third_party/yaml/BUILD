@@ -4,5 +4,5 @@ py_library(
     name = "yaml",
     srcs = glob(["**/*.py"]),
     imports = ["."],
-    visibility = ["//contest:__subpackages__"],
+    visibility = ["//:__subpackages__"],
 )

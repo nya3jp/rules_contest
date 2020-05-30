@@ -1,6 +1,6 @@
 package(default_visibility = ["//tests/example/sqrt:__subpackages__"])
 
-load("//contest/impls/lint:defs.bzl", "buildifier_test")
+load("//lint:defs.bzl", "buildifier_test")
 load(
     "//contest:defs.bzl",
     "dataset_derive",
