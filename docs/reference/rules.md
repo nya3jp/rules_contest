@@ -109,7 +109,7 @@ the expectation of a solution.
 | --- | --- | --- | --- |
 | `name` | `str` | Required | A unique name for the rule. |
 | `dataset` | `Label` | Required | A label of a dataset containing test cases. |
-| `comparator` | `Label` | `"@rules_contest//contest:exact_comparator"` | A label of an executable to run to compare an output file and an answer file. `
+| `comparator` | `Label` | `"@rules_contest//contest:exact_comparator"` | A label of an executable to run to compare an output file and an answer file. |
 | `input_extension` | `str` | `"in"` | The extension of input data files. |
 | `answer_extension` | `str` | `"in"` | The extension of answer data files. |
 
