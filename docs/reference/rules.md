@@ -13,7 +13,7 @@ load(
 )
 ```
 
-## `dataset_merge`
+## dataset_merge
 
 `dataset_merge(name, files, datasets, **kwargs)`
 
@@ -29,7 +29,7 @@ files, as well as to merge multiple datasets.
 
 ![dataset_merge](../images/dataset_merge.svg)
 
-## `dataset_generate`
+## dataset_generate
 
 `dataset_generate(name, exec, **kwargs)`
 
@@ -44,7 +44,7 @@ This rule is typically used to generate random input data files.
 
 ![dataset_generate](../images/dataset_generate.svg)
 
-## `dataset_derive`
+## dataset_derive
 
 `dataset_derive(name, exec, dataset, input_extension, output_extension, **kwargs)`
 
@@ -67,7 +67,7 @@ data files by running a reference solution program over input data files.
 
 ![dataset_derive](../images/dataset_derive.svg)
 
-## `dataset_test`
+## dataset_test
 
 `dataset_test(name, exec, dataset, input_extension, **kwargs)`
 
@@ -86,7 +86,7 @@ standard input of the program. A test passes if the program exits normally
 
 ![dataset_test](../images/dataset_test.svg)
 
-## `simple_judge`
+## simple_judge
 
 `simple_judge(name, dataset, comparator, input_extension, answer_extension, **kwargs)`
 
@@ -115,7 +115,7 @@ the expectation of a solution.
 
 ![simple_judge](../images/simple_judge.svg)
 
-## `solution_test`
+## solution_test
 
 `solution_test(name, solution, judge, judge_args, **kwargs)`
 
@@ -134,10 +134,10 @@ pass to the judge program to control a judge program's behavior.
 
 ![solution_test](../images/solution_test.svg)
 
-## `jinja2_template`
+## jinja2_template
 
-## `markdown`
+## markdown
 
-## `cc_yaml_library`
+## cc_yaml_library
 
-## `py_yaml_library`
+## py_yaml_library
