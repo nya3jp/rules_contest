@@ -140,4 +140,22 @@ pass to the judge program to control a judge program's behavior.
 
 ## cc_yaml_library
 
+`cc_yaml_library(name, src, **kwargs)`
+
+`cc_yaml_library` rule generates a C++ header file from a constraint YAML file.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| `name` | `str` | Required | A unique name for the rule. |
+| `src` | `str` | Required | The name of a YAML file. |
+
 ## py_yaml_library
+
+`py_yaml_library(name, src, **kwargs)`
+
+`py_yaml_library` rule generates a Python module from a constraint YAML file.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| `name` | `str` | Required | A unique name for the rule. |
+| `src` | `str` | Required | The name of a YAML file. |

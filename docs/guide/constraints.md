@@ -2,19 +2,28 @@
 
 Managing problem constraints in a central place is important to avoid
 disagreement among problem statements, generator, validator, judge etc.
-`rules_contest` supports describing problem constraints in a YAML file.
+`rules_contest` supports describing problem constraints in a [YAML] file.
 
-## Generating source code from a constraint YAML file
+[YAML]: https://en.wikipedia.org/wiki/YAML
+
+## Constraint YAML files
+
+Constraint YAML files describe problem constraints in [the YAML format].
+Constraint YAML files should be a simple key-value mapping, such as:
+
+```yaml
+VALUE_MAX: 1000000  # Maximum input number
+ERROR_MAX: 0.001    # Permitted error in outputs
+```
+
+[the YAML format]: https://yaml.org/
+
+## Generating source code from constraint YAML files
 
 [`cc_yaml_library`] rule generates a C++ header file from a YAML file.
 
-For example, the following YAML file is converted to the following C++ header
-file.
-
-```yaml
-VALUE_MAX: 1000000
-ERROR_MAX: 0.001
-```
+For example, the example YAML file above is converted to the following C++
+header file.
 
 ```cc
 #define VALUE_MAX 1000000
