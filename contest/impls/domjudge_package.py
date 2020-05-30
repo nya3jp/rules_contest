@@ -16,6 +16,8 @@ def main():
     parser.add_argument('--dataset', required=True)
     options = parser.parse_args()
 
+    # DOMJudge problem format:
+    # https://www.domjudge.org/docs/manual/problem-format.html
     with tempfile.TemporaryDirectory() as tmp_dir:
         with open(options.metadata, 'r') as f:
             # Make sure the metadata YAML is well-formed.
