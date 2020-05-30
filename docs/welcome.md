@@ -5,7 +5,7 @@ contest problems. `rules_contest` helps you automate tasks to prepare
 programming contest problems, such as:
 
 - Building and testing datasets
-- Building and testing reference solutions
+- Building and testing solutions
 - Building problem statements
 - Building a progress tracker
 

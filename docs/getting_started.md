@@ -21,13 +21,11 @@ the template. Use [Git] to checkout the repository to the local machine.
 [Use this template]: https://help.github.com/articles/creating-a-repository-from-a-template/
 [Git]: https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository
 
-The template workspace contains two mock problems ("Sum of two numbers" and
-"Square root"), as well as several reference solutions to them.
+The template workspace contains a few example problems and their solutions.
 
 ## Build all targets
 
-In the workspace, run the following command to build all datasets and reference
-solutions.
+In the workspace, run the following command to build all datasets and solutions.
 
 ```console
 bazel build //...
@@ -39,8 +37,7 @@ For example, the dataset for the "Sum of two numbers" problem is at
 
 ## Test all targets
 
-In the workspace, run the following command to test all datasets and reference
-solutions.
+In the workspace, run the following command to test all datasets and solutions.
 
 ```console
 bazel test //...

@@ -33,13 +33,13 @@ contest event, it is recommended to place workspace files in the following
 - Workspace root directory
     - Problem 1 directory
         - Judge directory
-        - Reference solution A directory
-        - Reference solution B directory
+        - Solution A directory
+        - Solution B directory
         - ...
     - Problem 2 directory
         - Judge directory
-        - Reference solution A directory
-        - Reference solution B directory
+        - Solution A directory
+        - Solution B directory
     - ...
 
 ## Settings

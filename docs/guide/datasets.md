@@ -42,9 +42,9 @@ the [`dataset_derive`] rule is run for each test case in the input dataset.
 A data file with an input file extension (default: `.in`) is opened and
 connected to the standard input of the program, and a data file with an output
 file extension (default: `.out`) is opened and connected to the standard output.
- The output dataset is built by combining the data files from the input dataset
- and the generated output files. This rule is typically used to generate answer
- data files by running a reference solution program over input data files.
+The output dataset is built by combining the data files from the input dataset
+and the generated output files. This rule is typically used to generate answer
+data files by running a reference solution program over input data files.
 
 ![dataset_derive](../images/dataset_derive.svg)
 
