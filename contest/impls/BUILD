@@ -134,3 +134,14 @@ pycodestyle_test(
     name = "pycodestyle_test",
     srcs = glob(["*.py"]),
 )
+
+py_binary(
+    name = "domjudge_package",
+    srcs = ["domjudge_package.py"],
+    srcs_version = "PY3",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":datasets",
+        "//third_party/yaml",
+    ],
+)

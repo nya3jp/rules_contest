@@ -4,7 +4,10 @@ load("//lint:defs.bzl", "buildifier_test", "pycodestyle_test")
 
 buildifier_test()
 
-exports_files(["defs.bzl"])
+exports_files([
+    "defs.bzl",
+    "experimental_defs.bzl",
+])
 
 sh_binary(
     name = "exact_comparator",

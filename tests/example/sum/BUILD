@@ -7,6 +7,7 @@ load(
     "markdown",
     "py_yaml_library",
 )
+load("//contest:experimental_defs.bzl", "domjudge_package")
 
 buildifier_test()
 
@@ -26,4 +27,11 @@ jinja2_template(
 markdown(
     name = "statement",
     src = ":statement_subst",
+)
+
+domjudge_package(
+    name = "sum",
+    dataset = "//tests/example/sum/judge:dataset",
+    metadata = "problem.yaml",
+    statements = [":statement"],
 )

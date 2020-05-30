@@ -1,4 +1,4 @@
-# Sum two numbers
+# Sum of two numbers
 
 Compute the sum of two numbers.
 
