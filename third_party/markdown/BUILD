@@ -1,10 +1,14 @@
-package(default_visibility=["//visibility:private"])
+package(default_visibility = ["//visibility:private"])
+
+load("//lint:defs.bzl", "buildifier_test")
+
+buildifier_test()
 
 py_library(
     name = "markdown",
     srcs = glob(["**/*.py"]),
-    imports = ["."],
     data = glob(["*.egg-info/*"]),
-    deps = ["//third_party/importlib_metadata"],
+    imports = ["."],
     visibility = ["//contest:__subpackages__"],
+    deps = ["//third_party/importlib_metadata"],
 )

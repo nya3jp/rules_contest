@@ -1,9 +1,13 @@
-package(default_visibility=["//visibility:private"])
+package(default_visibility = ["//visibility:private"])
+
+load("//lint:defs.bzl", "buildifier_test")
+
+buildifier_test()
 
 py_library(
     name = "jinja2",
     srcs = glob(["**/*.py"]),
     imports = ["."],
-    deps = ["//third_party/markupsafe"],
     visibility = ["//contest:__subpackages__"],
+    deps = ["//third_party/markupsafe"],
 )
