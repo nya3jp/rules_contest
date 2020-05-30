@@ -117,7 +117,7 @@ the expectation of a solution.
 
 ## solution_test
 
-`solution_test(name, solution, judge, judge_args, exclusive, **kwargs)`
+`solution_test(name, solution, judge, judge_args, **kwargs)`
 
 `solution_test` is a test rule that runs a judge against a solution.
 On executing a judge program, the path to the specified solution program is
@@ -131,7 +131,6 @@ pass to the judge program to control a judge program's behavior.
 | `solution` | `Label` | Required | A label of a solution executable to pass to the judge. |
 | `judge` | `Label` | Required | A label of a judge executable. |
 | `judge_args` | `List[str]` | `[]` | A list of extra arguments passed to the judge. |
-| `exclusive` | `bool` | `True` | If `True` (default), sets the `exclusive` tag to the test target so that the test does not run in parallel with other tests. |
 
 ![solution_test](../images/solution_test.svg)
 

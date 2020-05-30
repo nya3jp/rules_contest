@@ -126,7 +126,7 @@ def simple_judge(name, dataset, comparator = "@rules_contest//contest:exact_comp
         **kwargs
     )
 
-def solution_test(name, solution, judge, judge_args = [], exclusive = True, **kwargs):
+def solution_test(name, solution, judge, judge_args = [], tags = [], **kwargs):
     sh = name + ".sh"
     args = [
         "'$(execpath @rules_contest//contest/impls:solution_test_wrapper_generator)'",
@@ -142,14 +142,11 @@ def solution_test(name, solution, judge, judge_args = [], exclusive = True, **kw
         executable = True,
         cmd = " ".join(args),
     )
-    tags = kwargs.setdefault("tags", [])
-    tags.append("solution")
-    if exclusive:
-        tags.append("exclusive")
     native.sh_test(
         name = name,
         srcs = [sh],
         data = [solution, judge],
+        tags = tags + ["solution"],
         **kwargs
     )
 
