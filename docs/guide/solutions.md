@@ -40,8 +40,8 @@ the expectation of a solution.
 | `--expect=reject_any` | A solution is rejected for any one of test cases |
 | `--expect=reject_all` | A solution is rejected for all test cases |
 
-[`simple_judge`]: ../api/rules.html#simple-judge
-[the default exact comparator]: ../api/targets.html#rules-contest-contest-fake-coverage-report-generator
+[`simple_judge`]: ../reference/rules.html#simple-judge
+[the default exact comparator]: ../reference/targets.html#rules-contest-contest-fake-coverage-report-generator
 
 ## Testing solutions
 
@@ -53,4 +53,4 @@ pass to the judge program to control a judge program's behavior.
 
 ![solution_test](../images/solution_test.svg)
 
-[`solution_test`]: ../api/rules.html#solution-test
+[`solution_test`]: ../reference/rules.html#solution-test

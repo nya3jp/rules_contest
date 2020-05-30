@@ -25,8 +25,8 @@
     :maxdepth: 1
     :caption: API Reference
 
-    api/rules
-    api/targets
+    reference/rules
+    reference/targets
 
 .. toctree::
     :maxdepth: 1

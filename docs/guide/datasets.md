@@ -48,9 +48,9 @@ data files by running a reference solution program over input data files.
 
 ![dataset_derive](../images/dataset_derive.svg)
 
-[`dataset_merge`]: ../api/rules.html#dataset-merge
-[`dataset_generate`]: ../api/rules.html#dataset-generate
-[`dataset_derive`]: ../api/rules.html#dataset-derive
+[`dataset_merge`]: ../reference/rules.html#dataset-merge
+[`dataset_generate`]: ../reference/rules.html#dataset-generate
+[`dataset_derive`]: ../reference/rules.html#dataset-derive
 
 ## Testing datasets
 
@@ -65,4 +65,4 @@ standard input of the program. A test passes if the program exits normally
 
 ![dataset_test](../images/dataset_test.svg)
 
-[`dataset_test`]: ../api/rules.html#dataset-test
+[`dataset_test`]: ../reference/rules.html#dataset-test
