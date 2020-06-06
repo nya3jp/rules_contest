@@ -9,8 +9,8 @@ from contest.impls import datasets
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--output', required=True)
-    parser.add_argument('--file', dest='files', action='append')
-    parser.add_argument('--dataset', dest='datasets', action='append')
+    parser.add_argument('--file', dest='files', action='append', default=[])
+    parser.add_argument('--dataset', dest='datasets', action='append', default=[])
     options = parser.parse_args()
 
     with tempfile.TemporaryDirectory() as dataset_dir:
