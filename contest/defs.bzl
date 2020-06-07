@@ -58,24 +58,45 @@ def dataset_derive(name, exec, dataset, input_extension = "in", output_extension
         **kwargs
     )
 
-def dataset_merge(name, files = [], datasets = [], **kwargs):
-    out = name + ".zip"
-    args = [
-        "'$(execpath @rules_contest//contest/impls:dataset_merge)'",
-        "--output='$@'",
-    ]
-    for file in files:
-        args.append("--file='$(execpath %s)'" % file)
-    for dataset in datasets:
-        args.append("--dataset='$(execpath %s)'" % dataset)
-    native.genrule(
-        name = name,
-        outs = [out],
-        srcs = files + datasets,
-        tools = ["@rules_contest//contest/impls:dataset_merge"],
-        cmd = " ".join(args),
-        **kwargs
+def _dataset_merge_impl(ctx):
+    out = ctx.outputs.out
+    args = ["--output=" + out.path]
+    for f in ctx.files.files:
+        args.append("--file=" + f.path)
+    for f in ctx.files.datasets:
+        args.append("--dataset=" + f.path)
+    ctx.actions.run(
+        outputs = [out],
+        inputs = ctx.files.files + ctx.files.datasets,
+        executable = ctx.executable._tool,
+        arguments = args,
+        mnemonic = "DatasetMerge",
+        progress_message = "Generating " + out.basename,
     )
+    return [
+        # TODO: Figure out why runfiles is needed even though this is not an
+        # executable rule. Without it, a generated zip file is not included
+        # to runfiles of binaries.
+        DefaultInfo(files = depset([out]), runfiles = ctx.runfiles([out])),
+    ]
+
+dataset_merge = rule(
+    implementation = _dataset_merge_impl,
+    attrs = {
+        "files": attr.label_list(
+            allow_files = True,
+        ),
+        "datasets": attr.label_list(
+            allow_files = True,
+        ),
+        "_tool": attr.label(
+            executable = True,
+            cfg = "host",
+            default = Label("//contest/impls:dataset_merge"),
+        ),
+    },
+    outputs = {"out": "%{name}.zip"},
+)
 
 def dataset_test(name, exec, dataset, input_extension = "in", **kwargs):
     sh = name + ".sh"
