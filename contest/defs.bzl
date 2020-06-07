@@ -1,25 +1,43 @@
-def dataset_generate(name, exec, **kwargs):
-    """Generates a new dataset by running an executable.
-
-    The executable should write generated data files to $OUTPUT_DIR.
-
-    Args:
-      name: A unique name for this rule.
-      exec: The label of an executable.
-    """
-    out = name + ".zip"
-    args = [
-        "'$(execpath @rules_contest//contest/impls:dataset_generate)'",
-        "--output='$@'",
-        "--executable='$(execpath " + exec + ")'",
-    ]
-    native.genrule(
-        name = name,
-        outs = [out],
-        tools = ["@rules_contest//contest/impls:dataset_generate", exec],
-        cmd = " ".join(args),
-        **kwargs
+def _dataset_generate_impl(ctx):
+    out = ctx.outputs.out
+    ctx.actions.run(
+        outputs = [out],
+        executable = ctx.executable._tool,
+        tools = [ctx.executable.exec],
+        arguments = [
+            "--output=" + out.path,
+            "--executable=" + ctx.executable.exec.path,
+            "--command=" + ctx.attr.cmd,
+        ],
+        mnemonic = "DatasetGenerate",
+        progress_message = "Generating " + out.basename,
     )
+    return [
+        # TODO: Figure out why runfiles is needed even though this is not an
+        # executable rule. Without it, a generated zip file is not included
+        # to runfiles of binaries.
+        DefaultInfo(files = depset([out]), runfiles = ctx.runfiles([out])),
+    ]
+
+dataset_generate = rule(
+    implementation = _dataset_generate_impl,
+    attrs = {
+        "exec": attr.label(
+            mandatory = True,
+            executable = True,
+            cfg = "host",
+        ),
+        "cmd": attr.string(
+            default = "${EXEC}",
+        ),
+        "_tool": attr.label(
+            executable = True,
+            cfg = "host",
+            default = Label("//contest/impls:dataset_generate"),
+        ),
+    },
+    outputs = {"out": "%{name}.zip"},
+)
 
 def dataset_derive(name, exec, dataset, input_extension = "in", output_extension = "ans", **kwargs):
     out = name + ".zip"

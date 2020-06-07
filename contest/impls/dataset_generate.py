@@ -10,13 +10,17 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--output', required=True)
     parser.add_argument('--executable', required=True)
+    parser.add_argument('--command', required=True)
     options = parser.parse_args()
 
     with tempfile.TemporaryDirectory() as dataset_dir:
         env = os.environ.copy()
-        env['OUTPUT_DIR'] = dataset_dir
+        env.update({
+            'EXEC': options.executable,
+            'OUTPUT_DIR': dataset_dir,
+        })
         subprocess.check_call(
-            [options.executable],
+            ["bash", "-e", "-c", options.command],
             env=env)
         datasets.create(dataset_dir, options.output)
 
