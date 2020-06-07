@@ -4,6 +4,7 @@ import subprocess
 import tempfile
 
 from contest.impls import datasets
+from contest.impls import exec_util
 
 
 def main():
@@ -14,19 +15,12 @@ def main():
     options = parser.parse_args()
 
     with tempfile.TemporaryDirectory() as dataset_dir:
-        env = os.environ.copy()
-        # Remove RUNFILES_ variables so as not to confuse the executable.
-        env = {
-            key: value
-            for key, value in env.items()
-            if not key.startswith('RUNFILES_')
-        }
-        env.update({
+        env = exec_util.make_env({
             'EXEC': os.path.abspath(options.executable),
             'OUTPUT_DIR': dataset_dir,
         })
         subprocess.check_call(
-            ["bash", "-e", "-c", options.command],
+            exec_util.bash_args(options.command),
             env=env)
         datasets.create(dataset_dir, options.output)
 

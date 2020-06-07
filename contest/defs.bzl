@@ -39,24 +39,52 @@ dataset_generate = rule(
     outputs = {"out": "%{name}.zip"},
 )
 
-def dataset_derive(name, exec, dataset, input_extension = "in", output_extension = "ans", **kwargs):
-    out = name + ".zip"
-    args = [
-        "'$(execpath @rules_contest//contest/impls:dataset_derive)'",
-        "--output='$@'",
-        "--executable='$(execpath " + exec + ")'",
-        "--dataset='$<'",
-        "--input_extension='" + input_extension + "'",
-        "--output_extension='" + output_extension + "'",
-    ]
-    native.genrule(
-        name = name,
-        outs = [out],
-        srcs = [dataset],
-        tools = ["@rules_contest//contest/impls:dataset_derive", exec],
-        cmd = " ".join(args),
-        **kwargs
+def _dataset_derive_impl(ctx):
+    out = ctx.outputs.out
+    ctx.actions.run(
+        outputs = [out],
+        inputs = [ctx.file.dataset],
+        executable = ctx.executable._tool,
+        tools = [ctx.executable.exec],
+        arguments = [
+            "--output=" + out.path,
+            "--executable=" + ctx.executable.exec.path,
+            "--dataset=" + ctx.file.dataset.path,
+            "--command=" + ctx.attr.cmd,
+        ],
+        mnemonic = "DatasetGenerate",
+        progress_message = "Generating " + out.basename,
     )
+    return [
+        # TODO: Figure out why runfiles is needed even though this is not an
+        # executable rule. Without it, a generated zip file is not included
+        # to runfiles of binaries.
+        DefaultInfo(files = depset([out]), runfiles = ctx.runfiles([out])),
+    ]
+
+dataset_derive = rule(
+    implementation = _dataset_derive_impl,
+    attrs = {
+        "exec": attr.label(
+            mandatory = True,
+            executable = True,
+            cfg = "host",
+        ),
+        "dataset": attr.label(
+            mandatory = True,
+            allow_single_file = True,
+        ),
+        "cmd": attr.string(
+            default = "${EXEC} < ${INPUT_DIR}/${TESTCASE}.in > ${OUTPUT_DIR}/${TESTCASE}.ans",
+        ),
+        "_tool": attr.label(
+            executable = True,
+            cfg = "host",
+            default = Label("//contest/impls:dataset_derive"),
+        ),
+    },
+    outputs = {"out": "%{name}.zip"},
+)
 
 def _dataset_merge_impl(ctx):
     out = ctx.outputs.out

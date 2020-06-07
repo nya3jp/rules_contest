@@ -33,7 +33,7 @@ files, as well as to merge multiple datasets.
 
 ## dataset_generate
 
-`dataset_generate(name, exec, **kwargs)`
+`dataset_generate(name, exec, cmd, **kwargs)`
 
 `dataset_generate` rule builds a dataset by running a program. By default,
 it should write data files to the directory specified by the `OUTPUT_DIR`
@@ -61,13 +61,13 @@ The following environment variables are available on running a command.
 
 ## dataset_derive
 
-`dataset_derive(name, exec, dataset, input_extension, output_extension, **kwargs)`
+`dataset_derive(name, exec, dataset, cmd, **kwargs)`
 
 `dataset_derive` rule extends a dataset by running a program. A program for
 the `dataset_derive` rule is run for each test case in the input dataset.
-A data file with an input file extension (default: `.in`) is opened and
+By default, a data file with an input file extension (`.in`) is opened and
 connected to the standard input of the program, and a data file with an output
-file extension (default: `.out`) is opened and connected to the standard output.
+file extension (`.ans`) is opened and connected to the standard output.
 The output dataset is built by combining the data files from the input dataset
 and the generated output files. This rule is typically used to generate answer
 data files by running a reference solution program over input data files.
@@ -79,8 +79,18 @@ data files by running a reference solution program over input data files.
 | `name` | `str` | Required | A unique name for the rule. |
 | `exec` | `Label` | Required | A label of an executable to run to generate data files. |
 | `dataset` | `Label` | Required | A label of a dataset that the new dataset derives from. |
-| `input_extension` | `str` | `"in"` | The extension of input data files. |
-| `output_extension` | `str` | `"ans"` | The extension of output data files. |
+| `cmd` | `str` | `${EXEC} < ${INPUT_DIR}/${TESTCASE}.in > ${OUTPUT_DIR}/${TESTCASE}.ans` | A shell command to run. |
+
+### Environment variables
+
+The following environment variables are available on running a command.
+
+| Variable | Description |
+| --- | --- |
+| `EXEC` | A path to the executable specified in the `exec` parameter of the rule. |
+| `INPUT_DIR` | A path to the directory where source data files are located. |
+| `OUTPUT_DIR` | A path to the directory where generated data files should be saved. |
+| `TESTCASE` | A test case name to be processed. |
 
 ![dataset_derive](../images/dataset_derive.svg)
 

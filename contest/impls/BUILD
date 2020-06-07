@@ -4,12 +4,34 @@ load("//lint:defs.bzl", "buildifier_test", "pycodestyle_test")
 
 buildifier_test()
 
+py_library(
+    name = "datasets",
+    srcs = ["datasets.py"],
+    srcs_version = "PY3",
+)
+
+py_test(
+    name = "datasets_test",
+    srcs = ["datasets_test.py"],
+    srcs_version = "PY3",
+    deps = [":datasets"],
+)
+
+py_library(
+    name = "exec_util",
+    srcs = ["exec_util.py"],
+    srcs_version = "PY3",
+)
+
 py_binary(
     name = "dataset_generate",
     srcs = ["dataset_generate.py"],
     srcs_version = "PY3",
     visibility = ["//visibility:public"],
-    deps = [":datasets"],
+    deps = [
+        ":datasets",
+        ":exec_util",
+    ],
 )
 
 py_binary(
@@ -17,7 +39,10 @@ py_binary(
     srcs = ["dataset_derive.py"],
     srcs_version = "PY3",
     visibility = ["//visibility:public"],
-    deps = [":datasets"],
+    deps = [
+        ":datasets",
+        ":exec_util",
+    ],
 )
 
 py_binary(
@@ -73,19 +98,6 @@ py_binary(
     deps = [
         "//third_party/jinja2",
     ],
-)
-
-py_library(
-    name = "datasets",
-    srcs = ["datasets.py"],
-    srcs_version = "PY3",
-)
-
-py_test(
-    name = "datasets_test",
-    srcs = ["datasets_test.py"],
-    srcs_version = "PY3",
-    deps = [":datasets"],
 )
 
 py_binary(
