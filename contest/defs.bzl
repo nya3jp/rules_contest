@@ -126,34 +126,54 @@ dataset_merge = rule(
     outputs = {"out": "%{name}.zip"},
 )
 
-def dataset_test(name, exec, dataset, input_extension = "in", **kwargs):
-    sh = name + ".sh"
-    args = [
-        "'$(execpath @rules_contest//contest/impls:dataset_test_wrapper_generator)'",
-        "--output='$@'",
-        "--dataset_test='$(rootpath @rules_contest//contest/impls:dataset_test)'",
-        "--executable='$(rootpath " + exec + ")'",
-        "--dataset='$(rootpath " + dataset + ")'",
-        "--input_extension='" + input_extension + "'",
-    ]
-    native.genrule(
-        name = name + "_sh",
-        outs = [sh],
-        srcs = [dataset],
-        tools = [
-            "@rules_contest//contest/impls:dataset_test_wrapper_generator",
-            "@rules_contest//contest/impls:dataset_test",
-            exec,
+def _dataset_test_impl(ctx):
+    out = ctx.outputs.executable
+    ctx.actions.run(
+        outputs = [out],
+        executable = ctx.executable._generator,
+        arguments = [
+            "--output=" + out.path,
+            "--dataset_test=" + ctx.executable._dataset_test.short_path,
+            "--executable=" + ctx.executable.exec.short_path,
+            "--dataset=" + ctx.file.dataset.short_path,
+            "--command=" + ctx.attr.cmd,
         ],
-        executable = True,
-        cmd = " ".join(args),
+        mnemonic = "DatasetTest",
+        progress_message = "Generating " + out.basename,
     )
-    native.sh_test(
-        name = name,
-        srcs = [sh],
-        data = ["@rules_contest//contest/impls:dataset_test", exec, dataset],
-        **kwargs
-    )
+    runfiles = ctx.attr._dataset_test[DefaultInfo].default_runfiles
+    runfiles = runfiles.merge(ctx.attr.exec[DefaultInfo].default_runfiles)
+    runfiles = runfiles.merge(ctx.runfiles(ctx.files.dataset))
+    return [DefaultInfo(runfiles = runfiles)]
+
+dataset_test = rule(
+    implementation = _dataset_test_impl,
+    attrs = {
+        "exec": attr.label(
+            mandatory = True,
+            executable = True,
+            cfg = "host",
+        ),
+        "dataset": attr.label(
+            mandatory = True,
+            allow_single_file = True,
+        ),
+        "cmd": attr.string(
+            default = "${EXEC} < ${INPUT_DIR}/${TESTCASE}.in",
+        ),
+        "_dataset_test": attr.label(
+            executable = True,
+            cfg = "host",
+            default = Label("//contest/impls:dataset_test"),
+        ),
+        "_generator": attr.label(
+            executable = True,
+            cfg = "host",
+            default = Label("//contest/impls:dataset_test_wrapper_generator"),
+        ),
+    },
+    test = True,
+)
 
 def simple_judge(name, dataset, comparator = "@rules_contest//contest:exact_comparator", input_extension = "in", answer_extension = "ans", _metadata = {}, **kwargs):
     full_name = "//" + native.package_name() + ":" + name

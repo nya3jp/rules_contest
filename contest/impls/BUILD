@@ -58,7 +58,10 @@ py_binary(
     srcs = ["dataset_test.py"],
     srcs_version = "PY3",
     visibility = ["//visibility:public"],
-    deps = [":datasets"],
+    deps = [
+        ":datasets",
+        ":exec_util",
+    ],
 )
 
 py_binary(

@@ -96,13 +96,13 @@ The following environment variables are available on running a command.
 
 ## dataset_test
 
-`dataset_test(name, exec, dataset, input_extension, **kwargs)`
+`dataset_test(name, exec, dataset, cmd, **kwargs)`
 
 `dataset_test` rule tests a dataset by running a program. A program for
-the `dataset_test` rule is run for each test case in the dataset. A data file
-with an input file extension (default: `.in`) is opened and connected to the
-standard input of the program. A test passes if the program exits normally
-(exit code 0) for all test cases.
+the `dataset_test` rule is run for each test case in the dataset.
+By default, a data file with an input file extension (`.in`) is opened and
+connected to the standard input of the program. A test passes if the
+program exits normally (exit code 0) for all test cases.
 
 ### Parameters
 
@@ -111,7 +111,17 @@ standard input of the program. A test passes if the program exits normally
 | `name` | `str` | Required | A unique name for the rule. |
 | `exec` | `Label` | Required | A label of an executable to run to validate data files. |
 | `dataset` | `Label` | Required | A label of a dataset to test. |
-| `input_extension` | `str` | `"in"` | The extension of input data files. |
+| `cmd` | `str` | `${EXEC} < ${INPUT_DIR}/${TESTCASE}.in` | A shell command to run. |
+
+### Environment variables
+
+The following environment variables are available on running a command.
+
+| Variable | Description |
+| --- | --- |
+| `EXEC` | A path to the executable specified in the `exec` parameter of the rule. |
+| `INPUT_DIR` | A path to the directory where source data files are located. |
+| `TESTCASE` | A test case name to be processed. |
 
 ![dataset_test](../images/dataset_test.svg)
 
