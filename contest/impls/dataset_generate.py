@@ -15,8 +15,14 @@ def main():
 
     with tempfile.TemporaryDirectory() as dataset_dir:
         env = os.environ.copy()
+        # Remove RUNFILES_ variables so as not to confuse the executable.
+        env = {
+            key: value
+            for key, value in env.items()
+            if not key.startswith('RUNFILES_')
+        }
         env.update({
-            'EXEC': options.executable,
+            'EXEC': os.path.abspath(options.executable),
             'OUTPUT_DIR': dataset_dir,
         })
         subprocess.check_call(

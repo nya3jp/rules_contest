@@ -11,7 +11,9 @@ pycodestyle_test(
 py_binary(
     name = "generator",
     srcs = ["generator.py"],
+    data = [":data.txt"],
     srcs_version = "PY3",
+    deps = ["@bazel_tools//tools/python/runfiles"],
 )
 
 dataset_generate(
