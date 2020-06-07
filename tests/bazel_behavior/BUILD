@@ -1,3 +1,5 @@
+package(default_visibility = ["//visibility:private"])
+
 py_test(
     name = "args_test",
     srcs = ["args_test.py"],

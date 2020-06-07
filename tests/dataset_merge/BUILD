@@ -1,3 +1,5 @@
+package(default_visibility = ["//visibility:private"])
+
 load("//lint:defs.bzl", "buildifier_test", "pycodestyle_test")
 load("//contest:defs.bzl", "dataset_merge")
 
