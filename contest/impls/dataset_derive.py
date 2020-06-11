@@ -1,7 +1,6 @@
 import argparse
 import os
 import subprocess
-import sys
 
 from contest.impls import datasets
 from contest.impls import exec_util
@@ -21,7 +20,7 @@ def main():
                 'EXEC': os.path.abspath(options.executable),
                 'INPUT_DIR': dataset_dir,
                 'OUTPUT_DIR': dataset_dir,
-                'TESTCASE': case.name,
+                'TESTCASE': case,
             })
             subprocess.check_call(
                 exec_util.bash_args(options.command),

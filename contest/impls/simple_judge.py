@@ -30,19 +30,19 @@ def main():
         cases = []
 
         for case in datasets.cases(dataset_dir):
-            print('*** %s: ' % case.name, end='')
+            print('*** %s: ' % case, end='')
 
-            solution_output_path = os.path.join(options.output_dir, '%s.solution.output' % case.name)
+            solution_output_path = os.path.join(options.output_dir, '%s.solution.output' % case)
 
-            solution_stdout_path = os.path.join(options.output_dir, '%s.solution.stdout' % case.name)
-            solution_stderr_path = os.path.join(options.output_dir, '%s.solution.stderr' % case.name)
+            solution_stdout_path = os.path.join(options.output_dir, '%s.solution.stdout' % case)
+            solution_stderr_path = os.path.join(options.output_dir, '%s.solution.stderr' % case)
 
             with open(solution_stdout_path, 'wb') as stdout_file, \
                     open(solution_stderr_path, 'wb') as stderr_file:
                 env = exec_util.make_env({
                     'EXEC': options.solution,
                     'INPUT_DIR': dataset_dir,
-                    'TESTCASE': case.name,
+                    'TESTCASE': case,
                     'OUTPUT_FILE': solution_output_path,
                 })
                 start_time = time.time()
@@ -58,7 +58,7 @@ def main():
                 msg = 'Solution skipped the test case'
                 print(msg)
                 cases.append({
-                    'name': case.name,
+                    'name': case,
                     'result': 'skipped',
                     'message': msg,
                     'solution_time': solution_time,
@@ -75,7 +75,7 @@ def main():
                 with open(solution_stderr_path, 'r') as f:
                     print(f.read())
                 cases.append({
-                    'name': case.name,
+                    'name': case,
                     'result': 'rejected',
                     'message': msg,
                     'solution_time': solution_time,
@@ -83,15 +83,15 @@ def main():
                 })
                 continue
 
-            judge_stdout_path = os.path.join(options.output_dir, '%s.judge.stdout' % case.name)
-            judge_stderr_path = os.path.join(options.output_dir, '%s.judge.stderr' % case.name)
+            judge_stdout_path = os.path.join(options.output_dir, '%s.judge.stdout' % case)
+            judge_stderr_path = os.path.join(options.output_dir, '%s.judge.stderr' % case)
 
             with open(judge_stdout_path, 'wb') as stdout_file, \
                     open(judge_stderr_path, 'wb') as stderr_file:
                 env = exec_util.make_env({
                     'EXEC': options.comparator,
                     'INPUT_DIR': dataset_dir,
-                    'TESTCASE': case.name,
+                    'TESTCASE': case,
                     'OUTPUT_FILE': solution_output_path,
                 })
                 start_time = time.time()
@@ -119,7 +119,7 @@ def main():
                 with open(judge_stderr_path, 'r') as f:
                     print(f.read())
                 cases.append({
-                    'name': case.name,
+                    'name': case,
                     'result': 'rejected',
                     'message': msg,
                     'solution_time': solution_time,
@@ -132,7 +132,7 @@ def main():
             msg = 'OK'
             print(msg)
             cases.append({
-                'name': case.name,
+                'name': case,
                 'result': 'accepted',
                 'message': msg,
                 'solution_time': solution_time,

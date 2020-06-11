@@ -16,13 +16,13 @@ def main():
 
     with datasets.expand(options.dataset) as dataset_dir:
         for case in datasets.cases(dataset_dir):
-            print('*** %s: ' % case.name, end='')
+            print('*** %s: ' % case, end='')
             sys.stdout.flush()
 
             env = exec_util.make_env({
                 'EXEC': os.path.abspath(options.executable),
                 'INPUT_DIR': dataset_dir,
-                'TESTCASE': case.name,
+                'TESTCASE': case,
             })
             returncode = subprocess.call(
                 exec_util.bash_args(options.command),
