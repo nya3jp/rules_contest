@@ -126,7 +126,8 @@ an answer by running the specified comparator program. If no comparator is
 specified, the default exact comparator is used.
 
 A simple judge optionally accepts a command line flag `--expect` that specifies
-the expectation of a solution.
+the expectation of a solution. It can be specified in the `solution_test` rule
+to customize the judge behavior for a solution.
 
 | Flag | Expectation |
 | --- | --- |
@@ -144,9 +145,10 @@ the expectation of a solution.
 | `comparator` | `Label` | `"@rules_contest//contest:exact_comparator"` | A label of an executable to run to compare an output file and an answer file. |
 | `comparator_cmd` | `str` | `${EXEC} ${INPUT_DIR}/${TESTCASE}.in ${OUTPUT_FILE} ${INPUT_DIR}/${TESTCASE}.ans` | A shell command to run a comparator. |
 
-### Environment variables (comparator and solution)
+### Environment variables
 
-The following environment variables are available on running a command.
+The following environment variables are available on running a command
+(comparator or solution).
 
 | Variable | Description |
 | --- | --- |
