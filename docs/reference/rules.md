@@ -15,8 +15,6 @@ load(
 
 ## dataset_merge
 
-`dataset_merge(name, files, datasets, **kwargs)`
-
 `dataset_merge` rule builds a dataset from zero or more datasets and zero or
 more data files. This rule can be used to build a dataset from static data
 files, as well as to merge multiple datasets.
@@ -32,8 +30,6 @@ files, as well as to merge multiple datasets.
 ![dataset_merge](../images/dataset_merge.svg)
 
 ## dataset_generate
-
-`dataset_generate(name, exec, cmd, **kwargs)`
 
 `dataset_generate` rule builds a dataset by running a program. By default,
 it should write data files to the directory specified by the `OUTPUT_DIR`
@@ -60,8 +56,6 @@ The following environment variables are available on running a command.
 ![dataset_generate](../images/dataset_generate.svg)
 
 ## dataset_derive
-
-`dataset_derive(name, exec, dataset, cmd, **kwargs)`
 
 `dataset_derive` rule extends a dataset by running a program. A program for
 the `dataset_derive` rule is run for each test case in the input dataset.
@@ -96,8 +90,6 @@ The following environment variables are available on running a command.
 
 ## dataset_test
 
-`dataset_test(name, exec, dataset, cmd, **kwargs)`
-
 `dataset_test` rule tests a dataset by running a program. A program for
 the `dataset_test` rule is run for each test case in the dataset.
 By default, a data file with an input file extension (`.in`) is opened and
@@ -126,8 +118,6 @@ The following environment variables are available on running a command.
 ![dataset_test](../images/dataset_test.svg)
 
 ## simple_judge
-
-`simple_judge(name, dataset, solution_cmd, comparator, comparator_cmd, **kwargs)`
 
 `simple_judge` rule generates a simple judge program from a dataset containing
 inputs and answers, and optionally a *comparator* program. A simple judge runs
@@ -169,8 +159,6 @@ The following environment variables are available on running a command.
 
 ## solution_test
 
-`solution_test(name, solution, judge, judge_args, **kwargs)`
-
 `solution_test` is a test rule that runs a judge against a solution.
 On executing a judge program, the path to the specified solution program is
 passed as a command line argument. A test is considered pass if the judge
@@ -189,8 +177,6 @@ pass to the judge program to control a judge program's behavior.
 ![solution_test](../images/solution_test.svg)
 
 ## jinja2_template
-
-`jinja2_template(name, srcs, main, vars, files, dataset, **kwargs)`
 
 `jinja2_template` rule renders a [Jinja2 template], substituting variables
 computed from constraint YAML files, static files and datasets.
@@ -220,8 +206,6 @@ Templates have access to the following variables:
 
 ## markdown
 
-`markdown(name, src, **kwargs)`
-
 `markdown` rule renders a [Markdown] document to a HTML document. This rule
 might be useful to build a file to upload to online judge systems.
 
@@ -236,8 +220,6 @@ might be useful to build a file to upload to online judge systems.
 
 ## cc_yaml_library
 
-`cc_yaml_library(name, src, **kwargs)`
-
 `cc_yaml_library` rule generates a C++ header file from a constraint YAML file.
 
 ### Parameters
@@ -248,8 +230,6 @@ might be useful to build a file to upload to online judge systems.
 | `src` | `str` | Required | The name of a YAML file. |
 
 ## py_yaml_library
-
-`py_yaml_library(name, src, **kwargs)`
 
 `py_yaml_library` rule generates a Python module from a constraint YAML file.
 
