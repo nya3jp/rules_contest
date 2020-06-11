@@ -1,12 +1,12 @@
 import argparse
 import json
 import os
-import shlex
 import subprocess
 import sys
 import time
 
 from contest.impls import datasets
+from contest.impls import exec_util
 
 
 def main():
@@ -15,14 +15,15 @@ def main():
     parser.add_argument('--judge_name', required=True)
     parser.add_argument('--comparator', required=True)
     parser.add_argument('--dataset', required=True)
-    parser.add_argument('--input_extension', required=True)
-    parser.add_argument('--answer_extension', required=True)
+    parser.add_argument('--solution_command', required=True)
+    parser.add_argument('--comparator_command', required=True)
     parser.add_argument('--metadata', default='{}')
-    parser.add_argument('--expect', default='accepted')
+    parser.add_argument('--expect', default='accept_all')
     parser.add_argument('solution')
     options = parser.parse_args()
 
-    assert options.expect in ('accepted', 'reject_any', 'reject_all')
+    assert options.output_dir, '--output_dir empty'
+    assert options.expect in ('accept_all', 'reject_any', 'reject_all')
     metadata = json.loads(options.metadata)
 
     with datasets.expand(options.dataset) as dataset_dir:
@@ -30,43 +31,25 @@ def main():
 
         for case in datasets.cases(dataset_dir):
             print('*** %s: ' % case.name, end='')
-            input_path = case.files.get(options.input_extension)
-            if not input_path:
-                msg = 'Input file missing: %s.%s' % (case.name, options.input_extension)
-                print(msg)
-                cases.append({
-                    'name': case.name,
-                    'result': 'error',
-                    'message': msg,
-                })
-                continue
-            answer_path = case.files.get(options.answer_extension)
-            if not answer_path:
-                msg = 'Answer file missing: %s.%s' % (case.name, options.answer_extension)
-                print(msg)
-                cases.append({
-                    'name': case.name,
-                    'result': 'error',
-                    'message': msg,
-                })
-                continue
+
+            solution_output_path = os.path.join(options.output_dir, '%s.solution.output' % case.name)
 
             solution_stdout_path = os.path.join(options.output_dir, '%s.solution.stdout' % case.name)
             solution_stderr_path = os.path.join(options.output_dir, '%s.solution.stderr' % case.name)
 
-            with open(input_path, 'rb') as stdin_file, \
-                    open(solution_stdout_path, 'wb') as stdout_file, \
+            with open(solution_stdout_path, 'wb') as stdout_file, \
                     open(solution_stderr_path, 'wb') as stderr_file:
-                args = [options.solution]
-
-                env = os.environ.copy()
-                env.update(case.env)
-
+                env = exec_util.make_env({
+                    'EXEC': options.solution,
+                    'INPUT_DIR': dataset_dir,
+                    'TESTCASE': case.name,
+                    'OUTPUT_FILE': solution_output_path,
+                })
                 start_time = time.time()
                 solution_code = subprocess.call(
-                    args,
+                    exec_util.bash_args(options.solution_command),
                     env=env,
-                    stdin=stdin_file,
+                    stdin=subprocess.DEVNULL,
                     stdout=stdout_file,
                     stderr=stderr_file)
                 solution_time = time.time() - start_time
@@ -105,14 +88,15 @@ def main():
 
             with open(judge_stdout_path, 'wb') as stdout_file, \
                     open(judge_stderr_path, 'wb') as stderr_file:
-                args = [options.comparator, input_path, solution_stdout_path, answer_path]
-
-                env = os.environ.copy()
-                env.update(case.env)
-
+                env = exec_util.make_env({
+                    'EXEC': options.comparator,
+                    'INPUT_DIR': dataset_dir,
+                    'TESTCASE': case.name,
+                    'OUTPUT_FILE': solution_output_path,
+                })
                 start_time = time.time()
                 judge_code = subprocess.call(
-                    args,
+                    exec_util.bash_args(options.comparator_command),
                     env=env,
                     stdin=subprocess.DEVNULL,
                     stdout=stdout_file,
@@ -163,7 +147,7 @@ def main():
             message = '%s: %s' % (case['name'], case['message'])
             break
     else:
-        if options.expect == 'accepted':
+        if options.expect == 'accept_all':
             for case in cases:
                 if case['result'] == 'rejected':
                     result = 'failure'

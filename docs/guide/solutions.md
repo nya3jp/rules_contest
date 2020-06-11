@@ -36,7 +36,7 @@ the expectation of a solution.
 
 | Flag | Expectation |
 | --- | --- |
-| `--expect=accept` | A solution is accepted for all test cases (default) |
+| `--expect=accept_all` | A solution is accepted for all test cases (default) |
 | `--expect=reject_any` | A solution is rejected for any one of test cases |
 | `--expect=reject_all` | A solution is rejected for all test cases |
 

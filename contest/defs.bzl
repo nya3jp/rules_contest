@@ -172,43 +172,59 @@ dataset_test = rule(
     test = True,
 )
 
-def simple_judge(name, dataset, comparator = "@rules_contest//contest:exact_comparator", input_extension = "in", answer_extension = "ans", _metadata = {}, **kwargs):
-    full_name = "//" + native.package_name() + ":" + name
-    if native.repository_name() != "@":
-        full_name = native.repository_name() + full_name
-    sh = name + ".sh"
-    args = [
-        "'$(execpath @rules_contest//contest/impls:simple_judge_wrapper_generator)'",
-        "--output='$@'",
-        "--judge_name=" + full_name,
-        "--simple_judge='$(rootpath @rules_contest//contest/impls:simple_judge)'",
-        "--comparator='$(rootpath " + comparator + ")'",
-        "--dataset='$(rootpath " + dataset + ")'",
-        "--input_extension='" + input_extension + "'",
-        "--answer_extension='" + answer_extension + "'",
-    ]
-    args.extend([
-        "--metadata=%s:%s" % (key, value)
-        for key, value in sorted(_metadata.items())
-    ])
-    native.genrule(
-        name = name + "_gen",
-        outs = [sh],
-        srcs = [dataset],
-        tools = [
-            "@rules_contest//contest/impls:simple_judge_wrapper_generator",
-            "@rules_contest//contest/impls:simple_judge",
-            comparator,
+def _simple_judge_impl(ctx):
+    out = ctx.actions.declare_file(ctx.label.name)
+    ctx.actions.run(
+        outputs = [out],
+        executable = ctx.executable._generator,
+        arguments = [
+            "--output=" + out.path,
+            "--judge_name=" + str(ctx.label),
+            "--simple_judge=" + ctx.executable._simple_judge.short_path,
+            "--comparator=" + ctx.executable.comparator.short_path,
+            "--dataset=" + ctx.file.dataset.short_path,
+            "--solution_command=" + ctx.attr.solution_cmd,
+            "--comparator_command=" + ctx.attr.comparator_cmd,
         ],
-        executable = True,
-        cmd = " ".join(args),
+        mnemonic = "SimpleJudge",
+        progress_message = "Generating " + out.basename,
     )
-    native.sh_binary(
-        name = name,
-        srcs = [sh],
-        data = ["@rules_contest//contest/impls:simple_judge", comparator, dataset],
-        **kwargs
-    )
+    runfiles = ctx.runfiles([out])
+    runfiles = runfiles.merge(ctx.attr._simple_judge[DefaultInfo].default_runfiles)
+    runfiles = runfiles.merge(ctx.attr.comparator[DefaultInfo].default_runfiles)
+    runfiles = runfiles.merge(ctx.runfiles(ctx.files.dataset))
+    return [DefaultInfo(files = depset([out]), runfiles = runfiles)]
+
+simple_judge = rule(
+    implementation = _simple_judge_impl,
+    attrs = {
+        "dataset": attr.label(
+            mandatory = True,
+            allow_single_file = True,
+        ),
+        "comparator": attr.label(
+            executable = True,
+            cfg = "host",
+            default = Label("//contest:exact_comparator"),
+        ),
+        "solution_cmd": attr.string(
+            default = "${EXEC} < ${INPUT_DIR}/${TESTCASE}.in > ${OUTPUT_FILE}",
+        ),
+        "comparator_cmd": attr.string(
+            default = "${EXEC} ${INPUT_DIR}/${TESTCASE}.in ${OUTPUT_FILE} ${INPUT_DIR}/${TESTCASE}.ans",
+        ),
+        "_simple_judge": attr.label(
+            executable = True,
+            cfg = "host",
+            default = Label("//contest/impls:simple_judge"),
+        ),
+        "_generator": attr.label(
+            executable = True,
+            cfg = "host",
+            default = Label("//contest/impls:simple_judge_wrapper_generator"),
+        ),
+    },
+)
 
 def solution_test(name, solution, judge, judge_args = [], tags = [], **kwargs):
     sh = name + ".sh"

@@ -1,0 +1,31 @@
+{
+  "cases": [
+    {
+      "judge_code": 0,
+      "judge_time": 123456,
+      "message": "OK",
+      "name": "data1",
+      "result": "accepted",
+      "solution_code": 0,
+      "solution_time": 123456
+    },
+    {
+      "judge_code": 0,
+      "judge_time": 123456,
+      "message": "OK",
+      "name": "data2",
+      "result": "accepted",
+      "solution_code": 0,
+      "solution_time": 123456
+    }
+  ],
+  "expect": "accept_all",
+  "judge": {
+    "metadata": {},
+    "target": "//tests/simple_judge:judge",
+    "type": "simple_judge"
+  },
+  "message": "All accepted",
+  "result": "success",
+  "target": "//tests/simple_judge:simple_judge_test"
+}

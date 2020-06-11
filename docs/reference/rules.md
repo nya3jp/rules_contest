@@ -127,7 +127,7 @@ The following environment variables are available on running a command.
 
 ## simple_judge
 
-`simple_judge(name, dataset, comparator, input_extension, answer_extension, **kwargs)`
+`simple_judge(name, dataset, solution_cmd, comparator, comparator_cmd, **kwargs)`
 
 `simple_judge` rule generates a simple judge program from a dataset containing
 inputs and answers, and optionally a *comparator* program. A simple judge runs
@@ -140,7 +140,7 @@ the expectation of a solution.
 
 | Flag | Expectation |
 | --- | --- |
-| `--expect=accept` | A solution is accepted for all test cases (default) |
+| `--expect=accept_all` | A solution is accepted for all test cases (default) |
 | `--expect=reject_any` | A solution is rejected for any one of test cases |
 | `--expect=reject_all` | A solution is rejected for all test cases |
 
@@ -150,9 +150,20 @@ the expectation of a solution.
 | --- | --- | --- | --- |
 | `name` | `str` | Required | A unique name for the rule. |
 | `dataset` | `Label` | Required | A label of a dataset containing test cases. |
+| `solution_cmd` | `str` | `${EXEC} < ${INPUT_DIR}/${TESTCASE}.in > ${OUTPUT_FILE}` | A shell command to run a solution. |
 | `comparator` | `Label` | `"@rules_contest//contest:exact_comparator"` | A label of an executable to run to compare an output file and an answer file. |
-| `input_extension` | `str` | `"in"` | The extension of input data files. |
-| `answer_extension` | `str` | `"ans"` | The extension of answer data files. |
+| `comparator_cmd` | `str` | `${EXEC} ${INPUT_DIR}/${TESTCASE}.in ${OUTPUT_FILE} ${INPUT_DIR}/${TESTCASE}.ans` | A shell command to run a comparator. |
+
+### Environment variables (comparator and solution)
+
+The following environment variables are available on running a command.
+
+| Variable | Description |
+| --- | --- |
+| `EXEC` | A path to the executable being executed. It can be a comparator or a solution. |
+| `INPUT_DIR` | A path to the directory where data files are located. |
+| `TESTCASE` | A test case name to be processed. |
+| `OUTPUT_FILE` | A file path where a solution should write an output. |
 
 ![simple_judge](../images/simple_judge.svg)
 
