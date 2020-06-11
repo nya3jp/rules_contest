@@ -1,5 +1,5 @@
 def _dataset_generate_impl(ctx):
-    out = ctx.outputs.out
+    out = ctx.actions.declare_file(ctx.label.name + ".zip")
     ctx.actions.run(
         outputs = [out],
         executable = ctx.executable._tool,
@@ -36,11 +36,10 @@ dataset_generate = rule(
             default = Label("//contest/impls:dataset_generate"),
         ),
     },
-    outputs = {"out": "%{name}.zip"},
 )
 
 def _dataset_derive_impl(ctx):
-    out = ctx.outputs.out
+    out = ctx.actions.declare_file(ctx.label.name + ".zip")
     ctx.actions.run(
         outputs = [out],
         inputs = [ctx.file.dataset],
@@ -83,11 +82,10 @@ dataset_derive = rule(
             default = Label("//contest/impls:dataset_derive"),
         ),
     },
-    outputs = {"out": "%{name}.zip"},
 )
 
 def _dataset_merge_impl(ctx):
-    out = ctx.outputs.out
+    out = ctx.actions.declare_file(ctx.label.name + ".zip")
     args = ["--output=" + out.path]
     for f in ctx.files.files:
         args.append("--file=" + f.path)
@@ -123,7 +121,6 @@ dataset_merge = rule(
             default = Label("//contest/impls:dataset_merge"),
         ),
     },
-    outputs = {"out": "%{name}.zip"},
 )
 
 def _dataset_test_impl(ctx):
