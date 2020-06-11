@@ -2,7 +2,7 @@ import os
 import tempfile
 import unittest
 
-from contest.impls import datasets
+from contest.impls.lib import datasets
 
 
 class DatasetsTest(unittest.TestCase):

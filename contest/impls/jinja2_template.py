@@ -6,7 +6,7 @@ from typing import Optional
 import jinja2
 import yaml
 
-from contest.impls import datasets
+from contest.impls.lib import datasets
 
 
 class _LazyDatasetDict:

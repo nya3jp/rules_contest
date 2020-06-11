@@ -3,7 +3,7 @@ import os
 import shutil
 import tempfile
 
-from contest.impls import datasets
+from contest.impls.lib import datasets
 
 
 def main():

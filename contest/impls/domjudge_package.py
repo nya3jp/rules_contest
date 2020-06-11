@@ -5,7 +5,7 @@ import tempfile
 
 import yaml
 
-from contest.impls import datasets
+from contest.impls.lib import datasets
 
 
 def main():

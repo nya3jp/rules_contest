@@ -3,8 +3,8 @@ import os
 import subprocess
 import sys
 
-from contest.impls import datasets
-from contest.impls import exec_util
+from contest.impls.lib import datasets
+from contest.impls.lib import exec_util
 
 
 def main():

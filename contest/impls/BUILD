@@ -4,23 +4,16 @@ load("//lint:defs.bzl", "buildifier_test", "pycodestyle_test")
 
 buildifier_test()
 
-py_library(
-    name = "datasets",
-    srcs = ["datasets.py"],
-    srcs_version = "PY3",
+pycodestyle_test(
+    name = "pycodestyle_test",
+    srcs = glob(["*.py"]),
 )
 
 py_test(
     name = "datasets_test",
     srcs = ["datasets_test.py"],
     srcs_version = "PY3",
-    deps = [":datasets"],
-)
-
-py_library(
-    name = "exec_util",
-    srcs = ["exec_util.py"],
-    srcs_version = "PY3",
+    deps = ["//contest/impls/lib:datasets"],
 )
 
 py_binary(
@@ -29,8 +22,8 @@ py_binary(
     srcs_version = "PY3",
     visibility = ["//visibility:public"],
     deps = [
-        ":datasets",
-        ":exec_util",
+        "//contest/impls/lib:datasets",
+        "//contest/impls/lib:exec_util",
     ],
 )
 
@@ -40,8 +33,8 @@ py_binary(
     srcs_version = "PY3",
     visibility = ["//visibility:public"],
     deps = [
-        ":datasets",
-        ":exec_util",
+        "//contest/impls/lib:datasets",
+        "//contest/impls/lib:exec_util",
     ],
 )
 
@@ -50,7 +43,7 @@ py_binary(
     srcs = ["dataset_merge.py"],
     srcs_version = "PY3",
     visibility = ["//visibility:public"],
-    deps = [":datasets"],
+    deps = ["//contest/impls/lib:datasets"],
 )
 
 py_binary(
@@ -59,8 +52,8 @@ py_binary(
     srcs_version = "PY3",
     visibility = ["//visibility:public"],
     deps = [
-        ":datasets",
-        ":exec_util",
+        "//contest/impls/lib:datasets",
+        "//contest/impls/lib:exec_util",
     ],
 )
 
@@ -77,8 +70,8 @@ py_binary(
     srcs_version = "PY3",
     visibility = ["//visibility:public"],
     deps = [
-        ":datasets",
-        ":exec_util",
+        "//contest/impls/lib:datasets",
+        "//contest/impls/lib:exec_util",
     ],
 )
 
@@ -112,7 +105,7 @@ py_binary(
     srcs_version = "PY3",
     visibility = ["//visibility:public"],
     deps = [
-        ":datasets",
+        "//contest/impls/lib:datasets",
         "//third_party/jinja2",
         "//third_party/yaml",
     ],
@@ -148,18 +141,13 @@ py_binary(
     ],
 )
 
-pycodestyle_test(
-    name = "pycodestyle_test",
-    srcs = glob(["*.py"]),
-)
-
 py_binary(
     name = "domjudge_package",
     srcs = ["domjudge_package.py"],
     srcs_version = "PY3",
     visibility = ["//visibility:public"],
     deps = [
-        ":datasets",
+        "//contest/impls/lib:datasets",
         "//third_party/yaml",
     ],
 )
