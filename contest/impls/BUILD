@@ -83,6 +83,24 @@ py_binary(
 )
 
 py_binary(
+    name = "interactive_judge",
+    srcs = ["interactive_judge.py"],
+    srcs_version = "PY3",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//contest/impls/lib:datasets",
+        "//contest/impls/lib:exec_util",
+    ],
+)
+
+py_binary(
+    name = "interactive_judge_wrapper_generator",
+    srcs = ["interactive_judge_wrapper_generator.py"],
+    srcs_version = "PY3",
+    visibility = ["//visibility:public"],
+)
+
+py_binary(
     name = "solution_test_wrapper_generator",
     srcs = ["solution_test_wrapper_generator.py"],
     srcs_version = "PY3",

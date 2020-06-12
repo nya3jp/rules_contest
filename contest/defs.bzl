@@ -226,6 +226,56 @@ simple_judge = rule(
     },
 )
 
+def _interactive_judge_impl(ctx):
+    out = ctx.actions.declare_file(ctx.label.name)
+    ctx.actions.run(
+        outputs = [out],
+        executable = ctx.executable._generator,
+        arguments = [
+            "--output=" + out.path,
+            "--judge_name=" + str(ctx.label),
+            "--interactive_judge=" + ctx.executable._interactive_judge.short_path,
+            "--exec=" + ctx.executable.exec.short_path,
+            "--dataset=" + ctx.file.dataset.short_path,
+            "--command=" + ctx.attr.cmd,
+        ],
+        mnemonic = "InteractiveJudge",
+        progress_message = "Generating " + out.basename,
+    )
+    runfiles = ctx.runfiles([out])
+    runfiles = runfiles.merge(ctx.attr._interactive_judge[DefaultInfo].default_runfiles)
+    runfiles = runfiles.merge(ctx.attr.exec[DefaultInfo].default_runfiles)
+    runfiles = runfiles.merge(ctx.runfiles(ctx.files.dataset))
+    return [DefaultInfo(files = depset([out]), runfiles = runfiles)]
+
+interactive_judge = rule(
+    implementation = _interactive_judge_impl,
+    attrs = {
+        "dataset": attr.label(
+            mandatory = True,
+            allow_single_file = True,
+        ),
+        "exec": attr.label(
+            executable = True,
+            cfg = "host",
+            default = Label("//contest:exact_comparator"),
+        ),
+        "cmd": attr.string(
+            default = "${EXEC} < ${INPUT_DIR}/${TESTCASE}.in > ${OUTPUT_FILE}",
+        ),
+        "_interactive_judge": attr.label(
+            executable = True,
+            cfg = "host",
+            default = Label("//contest/impls:interactive_judge"),
+        ),
+        "_generator": attr.label(
+            executable = True,
+            cfg = "host",
+            default = Label("//contest/impls:interactive_judge_wrapper_generator"),
+        ),
+    },
+)
+
 def solution_test(name, solution, judge, judge_args = [], tags = [], **kwargs):
     sh = name + ".sh"
     args = [
