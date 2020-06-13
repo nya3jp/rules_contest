@@ -10,6 +10,13 @@ py_library(
     srcs_version = "PY3",
 )
 
+py_test(
+    name = "datasets_test",
+    srcs = ["datasets_test.py"],
+    srcs_version = "PY3",
+    deps = [":datasets"],
+)
+
 py_library(
     name = "exec_util",
     srcs = ["exec_util.py"],

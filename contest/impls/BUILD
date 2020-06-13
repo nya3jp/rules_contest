@@ -4,13 +4,6 @@ load("//lint:defs.bzl", "lint_all")
 
 lint_all()
 
-py_test(
-    name = "datasets_test",
-    srcs = ["datasets_test.py"],
-    srcs_version = "PY3",
-    deps = ["//contest/impls/lib:datasets"],
-)
-
 py_binary(
     name = "dataset_generate",
     srcs = ["dataset_generate.py"],
