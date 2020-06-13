@@ -1,10 +1,5 @@
 package(default_visibility = ["//visibility:private"])
 
-load("//lint:defs.bzl", "buildifier_test")
+load("//lint:defs.bzl", "lint_all")
 
-buildifier_test()
-
-exports_files(
-    ["pycodestyle_runner.py"],
-    visibility = ["//:__subpackages__"],
-)
+lint_all()

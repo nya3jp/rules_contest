@@ -1,6 +1,6 @@
 package(default_visibility = ["//tests/example/sum:__subpackages__"])
 
-load("//lint:defs.bzl", "buildifier_test")
+load("//lint:defs.bzl", "lint_all")
 load(
     "//contest:defs.bzl",
     "dataset_derive",
@@ -11,7 +11,7 @@ load(
     "simple_judge",
 )
 
-buildifier_test()
+lint_all()
 
 py_binary(
     name = "generator",

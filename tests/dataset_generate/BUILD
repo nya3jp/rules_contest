@@ -1,14 +1,9 @@
 package(default_visibility = ["//visibility:private"])
 
-load("//lint:defs.bzl", "buildifier_test", "pycodestyle_test")
+load("//lint:defs.bzl", "lint_all")
 load("//contest:defs.bzl", "dataset_generate")
 
-buildifier_test()
-
-pycodestyle_test(
-    name = "pycodestyle_test",
-    srcs = glob(["*.py"]),
-)
+lint_all()
 
 py_binary(
     name = "generator",

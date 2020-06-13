@@ -1,10 +1,10 @@
 package(default_visibility = ["//visibility:private"])
 
-load("//lint:defs.bzl", "buildifier_test")
+load("//lint:defs.bzl", "lint_all")
 load("//contest:defs.bzl", "dataset_merge")
 load("//contest:experimental_defs.bzl", "domjudge_package")
 
-buildifier_test()
+lint_all()
 
 dataset_merge(
     name = "dataset",

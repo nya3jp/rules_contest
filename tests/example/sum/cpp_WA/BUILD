@@ -1,12 +1,12 @@
 package(default_visibility = ["//tests/example/sum:__subpackages__"])
 
-load("//lint:defs.bzl", "buildifier_test")
+load("//lint:defs.bzl", "lint_all")
 load(
     "//contest:defs.bzl",
     "solution_test",
 )
 
-buildifier_test()
+lint_all()
 
 cc_binary(
     name = "cpp_WA",

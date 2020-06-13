@@ -1,6 +1,6 @@
 package(default_visibility = ["//tests/example/sqrt:__subpackages__"])
 
-load("//lint:defs.bzl", "buildifier_test")
+load("//lint:defs.bzl", "lint_all")
 load(
     "//contest:defs.bzl",
     "jinja2_template",
@@ -9,7 +9,7 @@ load(
 )
 load("//contest:experimental_defs.bzl", "domjudge_package")
 
-buildifier_test()
+lint_all()
 
 py_yaml_library(
     name = "constraints_py",

@@ -1,13 +1,8 @@
 package(default_visibility = ["//contest/impls:__subpackages__"])
 
-load("//lint:defs.bzl", "buildifier_test", "pycodestyle_test")
+load("//lint:defs.bzl", "lint_all")
 
-buildifier_test()
-
-pycodestyle_test(
-    name = "pycodestyle_test",
-    srcs = glob(["*.py"]),
-)
+lint_all()
 
 py_library(
     name = "datasets",
