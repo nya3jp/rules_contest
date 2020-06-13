@@ -256,12 +256,12 @@ interactive_judge = rule(
             allow_single_file = True,
         ),
         "exec": attr.label(
+            mandatory = True,
             executable = True,
             cfg = "host",
-            default = Label("//contest:exact_comparator"),
         ),
         "cmd": attr.string(
-            default = "${EXEC} < ${INPUT_DIR}/${TESTCASE}.in > ${OUTPUT_FILE}",
+            default = "${EXEC} ${INPUT_DIR}/${TESTCASE}.in",
         ),
         "_interactive_judge": attr.label(
             executable = True,
