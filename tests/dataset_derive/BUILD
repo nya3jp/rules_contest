@@ -13,7 +13,7 @@ pycodestyle_test(
 py_binary(
     name = "deriver",
     srcs = ["deriver.py"],
-    data = [":data.txt"],
+    data = [":deriver.data"],
     srcs_version = "PY3",
     deps = ["@bazel_tools//tools/python/runfiles"],
 )

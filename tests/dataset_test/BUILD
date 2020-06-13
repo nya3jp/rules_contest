@@ -18,7 +18,9 @@ dataset_merge(
 py_binary(
     name = "validator",
     srcs = ["validator.py"],
+    data = [":validator.data"],
     srcs_version = "PY3",
+    deps = ["@bazel_tools//tools/python/runfiles"],
 )
 
 dataset_test(

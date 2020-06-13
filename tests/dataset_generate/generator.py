@@ -14,7 +14,7 @@ def main():
 
     # Make sure we have access to the data file.
     resolver = runfiles.Create()
-    location = resolver.Rlocation('rules_contest/tests/dataset_generate/data.txt')
+    location = resolver.Rlocation('rules_contest/tests/dataset_generate/generator.data')
     assert location and os.path.exists(location), location
 
     out_dir = os.environ.get('OUTPUT_DIR')

@@ -12,7 +12,7 @@ def main():
 
     # Make sure we have access to the data file.
     resolver = runfiles.Create()
-    location = resolver.Rlocation('rules_contest/tests/simple_judge/data.txt')
+    location = resolver.Rlocation('rules_contest/tests/simple_judge/comparator.data')
     assert location and os.path.exists(location), location
 
     with open(options.input_file) as f:

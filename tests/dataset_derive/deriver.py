@@ -11,7 +11,7 @@ def main():
 
     # Make sure we have access to the data file.
     resolver = runfiles.Create()
-    location = resolver.Rlocation('rules_contest/tests/dataset_derive/data.txt')
+    location = resolver.Rlocation('rules_contest/tests/dataset_derive/deriver.data')
     assert location and os.path.exists(location), location
 
     value = int(input())

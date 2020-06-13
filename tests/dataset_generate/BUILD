@@ -13,7 +13,7 @@ pycodestyle_test(
 py_binary(
     name = "generator",
     srcs = ["generator.py"],
-    data = [":data.txt"],
+    data = [":generator.data"],
     srcs_version = "PY3",
     deps = ["@bazel_tools//tools/python/runfiles"],
 )
