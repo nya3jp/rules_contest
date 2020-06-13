@@ -45,6 +45,25 @@ the expectation of a solution.
 [`simple_judge`]: ../reference/rules.html#simple-judge
 [the default exact comparator]: ../reference/targets.html#rules-contest-contest-fake-coverage-report-generator
 
+## Interactive judge
+
+In an interactive problem, a solution interacts with a *server* program via
+standard input/output to solve an online problem.
+
+[`interactive_judge`] rule generates an interactive judge program from
+a dataset containing inputs and a server program. For each test case in the
+dataset, an interactive judge starts a solution and the server in parallel and
+connects their standard input and output for bi-directional interaction.
+A solution is considered to pass a test case if the server program exits
+normally (exit code 0).
+
+An interactive judge also optionally accepts the same command line flag
+`--expect` as a simple judge.
+
+![interactive_judge](../images/interactive_judge.svg)
+
+[`interactive_judge`]: ../reference/rules.html#interactive-judge
+
 ## Testing solutions
 
 [`solution_test`] is a test rule that runs a judge against a solution.

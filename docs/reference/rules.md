@@ -147,17 +147,56 @@ to customize the judge behavior for a solution.
 
 ### Environment variables
 
-The following environment variables are available on running a command
-(comparator or solution).
+The following environment variables are available on running a command.
 
 | Variable | Description |
 | --- | --- |
-| `EXEC` | A path to the executable being executed. It can be a comparator or a solution. |
+| `EXEC` | A path to the executable being executed (comparator or solution). |
 | `INPUT_DIR` | A path to the directory where data files are located. |
 | `TESTCASE` | A test case name to be processed. |
 | `OUTPUT_FILE` | A file path where a solution should write an output. |
 
 ![simple_judge](../images/simple_judge.svg)
+
+## interactive_judge
+
+`interactive_judge` rule generates an interactive judge program from a dataset
+containing inputs and a *server* program. For each test case in the dataset,
+an interactive judge starts a solution and the server in parallel and connects
+their standard input and output for bi-directional interaction. A solution is
+considered to pass a test case if the server program exits normally
+(exit code 0).
+
+An interactive judge optionally accepts a command line flag `--expect` that
+specifies the expectation of a solution. It can be specified in the
+`solution_test` rule to customize the judge behavior for a solution.
+
+| Flag | Expectation |
+| --- | --- |
+| `--expect=accept_all` | A solution is accepted for all test cases (default) |
+| `--expect=reject_any` | A solution is rejected for any one of test cases |
+| `--expect=reject_all` | A solution is rejected for all test cases |
+
+### Parameters
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| `name` | `str` | Required | A unique name for the rule. |
+| `dataset` | `Label` | Required | A label of a dataset containing test cases. |
+| `exec` | `Label` | Required | A label of an executable to run to interact with a solution via standard input/output. |
+| `cmd` | `str` | `${EXEC} ${INPUT_DIR}/${TESTCASE}.in` | A shell command to run a server. |
+
+### Environment variables
+
+The following environment variables are available on running a command.
+
+| Variable | Description |
+| --- | --- |
+| `EXEC` | A path to the server executable being executed. |
+| `INPUT_DIR` | A path to the directory where data files are located. |
+| `TESTCASE` | A test case name to be processed. |
+
+![interactive_judge](../images/interactive_judge.svg)
 
 ## solution_test
 
