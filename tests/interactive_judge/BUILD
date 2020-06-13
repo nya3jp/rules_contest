@@ -16,9 +16,9 @@ dataset_merge(
 )
 
 py_binary(
-    name = "peer",
-    srcs = ["peer.py"],
-    data = [":peer.data"],
+    name = "server",
+    srcs = ["server.py"],
+    data = [":server.data"],
     srcs_version = "PY3",
     deps = ["@bazel_tools//tools/python/runfiles"],
 )
@@ -51,7 +51,7 @@ interactive_judge(
     name = "judge",
     cmd = "${EXEC} ${INPUT_DIR}/${TESTCASE}.in",
     dataset = ":dataset",
-    exec = ":peer",
+    exec = ":server",
 )
 
 py_test(

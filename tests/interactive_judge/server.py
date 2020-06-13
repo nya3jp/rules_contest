@@ -7,7 +7,7 @@ from bazel_tools.tools.python.runfiles import runfiles
 def main():
     # Make sure we have access to the data file.
     resolver = runfiles.Create()
-    location = resolver.Rlocation('rules_contest/tests/interactive_judge/peer.data')
+    location = resolver.Rlocation('rules_contest/tests/interactive_judge/server.data')
     assert location and os.path.exists(location), location
 
     with open(sys.argv[1]) as f:
