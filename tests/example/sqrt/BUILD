@@ -32,6 +32,7 @@ markdown(
 domjudge_package(
     name = "sqrt",
     dataset = "//tests/example/sqrt/judge:dataset",
-    metadata = "problem.yaml",
+    domjudge_metadata = "domjudge-problem.ini",
+    icpc_metadata = "problem.yaml",
     statements = [":statement"],
 )
