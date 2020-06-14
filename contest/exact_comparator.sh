@@ -1,3 +1,3 @@
 #!/bin/sh
 
-exec diff -u "$2" "$3"
+exec diff -u --label OUTPUT --label ANSWER "$2" "$3"
