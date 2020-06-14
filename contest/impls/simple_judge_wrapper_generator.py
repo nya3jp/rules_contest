@@ -11,7 +11,6 @@ exec %(simple_judge)s \\
     --dataset=%(dataset)s \\
     --solution_command=%(solution_command)s \\
     --comparator_command=%(comparator_command)s \\
-    --metadata=%(metadata)s \\
     "$@"
 """
 
@@ -25,13 +24,7 @@ def main():
     parser.add_argument('--dataset', required=True)
     parser.add_argument('--solution_command', required=True)
     parser.add_argument('--comparator_command', required=True)
-    parser.add_argument('--metadata', action='append', default=[])
     options = parser.parse_args()
-
-    metadata = {}
-    for kv in options.metadata:
-        k, v = kv.split(':', 1)
-        metadata[k] = v
 
     script_vars = {
         'simple_judge': shlex.quote(options.simple_judge),
@@ -40,7 +33,6 @@ def main():
         'dataset': shlex.quote(options.dataset),
         'solution_command': shlex.quote(options.solution_command),
         'comparator_command': shlex.quote(options.comparator_command),
-        'metadata': shlex.quote(json.dumps(metadata, separators=(',', ':'), sort_keys=True)),
     }
     script = _SCRIPT_TMPL % script_vars
 

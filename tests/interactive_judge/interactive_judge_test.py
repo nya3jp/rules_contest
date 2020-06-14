@@ -33,8 +33,11 @@ class InteractiveJudgeTest(unittest.TestCase):
 
         # Fix undeterministic fields.
         for case in results['cases']:
-            case['solution_time'] = 123456
-            case['judge_time'] = 123456
+            case['time'] = 123456
+            case['details'].update({
+                'solution_time': 123456,
+                'judge_time': 123456,
+            })
 
         golden_path = resolver.Rlocation(
             'rules_contest/tests/interactive_judge/results_golden.json')

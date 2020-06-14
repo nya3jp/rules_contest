@@ -60,6 +60,7 @@ py_binary(
     deps = [
         "//contest/impls/lib:datasets",
         "//contest/impls/lib:exec_util",
+        "//contest/impls/lib:judge_report",
     ],
 )
 
@@ -78,6 +79,7 @@ py_binary(
     deps = [
         "//contest/impls/lib:datasets",
         "//contest/impls/lib:exec_util",
+        "//contest/impls/lib:judge_report",
     ],
 )
 

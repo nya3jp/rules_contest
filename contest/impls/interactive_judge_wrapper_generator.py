@@ -10,7 +10,6 @@ exec %(interactive_judge)s \\
     --dataset=%(dataset)s \\
     --exec=%(exec)s \\
     --command=%(command)s \\
-    --metadata=%(metadata)s \\
     "$@"
 """
 
@@ -23,13 +22,7 @@ def main():
     parser.add_argument('--dataset', required=True)
     parser.add_argument('--exec', required=True)
     parser.add_argument('--command', required=True)
-    parser.add_argument('--metadata', action='append', default=[])
     options = parser.parse_args()
-
-    metadata = {}
-    for kv in options.metadata:
-        k, v = kv.split(':', 1)
-        metadata[k] = v
 
     script_vars = {
         'interactive_judge': shlex.quote(options.interactive_judge),
@@ -37,7 +30,6 @@ def main():
         'dataset': shlex.quote(options.dataset),
         'exec': shlex.quote(options.exec),
         'command': shlex.quote(options.command),
-        'metadata': shlex.quote(json.dumps(metadata, separators=(',', ':'), sort_keys=True)),
     }
     script = _SCRIPT_TMPL % script_vars
 

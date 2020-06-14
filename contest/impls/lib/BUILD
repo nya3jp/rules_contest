@@ -22,3 +22,9 @@ py_library(
     srcs = ["exec_util.py"],
     srcs_version = "PY3",
 )
+
+py_library(
+    name = "judge_report",
+    srcs = ["judge_report.py"],
+    srcs_version = "PY3",
+)

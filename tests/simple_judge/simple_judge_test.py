@@ -18,6 +18,8 @@ bad_solution_path = resolver.Rlocation(
 
 
 class SimpleJudgeTest(unittest.TestCase):
+    maxDiff = None
+
     def test_results(self):
         subprocess.check_call([judge_path, good_solution_path])
 
@@ -39,8 +41,11 @@ class SimpleJudgeTest(unittest.TestCase):
 
         # Fix undeterministic fields.
         for case in results['cases']:
-            case['solution_time'] = 123456
-            case['judge_time'] = 123456
+            case['time'] = 123456
+            case['details'].update({
+                'solution_time': 123456,
+                'judge_time': 123456,
+            })
 
         golden_path = resolver.Rlocation(
             'rules_contest/tests/simple_judge/results_golden.json')
