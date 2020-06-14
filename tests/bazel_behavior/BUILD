@@ -21,5 +21,6 @@ py_test(
         "$$HOME",
         "|| true",
     ],
+    python_version = "PY3",
     srcs_version = "PY3",
 )

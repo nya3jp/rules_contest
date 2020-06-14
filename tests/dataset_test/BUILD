@@ -14,6 +14,7 @@ py_binary(
     name = "validator",
     srcs = ["validator.py"],
     data = [":validator.data"],
+    python_version = "PY3",
     srcs_version = "PY3",
     deps = ["@bazel_tools//tools/python/runfiles"],
 )

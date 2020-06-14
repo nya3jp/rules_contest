@@ -14,6 +14,7 @@ py_binary(
     name = "comparator",
     srcs = ["comparator.py"],
     data = [":comparator.data"],
+    python_version = "PY3",
     srcs_version = "PY3",
     deps = ["@bazel_tools//tools/python/runfiles"],
 )
@@ -29,6 +30,7 @@ py_binary(
     name = "good_solution",
     srcs = ["good_solution.py"],
     data = [":solution.data"],
+    python_version = "PY3",
     srcs_version = "PY3",
     deps = ["@bazel_tools//tools/python/runfiles"],
 )
@@ -37,6 +39,7 @@ py_binary(
     name = "half_solution",
     srcs = ["half_solution.py"],
     data = [":solution.data"],
+    python_version = "PY3",
     srcs_version = "PY3",
     deps = ["@bazel_tools//tools/python/runfiles"],
 )
@@ -45,6 +48,7 @@ py_binary(
     name = "bad_solution",
     srcs = ["bad_solution.py"],
     data = [":solution.data"],
+    python_version = "PY3",
     srcs_version = "PY3",
     deps = ["@bazel_tools//tools/python/runfiles"],
 )
@@ -59,6 +63,7 @@ py_test(
         ":judge",
         ":results_golden.json",
     ],
+    python_version = "PY3",
     srcs_version = "PY3",
     deps = ["@bazel_tools//tools/python/runfiles"],
 )

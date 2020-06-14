@@ -11,6 +11,7 @@ lint_all()
 py_binary(
     name = "python",
     srcs = ["python.py"],
+    python_version = "PY3",
     srcs_version = "PY3",
 )
 

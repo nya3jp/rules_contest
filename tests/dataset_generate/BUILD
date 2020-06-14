@@ -9,6 +9,7 @@ py_binary(
     name = "generator",
     srcs = ["generator.py"],
     data = [":generator.data"],
+    python_version = "PY3",
     srcs_version = "PY3",
     deps = ["@bazel_tools//tools/python/runfiles"],
 )
@@ -32,5 +33,6 @@ py_test(
         ":dataset",
         ":empty",
     ],
+    python_version = "PY3",
     srcs_version = "PY3",
 )

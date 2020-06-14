@@ -7,6 +7,7 @@ lint_all()
 py_binary(
     name = "dataset_generate",
     srcs = ["dataset_generate.py"],
+    python_version = "PY3",
     srcs_version = "PY3",
     visibility = ["//visibility:public"],
     deps = [
@@ -18,6 +19,7 @@ py_binary(
 py_binary(
     name = "dataset_derive",
     srcs = ["dataset_derive.py"],
+    python_version = "PY3",
     srcs_version = "PY3",
     visibility = ["//visibility:public"],
     deps = [
@@ -29,6 +31,7 @@ py_binary(
 py_binary(
     name = "dataset_merge",
     srcs = ["dataset_merge.py"],
+    python_version = "PY3",
     srcs_version = "PY3",
     visibility = ["//visibility:public"],
     deps = ["//contest/impls/lib:datasets"],
@@ -37,6 +40,7 @@ py_binary(
 py_binary(
     name = "dataset_test",
     srcs = ["dataset_test.py"],
+    python_version = "PY3",
     srcs_version = "PY3",
     visibility = ["//visibility:public"],
     deps = [
@@ -48,6 +52,7 @@ py_binary(
 py_binary(
     name = "dataset_test_wrapper_generator",
     srcs = ["dataset_test_wrapper_generator.py"],
+    python_version = "PY3",
     srcs_version = "PY3",
     visibility = ["//visibility:public"],
 )
@@ -55,6 +60,7 @@ py_binary(
 py_binary(
     name = "simple_judge",
     srcs = ["simple_judge.py"],
+    python_version = "PY3",
     srcs_version = "PY3",
     visibility = ["//visibility:public"],
     deps = [
@@ -67,6 +73,7 @@ py_binary(
 py_binary(
     name = "simple_judge_wrapper_generator",
     srcs = ["simple_judge_wrapper_generator.py"],
+    python_version = "PY3",
     srcs_version = "PY3",
     visibility = ["//visibility:public"],
 )
@@ -74,6 +81,7 @@ py_binary(
 py_binary(
     name = "interactive_judge",
     srcs = ["interactive_judge.py"],
+    python_version = "PY3",
     srcs_version = "PY3",
     visibility = ["//visibility:public"],
     deps = [
@@ -86,6 +94,7 @@ py_binary(
 py_binary(
     name = "interactive_judge_wrapper_generator",
     srcs = ["interactive_judge_wrapper_generator.py"],
+    python_version = "PY3",
     srcs_version = "PY3",
     visibility = ["//visibility:public"],
 )
@@ -93,6 +102,7 @@ py_binary(
 py_binary(
     name = "solution_test_wrapper_generator",
     srcs = ["solution_test_wrapper_generator.py"],
+    python_version = "PY3",
     srcs_version = "PY3",
     visibility = ["//visibility:public"],
 )
@@ -100,6 +110,7 @@ py_binary(
 py_binary(
     name = "sample_test_solution_generator",
     srcs = ["sample_test_solution_generator.py"],
+    python_version = "PY3",
     srcs_version = "PY3",
     visibility = ["//visibility:public"],
     deps = [
@@ -110,6 +121,7 @@ py_binary(
 py_binary(
     name = "jinja2_template",
     srcs = ["jinja2_template.py"],
+    python_version = "PY3",
     srcs_version = "PY3",
     visibility = ["//visibility:public"],
     deps = [
@@ -122,6 +134,7 @@ py_binary(
 py_binary(
     name = "render_markdown",
     srcs = ["render_markdown.py"],
+    python_version = "PY3",
     srcs_version = "PY3",
     visibility = ["//visibility:public"],
     deps = [
@@ -132,6 +145,7 @@ py_binary(
 py_binary(
     name = "cc_yaml_library",
     srcs = ["cc_yaml_library.py"],
+    python_version = "PY3",
     srcs_version = "PY3",
     visibility = ["//visibility:public"],
     deps = [
@@ -142,6 +156,7 @@ py_binary(
 py_binary(
     name = "py_yaml_library",
     srcs = ["py_yaml_library.py"],
+    python_version = "PY3",
     srcs_version = "PY3",
     visibility = ["//visibility:public"],
     deps = [
@@ -152,6 +167,7 @@ py_binary(
 py_binary(
     name = "domjudge_package",
     srcs = ["domjudge_package.py"],
+    python_version = "PY3",
     srcs_version = "PY3",
     visibility = ["//visibility:public"],
     deps = [

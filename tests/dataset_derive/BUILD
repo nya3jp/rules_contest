@@ -9,6 +9,7 @@ py_binary(
     name = "deriver",
     srcs = ["deriver.py"],
     data = [":deriver.data"],
+    python_version = "PY3",
     srcs_version = "PY3",
     deps = ["@bazel_tools//tools/python/runfiles"],
 )
@@ -38,5 +39,6 @@ py_test(
         ":dataset1",
         ":dataset2",
     ],
+    python_version = "PY3",
     srcs_version = "PY3",
 )
