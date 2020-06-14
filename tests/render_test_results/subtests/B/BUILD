@@ -21,6 +21,7 @@ simple_judge(
 cc_binary(
     name = "solution",
     srcs = ["solution.c"],
+    copts = ["-Wno-unused-result"],
 )
 
 solution_test(
