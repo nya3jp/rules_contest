@@ -1,0 +1,16 @@
+package(default_visibility = ["//visibility:private"])
+
+load("//lint:defs.bzl", "lint_all")
+
+lint_all()
+
+py_test(
+    name = "render_test_results_test",
+    srcs = ["render_test_results_test.py"],
+    data = [
+        "//contest:render_test_results",
+        "golden.md",
+    ] + glob(["testdata/**"]),
+    python_version = "PY3",
+    srcs_version = "PY3",
+)

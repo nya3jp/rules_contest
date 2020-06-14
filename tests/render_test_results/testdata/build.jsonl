@@ -1,0 +1,12 @@
+{"configured":{"tag":["exclusive","manual","solution"],"testSize":"MEDIUM"},"id":{"targetConfigured":{"label":"//tests/render_test_results/subtests/B:solution_reject_any_test"}}}
+{"configured":{"tag":["exclusive","manual","solution"],"testSize":"MEDIUM"},"id":{"targetConfigured":{"label":"//tests/render_test_results/subtests/B:solution_accept_all_test"}}}
+{"configured":{"tag":["exclusive","manual","solution"],"testSize":"MEDIUM"},"id":{"targetConfigured":{"label":"//tests/render_test_results/subtests/A:solution_reject_any_test"}}}
+{"configured":{"tag":["exclusive","manual","solution"],"testSize":"MEDIUM"},"id":{"targetConfigured":{"label":"//tests/render_test_results/subtests/A:solution_accept_all_test"}}}
+{"configured":{"tag":["exclusive","manual"],"testSize":"MEDIUM"},"id":{"targetConfigured":{"label":"//tests/render_test_results/subtests:good_test"}}}
+{"configured":{"tag":["exclusive","manual"],"testSize":"MEDIUM"},"id":{"targetConfigured":{"label":"//tests/render_test_results/subtests:bad_test"}}}
+{"id":{"testResult":{"label":"//tests/render_test_results/subtests/B:solution_reject_any_test"}},"testResult":{"status":"PASSED","testActionOutput":[{"name":"test.outputs__outputs.zip","uri":"file://./tests/render_test_results/testdata/B/solution_reject_any_test/test.outputs/outputs.zip"}]}}
+{"id":{"testResult":{"label":"//tests/render_test_results/subtests/B:solution_accept_all_test"}},"testResult":{"status":"FAILED","testActionOutput":[{"name":"test.outputs__outputs.zip","uri":"file://./tests/render_test_results/testdata/B/solution_accept_all_test/test.outputs/outputs.zip"}]}}
+{"id":{"testResult":{"label":"//tests/render_test_results/subtests/A:solution_reject_any_test"}},"testResult":{"status":"FAILED","testActionOutput":[{"name":"test.outputs__outputs.zip","uri":"file://./tests/render_test_results/testdata/A/solution_reject_any_test/test.outputs/outputs.zip"}]}}
+{"id":{"testResult":{"label":"//tests/render_test_results/subtests/A:solution_accept_all_test"}},"testResult":{"status":"PASSED","testActionOutput":[{"name":"test.outputs__outputs.zip","uri":"file://./tests/render_test_results/testdata/A/solution_accept_all_test/test.outputs/outputs.zip"}]}}
+{"id":{"testResult":{"label":"//tests/render_test_results/subtests:good_test"}},"testResult":{"status":"PASSED","testActionOutput":[]}}
+{"id":{"testResult":{"label":"//tests/render_test_results/subtests:bad_test"}},"testResult":{"status":"FAILED","testActionOutput":[]}}

@@ -27,5 +27,6 @@ py_binary(
     data = ["test_results.md"],
     python_version = "PY3",
     srcs_version = "PY3",
+    visibility = ["//visibility:public"],
     deps = ["//third_party/jinja2"],
 )
