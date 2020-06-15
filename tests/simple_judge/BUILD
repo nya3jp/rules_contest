@@ -7,12 +7,15 @@ lint_all()
 
 dataset_merge(
     name = "dataset",
-    files = glob(["*.in"]),
+    files = glob([
+        "*.in",
+        "*.ans",
+    ]),
 )
 
 py_binary(
-    name = "comparator",
-    srcs = ["comparator.py"],
+    name = "comparator_with_runfiles",
+    srcs = ["comparator_with_runfiles.py"],
     data = [":comparator.data"],
     python_version = "PY3",
     srcs_version = "PY3",
@@ -22,55 +25,60 @@ py_binary(
 simple_judge(
     name = "judge",
     case_timeout = 1,
-    comparator = ":comparator",
-    comparator_cmd = "${EXEC} --input_file=${INPUT_DIR}/${TESTCASE}.in --output_file=${OUTPUT_FILE}",
     dataset = ":dataset",
 )
 
+simple_judge(
+    name = "judge_with_runfiles",
+    comparator = ":comparator_with_runfiles",
+    dataset = ":dataset",
+)
+
+cc_binary(
+    name = "solution_good",
+    srcs = ["solution_good.c"],
+    copts = ["-Wno-unused-result"],
+)
+
+cc_binary(
+    name = "solution_half",
+    srcs = ["solution_half.c"],
+    copts = ["-Wno-unused-result"],
+)
+
+cc_binary(
+    name = "solution_bad",
+    srcs = ["solution_bad.c"],
+    copts = ["-Wno-unused-result"],
+)
+
+cc_binary(
+    name = "solution_slow",
+    srcs = ["solution_slow.c"],
+    copts = ["-Wno-unused-result"],
+)
+
 py_binary(
-    name = "good_solution",
-    srcs = ["good_solution.py"],
+    name = "solution_with_runfiles",
+    srcs = ["solution_with_runfiles.py"],
     data = [":solution.data"],
     python_version = "PY3",
     srcs_version = "PY3",
     deps = ["@bazel_tools//tools/python/runfiles"],
-)
-
-py_binary(
-    name = "half_solution",
-    srcs = ["half_solution.py"],
-    data = [":solution.data"],
-    python_version = "PY3",
-    srcs_version = "PY3",
-    deps = ["@bazel_tools//tools/python/runfiles"],
-)
-
-py_binary(
-    name = "bad_solution",
-    srcs = ["bad_solution.py"],
-    data = [":solution.data"],
-    python_version = "PY3",
-    srcs_version = "PY3",
-    deps = ["@bazel_tools//tools/python/runfiles"],
-)
-
-py_binary(
-    name = "long_solution",
-    srcs = ["long_solution.py"],
-    python_version = "PY3",
-    srcs_version = "PY3",
 )
 
 py_test(
     name = "simple_judge_test",
     srcs = ["simple_judge_test.py"],
     data = [
-        ":bad_solution",
-        ":good_solution",
-        ":half_solution",
         ":judge",
-        ":long_solution",
+        ":judge_with_runfiles",
         ":results_golden.json",
+        ":solution_bad",
+        ":solution_good",
+        ":solution_half",
+        ":solution_slow",
+        ":solution_with_runfiles",
     ],
     python_version = "PY3",
     srcs_version = "PY3",

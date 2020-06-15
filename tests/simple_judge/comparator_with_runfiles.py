@@ -6,8 +6,9 @@ from bazel_tools.tools.python.runfiles import runfiles
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--input_file', required=True)
-    parser.add_argument('--output_file', required=True)
+    parser.add_argument('input_file')
+    parser.add_argument('output_file')
+    parser.add_argument('answer_file')
     options = parser.parse_args()
 
     # Make sure we have access to the data file.
