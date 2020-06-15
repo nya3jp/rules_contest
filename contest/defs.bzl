@@ -185,6 +185,7 @@ def _simple_judge_impl(ctx):
             "--dataset=" + ctx.file.dataset.short_path,
             "--solution_command=" + ctx.attr.solution_cmd,
             "--comparator_command=" + ctx.attr.comparator_cmd,
+            "--case_timeout=%d" % ctx.attr.case_timeout,
         ],
         mnemonic = "SimpleJudge",
         progress_message = "Generating " + out.basename,
@@ -213,6 +214,9 @@ simple_judge = rule(
         "comparator_cmd": attr.string(
             default = "${EXEC} ${INPUT_DIR}/${TESTCASE}.in ${OUTPUT_FILE} ${INPUT_DIR}/${TESTCASE}.ans",
         ),
+        "case_timeout": attr.int(
+            default = 10,
+        ),
         "_simple_judge": attr.label(
             executable = True,
             cfg = "host",
@@ -238,6 +242,7 @@ def _interactive_judge_impl(ctx):
             "--exec=" + ctx.executable.exec.short_path,
             "--dataset=" + ctx.file.dataset.short_path,
             "--command=" + ctx.attr.cmd,
+            "--case_timeout=%d" % ctx.attr.case_timeout,
         ],
         mnemonic = "InteractiveJudge",
         progress_message = "Generating " + out.basename,
@@ -262,6 +267,9 @@ interactive_judge = rule(
         ),
         "cmd": attr.string(
             default = "${EXEC} ${INPUT_DIR}/${TESTCASE}.in",
+        ),
+        "case_timeout": attr.int(
+            default = 10,
         ),
         "_interactive_judge": attr.label(
             executable = True,

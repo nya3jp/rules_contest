@@ -21,6 +21,7 @@ py_binary(
 
 simple_judge(
     name = "judge",
+    case_timeout = 1,
     comparator = ":comparator",
     comparator_cmd = "${EXEC} --input_file=${INPUT_DIR}/${TESTCASE}.in --output_file=${OUTPUT_FILE}",
     dataset = ":dataset",
@@ -53,6 +54,13 @@ py_binary(
     deps = ["@bazel_tools//tools/python/runfiles"],
 )
 
+py_binary(
+    name = "long_solution",
+    srcs = ["long_solution.py"],
+    python_version = "PY3",
+    srcs_version = "PY3",
+)
+
 py_test(
     name = "simple_judge_test",
     srcs = ["simple_judge_test.py"],
@@ -61,6 +69,7 @@ py_test(
         ":good_solution",
         ":half_solution",
         ":judge",
+        ":long_solution",
         ":results_golden.json",
     ],
     python_version = "PY3",

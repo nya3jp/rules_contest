@@ -7,6 +7,7 @@ from typing import Any, Dict, List
 class CaseResult(enum.Enum):
     ACCEPTED = 'accepted'
     REJECTED = 'rejected'
+    TIMEOUT = 'timeout'
     SKIPPED = 'skipped'
     ERROR = 'error'
 
@@ -37,6 +38,7 @@ class Expect(enum.Enum):
     ACCEPT_ALL = 'accept_all'
     REJECT_ANY = 'reject_any'
     REJECT_ALL = 'reject_all'
+    TIMEOUT_ANY = 'timeout_any'
 
     def __str__(self) -> str:
         return self.value
@@ -102,14 +104,14 @@ def from_dict(data: dict) -> JudgeReport:
 
 def summarize(cases: List[CaseReport], expect: Expect, judge: JudgeInfo) -> JudgeReport:
     for case in cases:
-        if case.result not in (CaseResult.ACCEPTED, CaseResult.REJECTED, CaseResult.SKIPPED):
+        if case.result == CaseResult.ERROR:
             result = JudgeResult.ERROR
             message = '%s: %s' % (case.name, case.message)
             break
     else:
         if expect == Expect.ACCEPT_ALL:
             for case in cases:
-                if case.result == CaseResult.REJECTED:
+                if case.result != CaseResult.ACCEPTED:
                     result = JudgeResult.FAILURE
                     message = '%s: %s' % (case.name, case.message)
                     break
@@ -118,7 +120,7 @@ def summarize(cases: List[CaseReport], expect: Expect, judge: JudgeInfo) -> Judg
                 message = 'All accepted'
         elif expect == Expect.REJECT_ANY:
             for case in cases:
-                if case.result == CaseResult.REJECTED:
+                if case.result != CaseResult.ACCEPTED:
                     result = JudgeResult.SUCCESS
                     message = 'Rejected as expected: %s: %s' % (case.name, case.message)
                     break
@@ -134,6 +136,15 @@ def summarize(cases: List[CaseReport], expect: Expect, judge: JudgeInfo) -> Judg
             else:
                 result = JudgeResult.SUCCESS
                 message = 'All rejected as expected'
+        elif expect == Expect.TIMEOUT_ANY:
+            for case in cases:
+                if case.result == CaseResult.TIMEOUT:
+                    result = JudgeResult.SUCCESS
+                    message = 'Timeout as expected: %s: %s' % (case.name, case.message)
+                    break
+            else:
+                result = JudgeResult.FAILURE
+                message = 'All finished unexpectedly'
         else:
             assert False, expect
 

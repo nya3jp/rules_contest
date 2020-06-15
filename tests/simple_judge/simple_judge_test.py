@@ -15,6 +15,8 @@ half_solution_path = resolver.Rlocation(
     'rules_contest/tests/simple_judge/half_solution')
 bad_solution_path = resolver.Rlocation(
     'rules_contest/tests/simple_judge/bad_solution')
+long_solution_path = resolver.Rlocation(
+    'rules_contest/tests/simple_judge/long_solution')
 
 
 class SimpleJudgeTest(unittest.TestCase):
@@ -58,21 +60,31 @@ class SimpleJudgeTest(unittest.TestCase):
         self.assertEqual(0, subprocess.call([judge_path, good_solution_path]))
         self.assertEqual(1, subprocess.call([judge_path, half_solution_path]))
         self.assertEqual(1, subprocess.call([judge_path, bad_solution_path]))
+        self.assertEqual(1, subprocess.call([judge_path, long_solution_path]))
 
     def test_accept_all(self):
         self.assertEqual(0, subprocess.call([judge_path, '--expect=accept_all', good_solution_path]))
         self.assertEqual(1, subprocess.call([judge_path, '--expect=accept_all', half_solution_path]))
         self.assertEqual(1, subprocess.call([judge_path, '--expect=accept_all', bad_solution_path]))
+        self.assertEqual(1, subprocess.call([judge_path, '--expect=accept_all', long_solution_path]))
 
     def test_reject_any(self):
         self.assertEqual(1, subprocess.call([judge_path, '--expect=reject_any', good_solution_path]))
         self.assertEqual(0, subprocess.call([judge_path, '--expect=reject_any', half_solution_path]))
         self.assertEqual(0, subprocess.call([judge_path, '--expect=reject_any', bad_solution_path]))
+        self.assertEqual(0, subprocess.call([judge_path, '--expect=reject_any', long_solution_path]))
 
     def test_reject_all(self):
         self.assertEqual(1, subprocess.call([judge_path, '--expect=reject_all', good_solution_path]))
         self.assertEqual(1, subprocess.call([judge_path, '--expect=reject_all', half_solution_path]))
         self.assertEqual(0, subprocess.call([judge_path, '--expect=reject_all', bad_solution_path]))
+        self.assertEqual(1, subprocess.call([judge_path, '--expect=reject_all', long_solution_path]))
+
+    def test_timeout_any(self):
+        self.assertEqual(1, subprocess.call([judge_path, '--expect=timeout_any', good_solution_path]))
+        self.assertEqual(1, subprocess.call([judge_path, '--expect=timeout_any', half_solution_path]))
+        self.assertEqual(1, subprocess.call([judge_path, '--expect=timeout_any', bad_solution_path]))
+        self.assertEqual(0, subprocess.call([judge_path, '--expect=timeout_any', long_solution_path]))
 
 
 if __name__ == '__main__':

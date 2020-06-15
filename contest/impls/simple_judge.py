@@ -22,6 +22,8 @@ def main():
     parser.add_argument('--dataset', required=True)
     parser.add_argument('--solution_command', required=True)
     parser.add_argument('--comparator_command', required=True)
+    parser.add_argument('--case_timeout', type=int, required=True)
+    parser.add_argument('--timeout_multiplier', type=int, default=1)
     parser.add_argument('solution')
     options = parser.parse_args()
 
@@ -36,6 +38,11 @@ def main():
             solution_stdout_path = os.path.join(options.output_dir, '%s.solution.stdout' % name)
             solution_stderr_path = os.path.join(options.output_dir, '%s.solution.stderr' % name)
 
+            timeout = (
+                options.case_timeout *
+                options.timeout_multiplier *
+                int(os.environ.get('JUDGE_TIMEOUT_MULTIPLIER', '1')))
+
             with open(solution_stdout_path, 'wb') as stdout_file, \
                     open(solution_stderr_path, 'wb') as stderr_file:
                 env = exec_util.make_env({
@@ -45,27 +52,34 @@ def main():
                     'OUTPUT_FILE': solution_output_path,
                 })
                 start_time = time.time()
-                solution_code = subprocess.call(
-                    exec_util.bash_args(options.solution_command),
-                    env=env,
-                    stdin=subprocess.DEVNULL,
-                    stdout=stdout_file,
-                    stderr=stderr_file)
+                try:
+                    solution_code = subprocess.call(
+                        exec_util.bash_args(options.solution_command),
+                        env=env,
+                        stdin=subprocess.DEVNULL,
+                        stdout=stdout_file,
+                        stderr=stderr_file,
+                        timeout=timeout)
+                except subprocess.TimeoutExpired:
+                    solution_code = 111
                 solution_time = time.time() - start_time
 
-            if solution_code == 228:
-                msg = 'Solution skipped the test case'
+            if solution_code == 111:
+                msg = 'Solution timeout (%ds)' % timeout
                 print(msg)
                 cases.append(judge_report.CaseReport(
                     name=name,
                     time=solution_time,
-                    result=judge_report.CaseResult.SKIPPED,
+                    result=judge_report.CaseResult.TIMEOUT,
                     message=msg,
                     details={
                         'solution_time': solution_time,
                         'solution_code': solution_code,
                     }
                 ))
+                break
+            elif solution_code == 112:
+                # Skip
                 continue
             elif solution_code != 0:
                 msg = 'Solution exited with code %d' % solution_code

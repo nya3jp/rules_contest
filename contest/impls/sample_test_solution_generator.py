@@ -10,7 +10,7 @@ case "${CASE_NAME}" in
 {% for file in files -%}
 {{ file.name }}) exec cat {{ file.path }};;
 {% endfor -%}
-*) exit 228;;
+*) exit 112;;
 esac
 """
 

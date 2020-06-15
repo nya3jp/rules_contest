@@ -1,5 +1,4 @@
 import argparse
-import json
 import shlex
 
 _SCRIPT_TMPL = """#!/bin/sh
@@ -11,6 +10,7 @@ exec %(simple_judge)s \\
     --dataset=%(dataset)s \\
     --solution_command=%(solution_command)s \\
     --comparator_command=%(comparator_command)s \\
+    --case_timeout=%(case_timeout)d \\
     "$@"
 """
 
@@ -24,6 +24,7 @@ def main():
     parser.add_argument('--dataset', required=True)
     parser.add_argument('--solution_command', required=True)
     parser.add_argument('--comparator_command', required=True)
+    parser.add_argument('--case_timeout', type=int, required=True)
     options = parser.parse_args()
 
     script_vars = {
@@ -33,6 +34,7 @@ def main():
         'dataset': shlex.quote(options.dataset),
         'solution_command': shlex.quote(options.solution_command),
         'comparator_command': shlex.quote(options.comparator_command),
+        'case_timeout': options.case_timeout,
     }
     script = _SCRIPT_TMPL % script_vars
 

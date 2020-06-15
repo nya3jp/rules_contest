@@ -21,6 +21,8 @@ def main():
     parser.add_argument('--dataset', required=True)
     parser.add_argument('--exec', required=True)
     parser.add_argument('--command', required=True)
+    parser.add_argument('--case_timeout', type=int, required=True)
+    parser.add_argument('--timeout_multiplier', type=int, default=1)
     parser.add_argument('solution')
     options = parser.parse_args()
 
@@ -32,6 +34,11 @@ def main():
 
             solution_stderr_path = os.path.join(options.output_dir, '%s.solution.stderr' % name)
             judge_stderr_path = os.path.join(options.output_dir, '%s.judge.stderr' % name)
+
+            timeout = (
+                    options.case_timeout *
+                    options.timeout_multiplier *
+                    int(os.environ.get('JUDGE_TIMEOUT_MULTIPLIER', '1')))
 
             judge_stdin, solution_stdout = os.pipe()
             solution_stdin, judge_stdout = os.pipe()
@@ -58,16 +65,43 @@ def main():
                     stdout=solution_stdout,
                     stderr=solution_stderr)
 
-            judge_code = judge_proc.wait()
+            try:
+                judge_code = judge_proc.wait(timeout=timeout)
+            except subprocess.TimeoutExpired:
+                solution_proc.kill()
+                solution_proc.wait()
+                judge_code = 111
             try:
                 solution_code = solution_proc.wait(timeout=3)
             except subprocess.TimeoutExpired:
-                solution_proc.terminate()
-                solution_code = solution_proc.wait
+                solution_proc.kill()
+                solution_code = solution_proc.wait()
 
             run_time = time.time() - start_time
 
-            if judge_code != 0:
+            if judge_code == 111:
+                msg = 'Solution timeout (%ds)' % timeout
+                print(msg)
+                print('--- SOLUTION STDERR ---')
+                with open(solution_stderr_path, 'r') as f:
+                    print(f.read())
+                print('--- JUDGE STDERR ---')
+                with open(judge_stderr_path, 'r') as f:
+                    print(f.read())
+                cases.append(judge_report.CaseReport(
+                    name=name,
+                    time=run_time,
+                    result=judge_report.CaseResult.TIMEOUT,
+                    message=msg,
+                    details={
+                        'solution_time': run_time,
+                        'solution_code': solution_code,
+                        'judge_time': run_time,
+                        'judge_code': judge_code,
+                    }
+                ))
+                break
+            elif judge_code != 0:
                 msg = 'Judge exited with code %d' % judge_code
                 print(msg)
                 print('--- SOLUTION STDERR ---')
