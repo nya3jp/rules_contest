@@ -30,6 +30,9 @@ def main():
 
     with datasets.expand(options.dataset) as dataset_dir:
         for name in datasets.cases(dataset_dir):
+            if cases and judge_report.may_break(cases[-1], options.expect):
+                break
+
             print('*** %s: ' % name, end='')
 
             solution_stderr_path = os.path.join(options.output_dir, '%s.solution.stderr' % name)
@@ -68,8 +71,9 @@ def main():
             try:
                 judge_code = judge_proc.wait(timeout=timeout)
             except subprocess.TimeoutExpired:
+                judge_proc.kill()
                 solution_proc.kill()
-                solution_proc.wait()
+                judge_proc.wait()
                 judge_code = 111
             try:
                 solution_code = solution_proc.wait(timeout=3)
@@ -98,9 +102,9 @@ def main():
                         'solution_code': solution_code,
                         'judge_time': run_time,
                         'judge_code': judge_code,
-                    }
+                    },
                 ))
-                break
+                continue
             elif judge_code != 0:
                 msg = 'Judge exited with code %d' % judge_code
                 print(msg)
@@ -120,7 +124,7 @@ def main():
                         'solution_code': solution_code,
                         'judge_time': run_time,
                         'judge_code': judge_code,
-                    }
+                    },
                 ))
                 continue
 
@@ -136,7 +140,7 @@ def main():
                     'solution_code': solution_code,
                     'judge_time': run_time,
                     'judge_code': judge_code,
-                }
+                },
             ))
 
     info = judge_report.JudgeInfo(

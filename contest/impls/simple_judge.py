@@ -31,6 +31,9 @@ def main():
 
     with datasets.expand(options.dataset) as dataset_dir:
         for name in datasets.cases(dataset_dir):
+            if cases and judge_report.may_break(cases[-1], options.expect):
+                break
+
             print('*** %s: ' % name, end='')
 
             solution_output_path = os.path.join(options.output_dir, '%s.solution.output' % name)
@@ -75,9 +78,9 @@ def main():
                     details={
                         'solution_time': solution_time,
                         'solution_code': solution_code,
-                    }
+                    },
                 ))
-                break
+                continue
             elif solution_code == 112:
                 # Skip
                 continue
@@ -98,7 +101,7 @@ def main():
                     details={
                         'solution_time': solution_time,
                         'solution_code': solution_code,
-                    }
+                    },
                 ))
                 continue
 
@@ -147,7 +150,7 @@ def main():
                         'solution_code': solution_code,
                         'judge_time': judge_time,
                         'judge_code': judge_code,
-                    }
+                    },
                 ))
                 continue
 
@@ -163,7 +166,7 @@ def main():
                     'solution_code': solution_code,
                     'judge_time': judge_time,
                     'judge_code': judge_code,
-                }
+                },
             ))
 
     info = judge_report.JudgeInfo(

@@ -8,7 +8,6 @@ class CaseResult(enum.Enum):
     ACCEPTED = 'accepted'
     REJECTED = 'rejected'
     TIMEOUT = 'timeout'
-    SKIPPED = 'skipped'
     ERROR = 'error'
 
 
@@ -156,3 +155,14 @@ def summarize(cases: List[CaseReport], expect: Expect, judge: JudgeInfo) -> Judg
         message=message,
         cases=cases,
     )
+
+
+def may_break(last_case: CaseReport, expect: Expect) -> bool:
+    null_info = JudgeInfo(
+        target='',
+        type='',
+        metadata={},
+    )
+    init_result = summarize([], expect, null_info).result
+    last_result = summarize([last_case], expect, null_info).result
+    return last_result != init_result

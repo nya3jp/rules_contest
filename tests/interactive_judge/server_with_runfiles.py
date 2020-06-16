@@ -13,14 +13,14 @@ def main():
     with open(sys.argv[1]) as f:
         a, b = map(int, f.read().split())
 
-    print('PEER: init: a=%d, b=%d' % (a, b), file=sys.stderr)
+    print('SERVER: init: a=%d, b=%d' % (a, b), file=sys.stderr)
 
     while True:
         line = input()
-        print('PEER: input: %s' % line, file=sys.stderr)
+        print('SERVER: input: %s' % line, file=sys.stderr)
         if line.startswith('q '):
             x = int(line.split()[1])
-            print('PEER: output: %d' % (a * x + b), file=sys.stderr)
+            print('SERVER: output: %d' % (a * x + b), file=sys.stderr)
             print(a * x + b)
             sys.stdout.flush()
         elif line.startswith('a '):
