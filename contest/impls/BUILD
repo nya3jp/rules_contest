@@ -64,9 +64,8 @@ py_binary(
     srcs_version = "PY3",
     visibility = ["//visibility:public"],
     deps = [
-        "//contest/impls/lib:datasets",
         "//contest/impls/lib:exec_util",
-        "//contest/impls/lib:judge_report",
+        "//contest/impls/lib:judge_common",
     ],
 )
 
@@ -85,9 +84,8 @@ py_binary(
     srcs_version = "PY3",
     visibility = ["//visibility:public"],
     deps = [
-        "//contest/impls/lib:datasets",
         "//contest/impls/lib:exec_util",
-        "//contest/impls/lib:judge_report",
+        "//contest/impls/lib:judge_common",
     ],
 )
 

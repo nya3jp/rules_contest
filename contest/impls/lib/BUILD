@@ -25,7 +25,8 @@ py_library(
 )
 
 py_library(
-    name = "judge_report",
-    srcs = ["judge_report.py"],
+    name = "judge_common",
+    srcs = ["judge_common.py"],
     srcs_version = "PY3",
+    deps = [":datasets"],
 )

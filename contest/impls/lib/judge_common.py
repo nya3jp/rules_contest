@@ -1,7 +1,12 @@
 import enum
+import json
 import os
+import shutil
+import sys
 import typing
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Tuple
+
+from contest.impls.lib import datasets
 
 
 class CaseResult(enum.Enum):
@@ -9,6 +14,7 @@ class CaseResult(enum.Enum):
     REJECTED = 'rejected'
     TIMEOUT = 'timeout'
     ERROR = 'error'
+    SKIPPED = '_skipped'  # invalid in data
 
 
 CaseReport = typing.NamedTuple('CaseReport', [
@@ -17,6 +23,12 @@ CaseReport = typing.NamedTuple('CaseReport', [
     ('time', float),
     ('message', str),
     ('details', Dict[str, Any]),
+])
+
+
+Output = typing.NamedTuple('Output', [
+    ('title', str),
+    ('path', str),
 ])
 
 
@@ -53,7 +65,7 @@ JudgeReport = typing.NamedTuple('JudgeReport', [
 ])
 
 
-def to_dict(report: JudgeReport) -> dict:
+def _report_to_dict(report: JudgeReport) -> dict:
     return {
         'judge': {
             'target': report.judge.target,
@@ -77,7 +89,7 @@ def to_dict(report: JudgeReport) -> dict:
     }
 
 
-def from_dict(data: dict) -> JudgeReport:
+def _report_from_dict(data: dict) -> JudgeReport:
     return JudgeReport(
         judge=JudgeInfo(
             target=data['judge']['target'],
@@ -101,7 +113,7 @@ def from_dict(data: dict) -> JudgeReport:
     )
 
 
-def summarize(cases: List[CaseReport], expect: Expect, judge: JudgeInfo) -> JudgeReport:
+def _summarize(cases: List[CaseReport], expect: Expect, judge: JudgeInfo) -> JudgeReport:
     for case in cases:
         if case.result == CaseResult.ERROR:
             result = JudgeResult.ERROR
@@ -157,12 +169,54 @@ def summarize(cases: List[CaseReport], expect: Expect, judge: JudgeInfo) -> Judg
     )
 
 
-def may_break(last_case: CaseReport, expect: Expect) -> bool:
+def _may_break(last_case: CaseReport, expect: Expect) -> bool:
     null_info = JudgeInfo(
         target='',
         type='',
         metadata={},
     )
-    init_result = summarize([], expect, null_info).result
-    last_result = summarize([last_case], expect, null_info).result
+    init_result = _summarize([], expect, null_info).result
+    last_result = _summarize([last_case], expect, null_info).result
     return last_result != init_result
+
+
+_RULER = '#' * 16
+_OUTPUT_BEGIN = '>' * 7
+_OUTPUT_END = '<' * 7
+RunCaseFunc = typing.Callable[[str, str], Tuple[CaseReport, List[Output]]]
+
+
+def main(info: JudgeInfo, expect: Expect, output_dir: str, dataset_path: str, run_case: RunCaseFunc) -> int:
+    cases = []
+    with datasets.expand(dataset_path) as dataset_dir:
+        names = datasets.cases(dataset_dir)
+        for i, name in enumerate(names):
+            print('\n%s %s [%d/%d]' % (_RULER, name, i + 1, len(names)))
+            case, outputs = run_case(dataset_dir, name)
+            print('Result: %s' % case.result.value)
+            print('Runtime: %.1fs' % case.time)
+            print('Message: %s' % case.message)
+            if outputs:
+                print()
+            for output in outputs:
+                print('%s %s BEGIN' % (_OUTPUT_BEGIN, output.title))
+                with open(output.path, 'r') as f:
+                    shutil.copyfileobj(f, sys.stdout)
+                print('%s %s END' % (_OUTPUT_END, output.title))
+            if case.result == CaseResult.SKIPPED:
+                continue
+            cases.append(case)
+            if _may_break(case, expect):
+                break
+
+    print('\n%s %s' % (_RULER, 'END'))
+
+    report = _summarize(cases, expect, info)
+    with open(os.path.join(output_dir, 'results.json'), 'w') as f:
+        json.dump(_report_to_dict(report), f, indent=2, sort_keys=True)
+
+    print('Overall result: %s' % report.result.value)
+
+    if report.result != JudgeResult.SUCCESS:
+        return 1
+    return 0
