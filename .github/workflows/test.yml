@@ -9,10 +9,12 @@ on:
       - master
 
 jobs:
-  test:
+  linux:
     strategy:
       matrix:
-        os: [ubuntu-18.04, ubuntu-16.04]
+        os:
+          - "ubuntu-18.04"
+          - "ubuntu-16.04"
     name: Test (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     steps:
@@ -22,6 +24,30 @@ jobs:
           echo "deb [arch=amd64] https://storage.googleapis.com/bazel-apt stable jdk1.8" | sudo tee /etc/apt/sources.list.d/bazel.list
           sudo apt update
           sudo apt install bazel
+      - name: Checkout the repository
+        uses: actions/checkout@v2
+      - name: Build
+        run: bazel build //...
+      - name: Run tests
+        run: bazel test --keep_going --test_strategy=exclusive --build_event_json_file=$PWD/build-events.jsonl //...
+      - name: Render test reports
+        run: bazel run //contest:render_test_results -- $PWD/build-events.jsonl
+
+  macos:
+    strategy:
+      matrix:
+        os:
+          - "macos-10.15"
+        bazel:
+          - "3.2.0"
+    name: Test (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Install Bazel
+        run: |
+          curl -fLO "https://github.com/bazelbuild/bazel/releases/download/${{ matrix.bazel }}/bazel-${{ matrix.bazel }}-installer-darwin-x86_64.sh"
+          chmod +x "bazel-${{ matrix.bazel }}-installer-darwin-x86_64.sh"
+          sudo ./bazel-${{ matrix.bazel }}-installer-darwin-x86_64.sh
       - name: Checkout the repository
         uses: actions/checkout@v2
       - name: Build
