@@ -9,7 +9,7 @@ on:
       - master
 
 jobs:
-  linux:
+  test:
     strategy:
       matrix:
         os:
@@ -22,7 +22,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - name: Install Bazel (Ubuntu)
-        if: startsWith('${{ matrix.os }}', 'ubuntu-')
+        if: startsWith(matrix.os, 'ubuntu-')
         run: |
           sudo apt-get update
           sudo apt-get install --no-install-recommends g++ unzip zip default-jdk
@@ -30,7 +30,7 @@ jobs:
           chmod +x "bazel-${{ matrix.bazel }}-installer-linux-x86_64.sh"
           sudo ./bazel-${{ matrix.bazel }}-installer-linux-x86_64.sh
       - name: Install Bazel (macOS)
-        if: startsWith('${{ matrix.os }}', 'macos-')
+        if: startsWith(matrix.os, 'macos-')
         run: |
           curl -fLO "https://github.com/bazelbuild/bazel/releases/download/${{ matrix.bazel }}/bazel-${{ matrix.bazel }}-installer-darwin-x86_64.sh"
           chmod +x "bazel-${{ matrix.bazel }}-installer-darwin-x86_64.sh"
