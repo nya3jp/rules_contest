@@ -21,6 +21,9 @@ jobs:
     name: Test (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     steps:
+      - name: Try xcodebuild
+        run: |
+          time xcodebuild -version -sdk
       - name: Install Bazel (Ubuntu)
         if: startsWith(matrix.os, 'ubuntu-')
         run: |
