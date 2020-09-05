@@ -21,10 +21,6 @@ jobs:
     name: Test (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     steps:
-      - name: Try xcodebuild
-        if: startsWith(matrix.os, 'macos-')
-        run: |
-          time xcodebuild -version -sdk
       - name: Install Bazel (Ubuntu)
         if: startsWith(matrix.os, 'ubuntu-')
         run: |
@@ -47,7 +43,7 @@ jobs:
       - name: Upload command.profile.gz
         uses: actions/upload-artifact@v2
         with:
-          name: profile
+          name: command.profile.${{ matrix.os }}.gz
           path: command.profile.gz
       - name: Run tests
         run: bazel test --keep_going --test_strategy=exclusive --build_event_json_file=$PWD/build-events.jsonl //...
