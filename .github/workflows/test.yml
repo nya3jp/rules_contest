@@ -12,20 +12,39 @@ jobs:
   test:
     strategy:
       matrix:
-        os: [ubuntu-18.04, ubuntu-16.04]
+        os:
+          - "ubuntu-18.04"
+          - "ubuntu-16.04"
+          - "macos-10.15"
+        bazel:
+          - "3.2.0"
     name: Test (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     steps:
-      - name: Install Bazel
+      - name: Install Bazel (Ubuntu)
+        if: startsWith(matrix.os, 'ubuntu-')
         run: |
-          curl https://bazel.build/bazel-release.pub.gpg | sudo apt-key add -
-          echo "deb [arch=amd64] https://storage.googleapis.com/bazel-apt stable jdk1.8" | sudo tee /etc/apt/sources.list.d/bazel.list
-          sudo apt update
-          sudo apt install bazel
+          sudo apt-get install --no-install-recommends g++ unzip zip default-jdk-headless
+          curl -fLO "https://github.com/bazelbuild/bazel/releases/download/${{ matrix.bazel }}/bazel-${{ matrix.bazel }}-installer-linux-x86_64.sh"
+          chmod +x "bazel-${{ matrix.bazel }}-installer-linux-x86_64.sh"
+          sudo ./bazel-${{ matrix.bazel }}-installer-linux-x86_64.sh
+      - name: Install Bazel (macOS)
+        if: startsWith(matrix.os, 'macos-')
+        run: |
+          curl -fLO "https://github.com/bazelbuild/bazel/releases/download/${{ matrix.bazel }}/bazel-${{ matrix.bazel }}-installer-darwin-x86_64.sh"
+          chmod +x "bazel-${{ matrix.bazel }}-installer-darwin-x86_64.sh"
+          sudo ./bazel-${{ matrix.bazel }}-installer-darwin-x86_64.sh
       - name: Checkout the repository
         uses: actions/checkout@v2
       - name: Build
         run: bazel build //...
+      - name: Copy command.profile.gz
+        run: cp "$(bazel info output_base)/command.profile.gz" ./
+      - name: Upload command.profile.gz
+        uses: actions/upload-artifact@v2
+        with:
+          name: command.profile.${{ matrix.os }}.gz
+          path: command.profile.gz
       - name: Run tests
         run: bazel test --keep_going --test_strategy=exclusive --build_event_json_file=$PWD/build-events.jsonl //...
       - name: Render test reports
