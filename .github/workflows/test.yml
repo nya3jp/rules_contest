@@ -38,6 +38,13 @@ jobs:
         uses: actions/checkout@v2
       - name: Build
         run: bazel build //...
+      - name: Copy command.profile.gz
+        run: cp "$(bazel info output_base)/command.profile.gz" ./
+      - name: Upload command.profile.gz
+        uses: actions/upload-artifact@v2
+        with:
+          name: profile
+          path: command.profile.gz
       - name: Run tests
         run: bazel test --keep_going --test_strategy=exclusive --build_event_json_file=$PWD/build-events.jsonl //...
       - name: Render test reports
