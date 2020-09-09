@@ -2,6 +2,8 @@
 
 [![test](https://github.com/nya3jp/rules_contest/workflows/test/badge.svg)][test]
 [![docs](https://readthedocs.org/projects/rules-contest/badge/?version=latest&style=flat)][docs]
+[![license](https://img.shields.io/github/license/nya3jp/rules_contest)][license]
+[![releases](https://img.shields.io/github/v/tag/nya3jp/rules_contest)][releases]
 
 `rules_contest` is a collection of [Bazel] rules for maintaining programming
 contest problems. `rules_contest` helps you automate tasks to prepare
@@ -18,6 +20,8 @@ them with your own custom rules while still using other useful rules.
 
 [test]: https://github.com/nya3jp/rules_contest/actions?query=workflow%3Atest
 [docs]: https://rules-contest.readthedocs.io/
+[license]: https://github.com/nya3jp/rules_contest/blob/master/LICENSE
+[releases]: https://github.com/nya3jp/rules_contest/releases/
 [Bazel]: https://bazel.build/
 
 ## Getting Started
@@ -79,4 +83,8 @@ In the end of the output, a summary of test results is printed to the console.
 
 ## Documentation
 
-Full documentation is available at https://rules-contest.readthedocs.io/.
+Full documentation is available online.
+
+[![docs](https://readthedocs.org/projects/rules-contest/badge/?version=latest&style=flat)][docs]
+
+[docs]: https://rules-contest.readthedocs.io/
