@@ -31,11 +31,14 @@ Install [Bazel] by following [the official guide].
 
 ### Clone the template repository
 
-We provide [a Git repository] containing a template workspace on GitHub.
+We provide a Git repository containing a template workspace on GitHub.
+
+[![https://github.com/nya3jp/contest_template](https://img.shields.io/badge/repo-nya3jp%2Fcontest__template-blue?logo=github)][contest_template]
+
 Click the "[Use this template]" button to create a new repository using
 the template. Use [Git] to checkout the repository to the local machine.
 
-[a Git repository]: https://github.com/nya3jp/contest_template
+[contest_template]: https://github.com/nya3jp/contest_template
 [Use this template]: https://help.github.com/articles/creating-a-repository-from-a-template/
 [Git]: https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository
 
