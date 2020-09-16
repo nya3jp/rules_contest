@@ -16,37 +16,24 @@ jobs:
           - "ubuntu-18.04"
           - "ubuntu-16.04"
           - "macos-10.15"
-        bazel:
-          - "3.2.0"
-        bazelisk:
-          - "1.6.1"
+          - "windows-2019"
     name: Test (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     env:
-      USE_BAZEL_VERSION: ${{ matrix.bazel }}
+      USE_BAZEL_VERSION: "3.2.0"
     steps:
-      - name: Install Bazel (Ubuntu)
-        if: startsWith(matrix.os, 'ubuntu-')
-        run: |
-          sudo curl -f -L -o /usr/local/bin/bazel https://github.com/bazelbuild/bazelisk/releases/download/v${{ matrix.bazelisk }}/bazelisk-linux-amd64
-          sudo chmod +x /usr/local/bin/bazel
-      - name: Install Bazel (macOS)
-        if: startsWith(matrix.os, 'macos-')
-        run: |
-          sudo curl -f -L -o /usr/local/bin/bazel https://github.com/bazelbuild/bazelisk/releases/download/v${{ matrix.bazelisk }}/bazelisk-darwin-amd64
-          sudo chmod +x /usr/local/bin/bazel
       - name: Checkout the repository
         uses: actions/checkout@v2
       - name: Build
-        run: bazel build //...
+        run: bazelisk build //...
       - name: Copy command.profile.gz
-        run: cp "$(bazel info output_base)/command.profile.gz" ./
+        run: cp "$(bazelisk info output_base)/command.profile.gz" ./
       - name: Upload command.profile.gz
         uses: actions/upload-artifact@v2
         with:
           name: command.profile.${{ matrix.os }}.gz
           path: command.profile.gz
       - name: Run tests
-        run: bazel test --keep_going --test_strategy=exclusive --build_event_json_file=$PWD/build-events.jsonl //...
+        run: bazelisk test --keep_going --test_strategy=exclusive --build_event_json_file=$PWD/build-events.jsonl //...
       - name: Render test reports
-        run: bazel run //contest:render_test_results -- $PWD/build-events.jsonl
+        run: bazelisk run //contest:render_test_results -- $PWD/build-events.jsonl
