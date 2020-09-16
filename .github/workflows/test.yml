@@ -19,7 +19,7 @@ jobs:
     name: Test (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     env:
-      USE_BAZEL_VERSION: {{ matrix.bazel }}
+      USE_BAZEL_VERSION: ${{ matrix.bazel }}
     steps:
       - name: Install Bazel (Ubuntu)
         if: startsWith(matrix.os, 'ubuntu-')
