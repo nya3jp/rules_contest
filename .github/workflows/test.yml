@@ -28,12 +28,12 @@ jobs:
       - name: Install Bazel (Ubuntu)
         if: startsWith(matrix.os, 'ubuntu-')
         run: |
-          sudo curl -f -L -o /usr/local/bin/bazel https://github.com/bazelbuild/bazelisk/releases/download/v{{ matrix.bazelisk }}/bazelisk-linux-amd64
+          sudo curl -f -L -o /usr/local/bin/bazel https://github.com/bazelbuild/bazelisk/releases/download/v${{ matrix.bazelisk }}/bazelisk-linux-amd64
           sudo chmod +x /usr/local/bin/bazel
       - name: Install Bazel (macOS)
         if: startsWith(matrix.os, 'macos-')
         run: |
-          sudo curl -f -L -o /usr/local/bin/bazel https://github.com/bazelbuild/bazelisk/releases/download/v{{ matrix.bazelisk }}/bazelisk-darwin-amd64
+          sudo curl -f -L -o /usr/local/bin/bazel https://github.com/bazelbuild/bazelisk/releases/download/v${{ matrix.bazelisk }}/bazelisk-darwin-amd64
           sudo chmod +x /usr/local/bin/bazel
       - name: Checkout the repository
         uses: actions/checkout@v2
