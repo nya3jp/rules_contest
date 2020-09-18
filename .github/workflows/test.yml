@@ -16,11 +16,15 @@ jobs:
           - "ubuntu-18.04"
           - "ubuntu-16.04"
           - "macos-10.15"
+          - "windows-2019"
     name: Test (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     env:
       USE_BAZEL_VERSION: "3.2.0"
     steps:
+      - name: Remove bash.exe on Windows
+        if: startsWith(matrix.os, 'windows-')
+        run: rm C:\Windows\System32\bash.exe
       - name: Checkout the repository
         uses: actions/checkout@v2
       - name: Build
