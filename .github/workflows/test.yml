@@ -24,7 +24,8 @@ jobs:
     steps:
       - name: Remove bash.exe on Windows
         if: startsWith(matrix.os, 'windows-')
-        run: rm C:\Windows\System32\bash.exe
+        shell: cmd
+        run: rm.exe "C:/Windows/System32/bash.exe"
       - name: Checkout the repository
         uses: actions/checkout@v2
       - name: Build
