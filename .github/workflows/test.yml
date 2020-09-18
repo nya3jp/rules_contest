@@ -8,6 +8,10 @@ on:
     branches:
       - master
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   test:
     strategy:
@@ -22,6 +26,7 @@ jobs:
     env:
       USE_BAZEL_VERSION: "3.2.0"
     steps:
+      # https://github.com/actions/virtual-environments/pull/1081#issuecomment-661220718
       - name: Remove bash.exe on Windows
         if: startsWith(matrix.os, 'windows-')
         shell: cmd
