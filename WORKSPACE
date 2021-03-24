@@ -3,19 +3,19 @@ workspace(name = "rules_contest")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
 
 http_file(
-    name = "buildifier_prebuilt_linux",
-    sha256 = "e92a6793c7134c5431c58fbc34700664f101e5c9b1c1fcd93b97978e8b7f88db",
-    urls = ["https://github.com/bazelbuild/buildtools/releases/download/3.0.0/buildifier"],
+    name = "buildifier_prebuilt_linux_amd64",
+    sha256 = "069a03fc1fa46135e3f71e075696e09389344710ccee798b2722c50a2d92d55a",
+    urls = ["https://github.com/bazelbuild/buildtools/releases/download/4.0.1/buildifier-linux-amd64"],
 )
 
 http_file(
-    name = "buildifier_prebuilt_mac",
-    sha256 = "acfa34087ae386b1c02c224ca685dc132e53790d0b95f7649c728e46f4b53870",
-    urls = ["https://github.com/bazelbuild/buildtools/releases/download/3.0.0/buildifier.mac"],
+    name = "buildifier_prebuilt_darwin_amd64",
+    sha256 = "f4d0ede5af04b32671b9a086ae061df8f621f48ea139b01b3715bfa068219e4a",
+    urls = ["https://github.com/bazelbuild/buildtools/releases/download/4.0.1/buildifier-darwin-amd64"],
 )
 
 http_file(
-    name = "buildifier_prebuilt_windows",
-    sha256 = "5134ada7526882398b4bf014efefe18aa0c59253cbbd6525a9e002ba11300f34",
-    urls = ["https://github.com/bazelbuild/buildtools/releases/download/3.0.0/buildifier.exe"],
+    name = "buildifier_prebuilt_windows_amd64",
+    sha256 = "cde962f8a76739a01f637a16f019253a1f22166f91ed78d38ad66d1d3ca13ea9",
+    urls = ["https://github.com/bazelbuild/buildtools/releases/download/4.0.1/buildifier-windows-amd64.exe"],
 )
