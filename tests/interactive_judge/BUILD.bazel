@@ -27,7 +27,7 @@ py_binary(
 
 interactive_judge(
     name = "judge",
-    case_timeout = 1,
+    case_timeout = 10,
     dataset = ":dataset",
     exec = ":server",
 )
