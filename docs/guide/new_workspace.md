@@ -88,8 +88,8 @@ build --coverage_report_generator=@rules_contest//contest:fake_coverage_report_g
 ### prelude_bazel (optional)
 
 `tools/build_rules/prelude_bazel` file is read by Bazel before evaluating any
-`BUILD` file. You can load rules provided by `rules_contest` to avoid explicitly
-loading them in each `BUILD` file.
+`BUILD.bazel` file. You can load rules provided by `rules_contest` to avoid
+explicitly loading them in each `BUILD.bazel` file.
 
 ```python
 load("@rules_contest//contest:defs.bzl",

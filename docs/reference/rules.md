@@ -2,7 +2,8 @@
 
 All rules are defined in `@rules_contest//contest:defs.bzl`.
 
-To use rules, put the following `load` statement to the top of the `BUILD` file.
+To use rules, put the following `load` statement to the top of the `BUILD.bazel`
+file.
 
 ```python
 load(
