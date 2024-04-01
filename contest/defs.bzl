@@ -1,3 +1,8 @@
+def _normalize_label(label):
+    if label.startswith("@//"):
+        return label[1:]
+    return label
+
 def _dataset_generate_impl(ctx):
     out = ctx.actions.declare_file(ctx.label.name + ".zip")
     ctx.actions.run(
@@ -179,7 +184,7 @@ def _simple_judge_impl(ctx):
         executable = ctx.executable._generator,
         arguments = [
             "--output=" + out.path,
-            "--judge_name=" + str(ctx.label),
+            "--judge_name=" + _normalize_label(str(ctx.label)),
             "--simple_judge=" + ctx.executable._simple_judge.short_path,
             "--comparator=" + ctx.executable.comparator.short_path,
             "--dataset=" + ctx.file.dataset.short_path,
@@ -237,7 +242,7 @@ def _interactive_judge_impl(ctx):
         executable = ctx.executable._generator,
         arguments = [
             "--output=" + out.path,
-            "--judge_name=" + str(ctx.label),
+            "--judge_name=" + _normalize_label(str(ctx.label)),
             "--interactive_judge=" + ctx.executable._interactive_judge.short_path,
             "--exec=" + ctx.executable.exec.short_path,
             "--dataset=" + ctx.file.dataset.short_path,
