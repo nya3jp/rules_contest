@@ -1,3 +1,5 @@
+visibility("public")
+
 def _normalize_label(label):
     if label.startswith("@//"):
         return label[1:]

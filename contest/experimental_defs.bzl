@@ -1,3 +1,5 @@
+visibility("public")
+
 def domjudge_package(name, dataset, domjudge_metadata = None, icpc_metadata = None, statements = [], **kwargs):
     out = name + ".zip"
     args = [
