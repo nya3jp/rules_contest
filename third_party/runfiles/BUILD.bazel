@@ -1,0 +1,7 @@
+package(default_visibility = ["//visibility:private"])
+
+py_library(
+    name = "runfiles",
+    srcs = ["runfiles.py"],
+    visibility = ["//tests:__subpackages__"],
+)

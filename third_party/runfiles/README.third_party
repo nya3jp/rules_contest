@@ -1,0 +1,2 @@
+runfiles module from rules_python
+https://github.com/bazelbuild/rules_python/blob/b9f39bf09760ff75aedd64ce99c9573c1a97068f/python/runfiles/runfiles.py

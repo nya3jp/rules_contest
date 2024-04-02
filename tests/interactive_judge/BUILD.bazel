@@ -22,7 +22,7 @@ py_binary(
     data = [":server.data"],
     python_version = "PY3",
     srcs_version = "PY3",
-    deps = ["@bazel_tools//tools/python/runfiles"],
+    deps = ["//third_party/runfiles"],
 )
 
 interactive_judge(
@@ -68,7 +68,7 @@ py_binary(
     data = [":solution.data"],
     python_version = "PY3",
     srcs_version = "PY3",
-    deps = ["@bazel_tools//tools/python/runfiles"],
+    deps = ["//third_party/runfiles"],
 )
 
 py_test(
@@ -86,5 +86,5 @@ py_test(
     ],
     python_version = "PY3",
     srcs_version = "PY3",
-    deps = ["@bazel_tools//tools/python/runfiles"],
+    deps = ["//third_party/runfiles"],
 )

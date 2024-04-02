@@ -1,7 +1,7 @@
 import argparse
 import os
 
-from bazel_tools.tools.python.runfiles import runfiles
+from third_party.runfiles import runfiles
 
 
 def main():

@@ -3,7 +3,7 @@ import os
 import subprocess
 import unittest
 
-from bazel_tools.tools.python.runfiles import runfiles
+from third_party.runfiles import runfiles
 
 resolver = runfiles.Create()
 
