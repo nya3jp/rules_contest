@@ -3,6 +3,9 @@ module(
     version = "0.0.0",
 )
 
+bazel_dep(name = "rules_cc", version = "0.0.9")
+bazel_dep(name = "rules_python", version = "0.31.0")
+
 http_file = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
 
 http_file(

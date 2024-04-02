@@ -1,5 +1,6 @@
 load("//contest:defs.bzl", "solution_test")
 load("//lint:defs.bzl", "lint_all")
+load("@rules_cc//cc:defs.bzl", "cc_binary")
 
 package(default_visibility = ["//tests/example/sum:__subpackages__"])
 

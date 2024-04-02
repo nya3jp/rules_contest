@@ -8,6 +8,7 @@ load(
     "simple_judge",
 )
 load("//lint:defs.bzl", "lint_all")
+load("@rules_python//python:defs.bzl", "py_binary")
 
 package(default_visibility = ["//tests/example/sqrt:__subpackages__"])
 

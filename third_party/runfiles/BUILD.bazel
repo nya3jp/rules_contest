@@ -1,4 +1,4 @@
-package(default_visibility = ["//visibility:private"])
+load("@rules_python//python:defs.bzl", "py_library")
 
 py_library(
     name = "runfiles",

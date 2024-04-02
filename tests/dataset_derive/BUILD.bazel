@@ -1,5 +1,6 @@
 load("//contest:defs.bzl", "dataset_derive", "dataset_merge")
 load("//lint:defs.bzl", "lint_all")
+load("@rules_python//python:defs.bzl", "py_binary", "py_test")
 
 lint_all()
 
