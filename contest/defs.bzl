@@ -1,3 +1,6 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+load("@rules_python//python:defs.bzl", "py_library")
+
 visibility("public")
 
 def _normalize_label(label):
@@ -407,7 +410,7 @@ def cc_yaml_library(name, src, **kwargs):
             ",
         **kwargs
     )
-    native.cc_library(
+    cc_library(
         name = name,
         hdrs = [out],
         **kwargs
@@ -427,7 +430,7 @@ def py_yaml_library(name, src, **kwargs):
             ",
         **kwargs
     )
-    native.py_library(
+    py_library(
         name = name,
         srcs = [out],
         srcs_version = "PY2AND3",
