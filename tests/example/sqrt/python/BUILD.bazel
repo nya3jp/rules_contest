@@ -1,10 +1,7 @@
-package(default_visibility = ["//tests/example/sqrt:__subpackages__"])
-
+load("//contest:defs.bzl", "solution_test")
 load("//lint:defs.bzl", "lint_all")
-load(
-    "//contest:defs.bzl",
-    "solution_test",
-)
+
+package(default_visibility = ["//tests/example/sqrt:__subpackages__"])
 
 lint_all()
 

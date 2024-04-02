@@ -1,13 +1,8 @@
-package(default_visibility = ["//tests/example/sum:__subpackages__"])
-
-load("//lint:defs.bzl", "lint_all")
-load(
-    "//contest:defs.bzl",
-    "jinja2_template",
-    "markdown",
-    "py_yaml_library",
-)
+load("//contest:defs.bzl", "jinja2_template", "markdown", "py_yaml_library")
 load("//contest:experimental_defs.bzl", "domjudge_package")
+load("//lint:defs.bzl", "lint_all")
+
+package(default_visibility = ["//tests/example/sum:__subpackages__"])
 
 lint_all()
 

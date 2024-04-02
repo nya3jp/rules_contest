@@ -1,6 +1,3 @@
-package(default_visibility = ["//tests/example/sqrt:__subpackages__"])
-
-load("//lint:defs.bzl", "lint_all")
 load(
     "//contest:defs.bzl",
     "dataset_derive",
@@ -10,6 +7,9 @@ load(
     "sample_test",
     "simple_judge",
 )
+load("//lint:defs.bzl", "lint_all")
+
+package(default_visibility = ["//tests/example/sqrt:__subpackages__"])
 
 lint_all()
 

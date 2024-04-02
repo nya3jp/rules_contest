@@ -1,7 +1,5 @@
-package(default_visibility = ["//visibility:private"])
-
-load("//lint:defs.bzl", "lint_all")
 load("//contest:defs.bzl", "dataset_merge")
+load("//lint:defs.bzl", "lint_all")
 
 lint_all()
 
