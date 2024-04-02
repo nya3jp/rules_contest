@@ -1,6 +1,8 @@
 def _normalize_label(label):
     if label.startswith("@//"):
         return label[1:]
+    if label.startswith("@@//"):
+        return label[2:]
     return label
 
 def _dataset_generate_impl(ctx):

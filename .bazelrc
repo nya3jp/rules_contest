@@ -4,6 +4,3 @@ build -c opt
 
 # Print test errors to the console by default.
 test --test_output=errors
-
-# We're not ready to support bzlmod.
-common --noenable_bzlmod
