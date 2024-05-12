@@ -8,7 +8,7 @@ int main(int argc, char** argv) {
     scanf("%d", &b);
 
     if (b == 4) {
-        sleep(10);
+        sleep(60);
     }
 
     printf("q 1\n");
