@@ -5,7 +5,7 @@ int main(int argc, char** argv) {
     int n;
     scanf("%d", &n);
     if (n >= 2) {
-        sleep(10);
+        sleep(60);
     }
     printf("%d\n", n * 42);
     return 0;
