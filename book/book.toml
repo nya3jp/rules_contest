@@ -1,0 +1,6 @@
+[book]
+authors = ["Rime Project"]
+language = "en"
+multilingual = false
+src = "src"
+title = "rules_contest documentation"
