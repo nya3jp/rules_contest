@@ -5,10 +5,13 @@ contest problems using `rules_contest`.
 
 ## What is a workspace?
 
-A workspace is a concept of [Bazel]. A workspace is a directory on your
-filesystem that contains the source files needed to build and test programs.
-A workspace directory has a text file named `WORKSPACE` which might be empty or
-contain some workspace configurations.
+A workspace is a concept of [Bazel]. A workspace refers to a set of
+*repositories*, namely the main repository which is the primary directory
+tree where you maintain source code for your project, and external
+repositories that are imported directly or indirectly by the main repository.
+The root directory of a repository contains a text file named
+`MODULE.bazel` (or alternatively, `REPO.bazel`, `WORKSPACE.bazel`,
+`WORKSPACE`) to declare that it's a Bazel repository.
 
 [Bazel]: https://bazel.build/
 
@@ -44,19 +47,13 @@ contest event, it is recommended to place workspace files in the following
 
 ## Settings
 
-### WORKSPACE
+### MODULE.bazel
 
-`WORKSPACE` file in the workspace directory should include the following
+`MODULE.bazel` file in the workspace directory should include the following
 external dependency to use `rules_contest`.
 
 ```python
-load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
-
-git_repository(
-    name = "rules_contest",
-    remote = "https://github.com/nya3jp/rules_contest",
-    branch = "v0.8.1",
-)
+bazel_dep(name = "rules_contest", version = "0.9.0")
 ```
 
 ### .gitignore (optional)
@@ -78,32 +75,6 @@ default configurations. Some configurations are recommended.
 # Enable optimization by default.
 # Without this setting, C++ programs are much slower.
 build -c opt
-
-# Disable test coverage reporting by default.
-# Without this setting, running any test requires downloading JDK, even if
-# no Java program is in the workspace.
-build --coverage_report_generator=@rules_contest//contest:fake_coverage_report_generator
-```
-
-### prelude_bazel (optional)
-
-`tools/build_rules/prelude_bazel` file is read by Bazel before evaluating any
-`BUILD.bazel` file. You can load rules provided by `rules_contest` to avoid
-explicitly loading them in each `BUILD.bazel` file.
-
-```python
-load("@rules_contest//contest:defs.bzl",
-    "dataset_generate",
-    "dataset_derive",
-    "dataset_merge",
-    "dataset_test",
-    "simple_judge",
-    "solution_test",
-    "sample_test",
-    "jinja2_template",
-    "markdown",
-    "cc_yaml_library",
-    "py_yaml_library")
 ```
 
 ## Configuring continuous integration
