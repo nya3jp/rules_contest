@@ -22,6 +22,8 @@ solution_slow_path = resolver.Rlocation(
 solution_with_runfiles_path = resolver.Rlocation(
     'rules_contest/tests/interactive_judge/solution_with_runfiles')
 
+current_repository_root = os.environ['TEST_TARGET'].split('//')[0] + '//'
+
 
 class InteractiveJudgeTest(unittest.TestCase):
     def test_results(self):
@@ -35,7 +37,9 @@ class InteractiveJudgeTest(unittest.TestCase):
         self.assertEqual(sorted(os.listdir(out_dir)), sorted(output_files))
 
         with open(os.path.join(out_dir, 'results.json')) as f:
-            results = json.load(f)
+            content = f.read()
+        content = content.replace(current_repository_root, '//')
+        results = json.loads(content)
 
         # Fix undeterministic fields.
         for case in results['cases']:
