@@ -22,8 +22,6 @@ solution_slow_path = resolver.Rlocation(
 solution_with_runfiles_path = resolver.Rlocation(
     'rules_contest/tests/simple_judge/solution_with_runfiles')
 
-current_repository_root = os.environ['TEST_TARGET'].split('//')[0] + '//'
-
 
 class SimpleJudgeTest(unittest.TestCase):
     maxDiff = None
@@ -45,9 +43,7 @@ class SimpleJudgeTest(unittest.TestCase):
         self.assertEqual(sorted(os.listdir(out_dir)), sorted(output_files))
 
         with open(os.path.join(out_dir, 'results.json')) as f:
-            content = f.read()
-        content = content.replace(current_repository_root, '//')
-        results = json.loads(content)
+            results = json.load(f)
 
         # Fix undeterministic fields.
         for case in results['cases']:

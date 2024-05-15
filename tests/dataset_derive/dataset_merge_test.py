@@ -1,10 +1,6 @@
 import unittest
 import zipfile
 
-from third_party.runfiles import runfiles
-
-resolver = runfiles.Create()
-
 
 class DatasetGenerateTest(unittest.TestCase):
     def test_dataset1(self):
@@ -14,11 +10,7 @@ class DatasetGenerateTest(unittest.TestCase):
             'data2.in': b'2\n',
             'data2.ans': b'22\n',
         }
-
-        zip_path = resolver.Rlocation(
-            'rules_contest/tests/dataset_derive/dataset1.zip')
-
-        with zipfile.ZipFile(zip_path) as zf:
+        with zipfile.ZipFile('tests/dataset_derive/dataset1.zip') as zf:
             self.assertEqual(sorted(zf.namelist()), sorted(expects))
             for name, content in expects.items():
                 with zf.open(name, 'r') as f:
