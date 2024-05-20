@@ -1,6 +1,5 @@
 import contextlib
 import os
-import subprocess
 import tempfile
 import zipfile
 from typing import List
