@@ -15,11 +15,7 @@ def expand(zip_path: str) -> str:
 
 def extract(zip_path: str, out_dir: str) -> None:
     with zipfile.ZipFile(zip_path, 'r') as zf:
-        if not zf.namelist():
-            return
-    subprocess.check_call(
-        ['unzip', '-q', '-n', os.path.abspath(zip_path)],
-        cwd=out_dir)
+        zf.extractall(out_dir)
 
 
 def cases(dataset_dir: str) -> List[str]:
@@ -29,10 +25,10 @@ def cases(dataset_dir: str) -> List[str]:
 
 
 def create(in_dir: str, zip_path: str) -> None:
-    if not os.listdir(in_dir):
-        with zipfile.ZipFile(zip_path, 'w'):
-            pass
-        return
-    subprocess.check_call(
-        ['zip', '-q', '-r', os.path.abspath(zip_path), '.'],
-        cwd=in_dir)
+    with zipfile.ZipFile(zip_path, 'w') as zf:
+        for abs_dir, _, files in os.walk(in_dir):
+            rel_dir = os.path.relpath(abs_dir, in_dir)
+            for file in sorted(files):
+                zf.write(
+                    os.path.join(abs_dir, file),
+                    os.path.join(rel_dir, file))
