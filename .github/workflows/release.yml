@@ -20,10 +20,10 @@ jobs:
       - name: Create a release archive
         run: git archive --format tar.gz --prefix rules_contest-${RELEASE_VERSION}/ -o rules_contest-${RELEASE_VERSION}.tar.gz ${GITHUB_REF}
       - name: Extract the release archive
-        run: tar xzf rules_contest-${RELEASE_VERSION}.tar.gz
+        run: tar xvzf rules_contest-${RELEASE_VERSION}.tar.gz
       - name: Run tests
         run: bazelisk test --keep_going --test_strategy=exclusive //...
-        working-directory: rules_contest-${RELEASE_VERSION}
+        working-directory: "rules_contest-${{ env.RELEASE_VERSION }}"
       - name: Make a release
         uses: softprops/action-gh-release@v2
         with:
