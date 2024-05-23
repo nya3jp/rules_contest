@@ -9,16 +9,22 @@ jobs:
   release:
     name: Publish a release
     runs-on: ubuntu-latest
+    env:
+      USE_BAZEL_VERSION: "7.1.1"
+      RELEASE_VERSION: unknown
     steps:
       - name: Set env
         run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/v}" >> $GITHUB_ENV
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Create an archive
+      - name: Create a release archive
         run: git archive --format tar.gz --prefix rules_contest-${RELEASE_VERSION}/ -o rules_contest-${RELEASE_VERSION}.tar.gz ${GITHUB_REF}
-      - name: Release
+      - name: Extract the release archive
+        run: tar xzf rules_contest-${RELEASE_VERSION}.tar.gz
+      - name: Run tests
+        run: bazelisk test --keep_going --test_strategy=exclusive //...
+        working-directory: rules_contest-${RELEASE_VERSION}
+      - name: Make a release
         uses: softprops/action-gh-release@v2
         with:
           files: "rules_contest-${{ env.RELEASE_VERSION }}.tar.gz"
-    env:
-      RELEASE_VERSION: unknown
