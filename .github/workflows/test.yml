@@ -30,7 +30,11 @@ jobs:
         with:
           name: command.profile.${{ matrix.os }}.gz
           path: command.profile.gz
-      - name: Run tests
+      - name: Run unit tests
+        run: bazelisk test --keep_going --test_strategy=exclusive //...
+      - name: Run e2e tests
         run: bazelisk test --keep_going --test_strategy=exclusive --build_event_json_file=$PWD/build-events.jsonl //...
+        working-directory: testmod
       - name: Render test reports
-        run: bazelisk run //contest:render_test_results -- $PWD/build-events.jsonl
+        run: bazelisk run @rules_contest//contest:render_test_results -- $PWD/build-events.jsonl
+        working-directory: testmod

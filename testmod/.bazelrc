@@ -1,0 +1,3 @@
+# Enable optimization by default.
+# Without this setting, C++ programs are much slower.
+build -c opt
