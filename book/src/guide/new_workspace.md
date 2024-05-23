@@ -53,7 +53,7 @@ contest event, it is recommended to place workspace files in the following
 external dependency to use `rules_contest`.
 
 ```python
-bazel_dep(name = "rules_contest", version = "0.9.0")
+bazel_dep(name = "rules_contest", version = "0.9.1")
 ```
 
 ### .gitignore (optional)
