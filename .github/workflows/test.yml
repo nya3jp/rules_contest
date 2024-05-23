@@ -22,7 +22,7 @@ jobs:
       USE_BAZEL_VERSION: "7.1.1"
     steps:
       - name: Checkout the repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Build
         run: bazelisk build //...
       - name: Copy command.profile.gz
