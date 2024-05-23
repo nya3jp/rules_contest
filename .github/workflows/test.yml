@@ -23,13 +23,6 @@ jobs:
         uses: actions/checkout@v4
       - name: Build
         run: bazelisk build //...
-      - name: Copy command.profile.gz
-        run: cp "$(bazelisk info output_base)/command.profile.gz" ./
-      - name: Upload command.profile.gz
-        uses: actions/upload-artifact@v2
-        with:
-          name: command.profile.${{ matrix.os }}.gz
-          path: command.profile.gz
       - name: Run unit tests
         run: bazelisk test --keep_going --test_strategy=exclusive //...
       - name: Run e2e tests
