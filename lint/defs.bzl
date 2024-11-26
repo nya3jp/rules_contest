@@ -26,9 +26,9 @@ def buildifier_test(name, srcs, type = "auto", **kwargs):
     )
 
 def lint_all():
-    py_srcs = native.glob(["*.py"])
+    py_srcs = native.glob(["*.py"], allow_empty = True)
     if py_srcs:
         pycodestyle_test(name = "pycodestyle_test", srcs = py_srcs)
-    bzl_srcs = native.glob(["WORKSPACE", "WORKSPACE.bazel", "BUILD", "BUILD.bazel", "*.bzl"])
+    bzl_srcs = native.glob(["WORKSPACE", "WORKSPACE.bazel", "BUILD", "BUILD.bazel", "*.bzl"], allow_empty = True)
     if bzl_srcs:
         buildifier_test(name = "buildifier_test", srcs = bzl_srcs)
